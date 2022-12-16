@@ -1,5 +1,7 @@
 package com.secondpartial.platformreplica.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,8 +12,32 @@ public class CityModel {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "cities", cascade = CascadeType.ALL, orphanRemoval = true)
+    private String name;
+
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserModel> users;
 
-    private String name;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserModel> users) {
+        this.users = users;
+    }
 }
