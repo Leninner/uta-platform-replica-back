@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 public class CityModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     private String name;
