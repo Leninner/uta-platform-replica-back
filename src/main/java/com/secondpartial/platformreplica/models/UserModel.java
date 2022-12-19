@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
     private Long id;
 
     @Column(nullable = false)
@@ -30,6 +31,7 @@ public class UserModel {
     @Column(nullable = false)
     private String image;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING) 
     private RolEnum rol;
 
@@ -38,7 +40,7 @@ public class UserModel {
     private CityModel city;
 
     @ManyToMany()
-    @JoinColumn(name = "courses_id")
+    @JoinColumn(name = "course_id", nullable = false)
     private List<CourseModel> courses;
 
     public Long getId() {
