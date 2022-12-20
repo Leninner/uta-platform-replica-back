@@ -16,12 +16,12 @@ public class CourseController {
 
   @GetMapping(path = "/{rol}")
   public ArrayList<CourseModel> getCoursesByUserRol(@PathVariable("rol") String rol) {
-    return this.courseService.getCoursesByUserRol(rol);
+    return courseService.getCoursesByUserRol(rol);
   }
 
   @PostMapping()
   public CourseModel createCourse(@RequestBody CourseCreationDTO course) {
-    return this.courseService.createCourse(
+    return courseService.createCourse(
       new CourseModel(
         course.getName(),
         course.getSemester(),
