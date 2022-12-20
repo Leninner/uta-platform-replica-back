@@ -1,5 +1,7 @@
 package com.secondpartial.platformreplica.models;
 
+import java.util.List;
+
 import com.secondpartial.platformreplica.enums.RolEnum;
 import jakarta.persistence.*;
 
@@ -8,7 +10,7 @@ import jakarta.persistence.*;
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(nullable = false, unique = true)
     private Long id;
 
     @Column(nullable = false)
@@ -26,12 +28,20 @@ public class UserModel {
     @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
+    @Column(nullable = false)
+    private String image;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING) 
     private RolEnum rol;
 
     @ManyToOne()
     @JoinColumn(name = "city_id")
     private CityModel city;
+
+    @ManyToMany()
+    @JoinColumn(name = "course_id", nullable = false)
+    private List<CourseModel> courses;
 
     public Long getId() {
         return id;
