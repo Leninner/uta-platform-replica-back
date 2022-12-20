@@ -1,5 +1,6 @@
 package com.secondpartial.platformreplica.models;
 
+import com.secondpartial.platformreplica.enums.RolEnum;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,11 +11,23 @@ public class UserModel {
     @Column(name = "id")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+    
+    @Column(nullable = false, unique = true)
     private String email;
+    
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String address;
+
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING) 
+    private RolEnum rol;
 
     @ManyToOne()
     @JoinColumn(name = "city_id")
