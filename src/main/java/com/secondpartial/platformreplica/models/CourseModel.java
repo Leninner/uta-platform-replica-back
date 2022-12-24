@@ -3,9 +3,13 @@ package com.secondpartial.platformreplica.models;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Entity
 @Table(name = "courses")
+@Data
+@AllArgsConstructor
 public class CourseModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +30,4 @@ public class CourseModel {
 
   @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<UserModel> users;
-
-  public CourseModel(String name, String semester, String description, String image, List<UserModel> users) {
-    this.name = name;
-    this.semester = semester;
-    this.description = description;
-    this.image = image;
-    this.users = users;
-  }
 }

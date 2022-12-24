@@ -23,6 +23,7 @@ public class CourseController {
   public CourseModel createCourse(@RequestBody CourseCreationDTO course) {
     return courseService.createCourse(
       new CourseModel(
+        null,
         course.getName(),
         course.getSemester(),
         course.getDescription(),
