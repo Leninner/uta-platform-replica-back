@@ -1,8 +1,13 @@
 package com.secondpartial.platformreplica.services;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.secondpartial.platformreplica.dtos.CityDTO;
+import com.secondpartial.platformreplica.dtos.UserDTO;
+import com.secondpartial.platformreplica.models.CityModel;
 import com.secondpartial.platformreplica.models.UserModel;
 import com.secondpartial.platformreplica.utils.JWTUtil;
 
@@ -17,19 +22,34 @@ public class AuthService {
   @Autowired
   UserService userService;
 
-  public String login(
+  public HashMap<String, Object> login(
     String mail,
     String password
   ) throws Exception {
     UserModel user = userService.getByEmail(mail);
-    System.out.println(user.getName() + " " + user.getEmail() + " " + user.getPassword());
     Boolean validUser = this.validateUser(user, password);
-    
     if (!validUser) {
       throw new Exception("AuthService: login " + mail + " ********");
     }
+    
+    HashMap<String, String> userInfo = new HashMap<>();
+    userInfo.put("name", user.getName());
+    userInfo.put("email", user.getEmail());
+    userInfo.put("address", user.getAddress());
+    userInfo.put("phoneNumber", user.getPhoneNumber());
+    userInfo.put("rol", user.getRol().toString());
+    userInfo.put("image", user.getImage());
+    userInfo.put("city", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getName());
+    userInfo.put("province", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getProvinceName());
+    userInfo.put("id", user.getId().toString());
+    
 
-    return jwtUtil.create(mail, password);
+    String token = jwtUtil.create(mail, password);
+    HashMap<String, Object> response = new HashMap<>();
+    response.put("token", token);
+    response.put("user", userInfo);
+
+    return response;
   }
 
   private Boolean validateUser(UserModel user, String passwordToVerify){

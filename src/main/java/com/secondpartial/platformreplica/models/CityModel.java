@@ -3,9 +3,11 @@ package com.secondpartial.platformreplica.models;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "cities")
+@Data
 public class CityModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

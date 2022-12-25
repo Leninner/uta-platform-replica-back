@@ -1,5 +1,7 @@
 package com.secondpartial.platformreplica.controllers;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +18,12 @@ public class AuthController {
   AuthService authService;
 
   @PostMapping("/login")
-  public String login(@RequestBody LoginDTO loginDto) {
+  public HashMap<String, Object> login(@RequestBody LoginDTO loginDto) {
     try {
       return authService.login(loginDto.getEmail(), loginDto.getPassword());
     } catch (Exception e) {
       e.printStackTrace();
-      return "Error";
+      return null;
     }
   }
   /**
