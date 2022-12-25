@@ -1,5 +1,6 @@
 package com.secondpartial.platformreplica.services;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import com.secondpartial.platformreplica.utils.JWTUtil;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 @Service
 public class UserService {
@@ -37,7 +36,16 @@ public class UserService {
     return (List<UserModel>) userRepository.findAll();
   }
 
-  public UserModel register(UserDTO user) {
+  public HashMap<String, Object> register(UserDTO user) {
+    HashMap<String, Object> response = new HashMap<>();
+    UserModel userExists = this.getByEmail(user.getEmail());
+    Boolean exists = userExists != null;
+    if(exists) {    
+      response.put("message", "Un usuario con esa información ya existe");
+      response.put("status", 400);
+      return response;
+    }
+
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
     String hash = argon2.hash(1, 1024, 1, user.getPassword());
     user.setPassword(hash);
@@ -54,11 +62,13 @@ public class UserService {
       city, 
       null
     );
-    return userRepository.save(userModel);
+    userRepository.save(userModel);
+    response.put("message", "Usuario registrado");
+    response.put("status", 200);
+    return response;
   }
 
   public UserModel getByEmail(String email) {
-    System.out.println("UserService: getByEmail " + email);
     return userRepository.getByEmail(email);
   }
 
