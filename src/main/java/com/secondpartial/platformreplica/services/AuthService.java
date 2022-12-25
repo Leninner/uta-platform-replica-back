@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.CityDTO;
-import com.secondpartial.platformreplica.dtos.UserDTO;
-import com.secondpartial.platformreplica.models.CityModel;
 import com.secondpartial.platformreplica.models.UserModel;
 import com.secondpartial.platformreplica.utils.JWTUtil;
 
@@ -27,11 +25,20 @@ public class AuthService {
     String password
   ) throws Exception {
     UserModel user = userService.getByEmail(mail);
+    HashMap<String, Object> response = new HashMap<>();
+    if(user == null) {
+      response.put("message", "El usuario no existe");
+      response.put("status", 400);
+      return response;
+    }
+
     Boolean validUser = this.validateUser(user, password);
     if (!validUser) {
-      throw new Exception("AuthService: login " + mail + " ********");
+      response.put("message", "Contraseña incorrecta");
+      response.put("status", 400);
+      return response;
     }
-    
+
     HashMap<String, String> userInfo = new HashMap<>();
     userInfo.put("name", user.getName());
     userInfo.put("email", user.getEmail());
@@ -45,7 +52,6 @@ public class AuthService {
     
 
     String token = jwtUtil.create(mail, password);
-    HashMap<String, Object> response = new HashMap<>();
     response.put("token", token);
     response.put("user", userInfo);
 
