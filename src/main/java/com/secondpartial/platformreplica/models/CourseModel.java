@@ -28,6 +28,15 @@ public class CourseModel {
   @Column(nullable = true)
   private String image;
 
-  @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<UserModel> users;
+  @ManyToMany
+  @JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+  private List<StudentModel> students;
+
+  @ManyToOne()
+  @JoinColumn(name = "teacher_id")
+  private TeacherModel teacher;
+
+  @ManyToOne()
+  @JoinColumn(name = "career_id")
+  private CareerModel career;
 }

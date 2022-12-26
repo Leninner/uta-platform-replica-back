@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.models.CityModel;
+import com.secondpartial.platformreplica.models.StudentModel;
+import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.models.UserModel;
 import com.secondpartial.platformreplica.repositories.CityRepository;
+import com.secondpartial.platformreplica.repositories.StudentRepository;
+import com.secondpartial.platformreplica.repositories.TeacherRepository;
 import com.secondpartial.platformreplica.repositories.UserRepository;
 import com.secondpartial.platformreplica.utils.JWTUtil;
 
@@ -29,6 +33,12 @@ public class UserService {
 
   @Autowired
   CityRepository cityRepository;
+
+  @Autowired
+  StudentRepository studentRepository;
+
+  @Autowired
+  TeacherRepository teacherRepository;
 
   public List<UserModel> getUsers(String token) {
     if (!validarToken(token)) {
@@ -50,6 +60,7 @@ public class UserService {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
     String hash = argon2.hash(1, 1024, 1, user.getPassword());
     user.setPassword(hash);
+    
     CityModel city = cityRepository.findById(user.getCityId()).get();
     UserModel userModel = new UserModel(
         null,
@@ -60,9 +71,18 @@ public class UserService {
         RolEnum.getRolEnum(user.getRol()),
         user.getPhoneNumber(),
         user.getImage(),
-        city,
-        null);
+        city, null, null);
+    
     userRepository.save(userModel);
+
+    if (userModel.getRol() == RolEnum.STUDENT) {
+      StudentModel student = new StudentModel(null, userModel, null);
+      studentRepository.save(student);
+    } else if (userModel.getRol() == RolEnum.TEACHER) {
+      TeacherModel teacher = new TeacherModel(null, userModel, null);
+      teacherRepository.save(teacher);
+    }
+
     response.put("message", "Usuario registrado");
 
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);

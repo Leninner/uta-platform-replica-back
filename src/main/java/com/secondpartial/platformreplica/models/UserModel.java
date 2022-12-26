@@ -45,7 +45,9 @@ public class UserModel {
   @JoinColumn(name = "city_id")
   private CityModel city;
 
-  @ManyToMany()
-  @JoinColumn(name = "course_id", nullable = false)
-  private List<CourseModel> courses;
+  @OneToOne(mappedBy = "user")
+  private StudentModel student;
+
+  @OneToOne(mappedBy = "user")
+  private TeacherModel teacher;
 }

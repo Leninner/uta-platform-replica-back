@@ -28,6 +28,8 @@ public class CourseController {
             course.getSemester(),
             course.getDescription(),
             course.getImage(),
-            course.getUsers()));
+            null,
+            null,
+            course.getCareer()));
   }
 }
