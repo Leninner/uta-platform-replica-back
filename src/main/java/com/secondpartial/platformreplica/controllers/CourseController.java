@@ -26,4 +26,9 @@ public class CourseController {
   public ResponseEntity<HashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course) {
     return courseService.createCourse(course);
   }
+
+  @PostMapping("/bulk")
+  public ResponseEntity<HashMap<String, Object>> createCourses(@RequestBody ArrayList<CourseCreationDTO> courses) {
+    return courseService.createCourses(courses);
+  }
 }

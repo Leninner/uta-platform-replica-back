@@ -1712,6 +1712,7 @@ const generateCityId = () => {
 // copy(uniqueTeachers)
 // console.log(uniqueTeachers)
 
+// las passwords est'an generadas aleatoriamente
 const uniqueTeachers = [
   {
       "name": "ALEXANDRA VIRGINIA LASCANO SUMBANA",
@@ -2493,5 +2494,2293 @@ const uniqueTeachers = [
       "rol": "TEACHER",
       "cityId": 17,
       "careerId": 2
+  }
+]
+
+const teachersWithId = {
+    "1": "ALEXANDRA VIRGINIA LASCANO SUMBANA",
+    "2": "MAURICIO XAVIER LOPEZ FLORES",
+    "3": "LUIS ARMANDO CAMPAÑA MUQUINCHE",
+    "4": "CLARA AUGUSTA SANCHEZ BENITEZ",
+    "5": "DANIEL SEBASTIAN JEREZ MAYORGA",
+    "6": "MARTHA ESPERANZA SEVILLA ABARCA",
+    "7": "JOSE VICENTE MORALES LOZADA",
+    "8": "FREDDY GEOVANNY BENALCAZAR PALACIOS",
+    "9": "PERCY ALBERTO RIOS VILLACORTA",
+    "10":"FABIAN RODRIGO SALAZAR ESCOBAR",
+    "11":"JAIME RODRIGO GUILCAPI MOSQUERA",
+    "12": "ELIZABETH PAULINA AYALA BAÑO",
+    "13": "ANDREA PATRICIA SANCHEZ ZUMBA",
+    "14": "VICTOR SANTIAGO MANZANO VILLAFUERTE",
+    "15": "SANTIAGO MAURICIO ALTAMIRANO MELENDEZ",
+    "16": "ANA PAMELA CASTRO MARTIN",
+    "17": "EDGAR FREDDY ROBALINO PEÑA",
+    "18": "CARLOS DIEGO GORDON GALLEGOS",
+    "19": "MARIO GEOVANNY GARCIA CARRILLO",
+    "20": "EDGAR PATRICIO CORDOVA CORDOVA",
+    "21": "MARCO ANTONIO JURADO LOZADA",
+    "22": "GEOVANNI DANILO BRITO MONCAYO",
+    "23": "JULIO ENRIQUE CUJI RODRIGUEZ",
+    "24": "JUAN PABLO PALLO NOROÑA",
+    "25": "JUAN CAMILO ESCOBAR NARANJO",
+    "26": "GLADYS ISABEL TITUAÑA PULLUQUITIN",
+    "27": "ANITA LUCIA LARREA BUSTOS",
+    "28": "PABLO RAFAEL MUÑOZ VALVERDE",
+    "29": "PAULO CESAR TORRES ABRIL",
+    "30": "LEONARDO DAVID TORRES VALVERDE",
+    "31": "MARCO VINICIO GUACHIMBOZA VILLALVA",
+    "32": "MARITZA ELIZABETH CASTRO MAYORGA",
+    "33": "FELIX OSCAR FERNANDEZ PEÑA",
+    "34": "FRANKLIN WILFRIDO SALAZAR LOGROÑO",
+    "35": "MARLON ANTONIO SANTAMARIA VILLACIS",
+    "36": "DENNIS VINICIO CHICAIZA CASTILLO",
+    "37": "EDWIN HERNANDO BUENAÑO VALENCIA",
+    "38": "FRANKLIN OSWALDO MAYORGA MAYORGA",
+    "39": "BOLIVAR EFRAIN MORALES OÑATE",
+    "40": "HERNAN FABRICIO NARANJO AVALOS",
+    "41": "DAVID OMAR GUEVARA AULESTIA",
+    "42": "OSCAR FERNANDO IBARRA TORRES",
+    "43": "SANDRA LUCRECIA CARRILLO RIOS",
+    "44": "ELSA PILAR URRUTIA URRUTIA",
+    "45": "VICTOR HUGO GUACHIMBOSA VILLALBA",
+    "46": "EDISON HOMERO ALVAREZ MAYORGA",
+    "47": "CLAY FERNANDO ALDAS FLORES",
+    "48": "CARLOS ISRAEL NUÑEZ MIRANDA",
+    "49": "JULIO ENRIQUE BALAREZO LOPEZ",
+    "50": "RUBEN EDUARDO NOGALES PORTERO",
+    "51": "ANGEL MAURICIO CARRANZA GARCES",
+    "52": "JAIME BOLIVAR RUIZ BANDA",
+    "53": "DAYSI MARGARITA ORTIZ GUERRERO",
+    "54": "CARLOS HUMBERTO SANCHEZ ROSERO",
+    "55": "CHRISTIAN ISMAEL ORTIZ SAILEMA",
+    "56": "JOSE LUIS GAVIDIA GARCIA",
+    "57": "FREDDY ROBERTO LEMA CHICAIZA",
+    "58": "JOSE EZEQUIEL NARANJO ROBALINO",
+    "59": "EDITH ELENA TUBÓN NÚÑEZ",
+    "60": "EDISSON PATRICIO JORDAN HIDALGO",
+    "61": "FRANKLIN GEOVANNY TIGRE ORTEGA",
+    "62": "LUIS ALBERTO MORALES PERRAZO",
+    "63": "CESAR ANIBAL ROSERO MANTILLA",
+    "64": "FERNANDO URRUTIA URRUTIA",
+    "65": "JOHN PAUL REYES VASQUEZ",
+    "66": "ISRAEL ERNESTO NARANJO CHIRIBOGA",
+    "67": "CHRISTIAN JOSE MARIÑO RIVERA",
+    "68": "JESSICA PAOLA LOPEZ ARBOLEDA",
+    "69": "MARCELO VLADIMIR GARCIA SANCHEZ",
+    "70": "MARCOS RAPHAEL BENITEZ ALDAS",
+    "71": "SANTIAGO DAVID JARA MOYA"
+}
+
+const coursesToSave = courses.map(course => {
+  return course.subjects.map(subject => {
+    const teacherID = Number(Object.keys(teachersWithId).find(key => teachersWithId[key] === subject.teacher))
+    const careerID = Number(Object.keys(careers).find(key => careers[key] === course.career))
+    return {
+      name: subject.name,
+      semester: course.semester,
+      description: subject.description,
+      image: 'image random',
+      careerId: careerID,
+      teacherId: teacherID
+    }
+  })
+})
+
+copy(coursesToSave.flat())
+console.log(coursesToSave)
+
+
+const coursesToDB = [
+  {
+      "name": "Química - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 1
+  },
+  {
+      "name": "Química - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 1
+  },
+  {
+      "name": "Física - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 2
+  },
+  {
+      "name": "Física - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 3
+  },
+  {
+      "name": "Matemática - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 4
+  },
+  {
+      "name": "Matemática - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 5
+  },
+  {
+      "name": "Universidad y Sociedad - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 2
+  },
+  {
+      "name": "Universidad y Sociedad - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 3
+  },
+  {
+      "name": "Química - B",
+      "semester": "Primer Semestre",
+      "description": "Los avances científicos y tecnológicos han provocado en todo el mundo cambios, destacados en la electrónica y telecomunicaciones provocando un salto tecnológico.",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 6
+  },
+  {
+      "name": "Química - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 6
+  },
+  {
+      "name": "Tecnologías de la Información (Tic) - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 7
+  },
+  {
+      "name": "Tecnologías de la Información (Tic) - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 7
+  },
+  {
+      "name": "Algebra Lineal - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 4
+  },
+  {
+      "name": "Algebra Lineal - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 4
+  },
+  {
+      "name": "Física Básica - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 8
+  },
+  {
+      "name": "Física Básica - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 9
+  },
+  {
+      "name": "Metodología de la Investigación - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 9
+  },
+  {
+      "name": "Metodología de la Investigación - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 9
+  },
+  {
+      "name": "Cálculo de una Variable - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 10
+  },
+  {
+      "name": "Cálculo de una Variable - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 11
+  },
+  {
+      "name": "Gestión de Calidad - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 6
+  },
+  {
+      "name": "Gestión de Calidad - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 6
+  },
+  {
+      "name": "Evolución de Las Telecomunicaciones - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 12
+  },
+  {
+      "name": "Evolución de Las Telecomunicaciones - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 12
+  },
+  {
+      "name": "Base de Datos - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 7
+  },
+  {
+      "name": "Base de Datos - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 7
+  },
+  {
+      "name": "Fundamentos de Programación - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 13
+  },
+  {
+      "name": "Fundamentos de Programación - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 14
+  },
+  {
+      "name": "Física Aplicada - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 8
+  },
+  {
+      "name": "Cálculo de Varias Variables - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 10
+  },
+  {
+      "name": "Cálculo de Varias Variables - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 11
+  },
+  {
+      "name": "Métodos Numéricos - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 4
+  },
+  {
+      "name": "Física para Electrónica - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 15
+  },
+  {
+      "name": "Programación Avanzada - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 16
+  },
+  {
+      "name": "Dispositivos y Medidas - B",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 17
+  },
+  {
+      "name": "Dispositivos y Medidas - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 17
+  },
+  {
+      "name": "Probabilidad y Estadística - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 6
+  },
+  {
+      "name": "Ecuaciones Diferenciales - B",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 10
+  },
+  {
+      "name": "Ecuaciones Diferenciales - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 11
+  },
+  {
+      "name": "Sistemas Digitales - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 18
+  },
+  {
+      "name": "Electromagnetismo - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 8
+  },
+  {
+      "name": "Software de Simulación - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 18
+  },
+  {
+      "name": "Análisis de Circuitos - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 19
+  },
+  {
+      "name": "Análisis de Circuitos - B",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 9
+  },
+  {
+      "name": "Sistemas Lineales - B",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 19
+  },
+  {
+      "name": "Sistemas Lineales - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 19
+  },
+  {
+      "name": "Legislación Laboral - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 12
+  },
+  {
+      "name": "Sistemas Embebidos (VlSI) - B",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 20
+  },
+  {
+      "name": "Sistemas Embebidos (VlSI) - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 20
+  },
+  {
+      "name": "Realidad Nacional - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 12
+  },
+  {
+      "name": "Procesos Estocásticos - B",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 16
+  },
+  {
+      "name": "Procesos Estocásticos - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 21
+  },
+  {
+      "name": "Circuitos Electrónicos - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 19
+  },
+  {
+      "name": "Sistemas de Telefonía - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 22
+  },
+  {
+      "name": "Redes de Datos - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 17
+  },
+  {
+      "name": "Proyecto de Telecomunicaciones - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 12
+  },
+  {
+      "name": "Procesamiento Digital de Señales e Imágenes - B",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 16
+  },
+  {
+      "name": "Procesamiento Digital de Señales e Imágenes - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 21
+  },
+  {
+      "name": "Líneas de Transmisión - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 23
+  },
+  {
+      "name": "Comunicación Analógica - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 24
+  },
+  {
+      "name": "Conmutación y Enrutamiento de Redes - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 14
+  },
+  {
+      "name": "Propagación y Antenas - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 23
+  },
+  {
+      "name": "Circuitos Rf - B",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 15
+  },
+  {
+      "name": "Circuitos Rf - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 15
+  },
+  {
+      "name": "Comunicación Digital - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 24
+  },
+  {
+      "name": "Diseño de Proyectos - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 20
+  },
+  {
+      "name": "Comunicaciones Avanzadas - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 14
+  },
+  {
+      "name": "Sistemas Satelitales y GPS - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 15
+  },
+  {
+      "name": "Televisión Digital - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 21
+  },
+  {
+      "name": "Comunicaciones Ópticas - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 18
+  },
+  {
+      "name": "Comunicaciones Móviles - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 24
+  },
+  {
+      "name": "Sistemas Inalámbricos - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 17
+  },
+  {
+      "name": "Desarrollo de Proyectos - A",
+      "semester": "Noveno Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 1,
+      "teacherId": 16
+  },
+  {
+      "name": "Lógica de Programación - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 3
+  },
+  {
+      "name": "Lógica de Programación - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 3
+  },
+  {
+      "name": "Física - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 25
+  },
+  {
+      "name": "Física - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 25
+  },
+  {
+      "name": "Matemática - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 26
+  },
+  {
+      "name": "Matemática - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 26
+  },
+  {
+      "name": "Universidad y Sociedad - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 1
+  },
+  {
+      "name": "Universidad y Sociedad - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 1
+  },
+  {
+      "name": "Metodología de la Investigación - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 27
+  },
+  {
+      "name": "Metodología de la Investigación - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 27
+  },
+  {
+      "name": "Física - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 28
+  },
+  {
+      "name": "Física - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 28
+  },
+  {
+      "name": "Calculo Diferencial - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 29
+  },
+  {
+      "name": "Calculo Diferencial - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 29
+  },
+  {
+      "name": "Fundamentos de Programación - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 30
+  },
+  {
+      "name": "Fundamentos de Programación - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 31
+  },
+  {
+      "name": "Algebra Lineal - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 32
+  },
+  {
+      "name": "Algebra Lineal - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 32
+  },
+  {
+      "name": "Programación Orientada A Objetos - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 30
+  },
+  {
+      "name": "Programación Orientada A Objetos - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 33
+  },
+  {
+      "name": "Realidad Nacional - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 7
+  },
+  {
+      "name": "Estructura de Datos - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 33
+  },
+  {
+      "name": "Medidas Eléctricas - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 34
+  },
+  {
+      "name": "Lógica Matemática - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 28
+  },
+  {
+      "name": "Calculo Integral - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 35
+  },
+  {
+      "name": "Fundamentos de Redes y Comunicación de Datos - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 36
+  },
+  {
+      "name": "Fundamentos de Bases de Datos - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 37
+  },
+  {
+      "name": "Sistemas Operativos - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 38
+  },
+  {
+      "name": "Probabilidad y Estadística - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 39
+  },
+  {
+      "name": "Programación Avanzada - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 40
+  },
+  {
+      "name": "Gestión de Bases de Datos - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 37
+  },
+  {
+      "name": "Administración de Sistemas Operativos - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 41
+  },
+  {
+      "name": "Interacción Hombre Maquina - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 31
+  },
+  {
+      "name": "Ingeniería de Software - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 42
+  },
+  {
+      "name": "Métodos Numéricos - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 35
+  },
+  {
+      "name": "Gestión y Evaluación de Proyectos TI - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 43
+  },
+  {
+      "name": "Conmutación y Enrutamiento Básico - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 44
+  },
+  {
+      "name": "Investigación Operativa - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 45
+  },
+  {
+      "name": "Tecnologías y Desarrollo Web - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 40
+  },
+  {
+      "name": "Sistemas de Bases de Datos Distribuidos - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 46
+  },
+  {
+      "name": "Aplicaciones Móviles - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 47
+  },
+  {
+      "name": "Gobiernos TI - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 7
+  },
+  {
+      "name": "Conmutación y Enrutamiento Avanzado - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 36
+  },
+  {
+      "name": "Sistemas de Soporte de Decisiones - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 46
+  },
+  {
+      "name": "Administración de Base de Datos - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 48
+  },
+  {
+      "name": "Administración de Redes - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 13
+  },
+  {
+      "name": "Arquitectura y Plataformas de Servidores - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 41
+  },
+  {
+      "name": "Emprendimiento y Gestión Financiera de TI - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 27
+  },
+  {
+      "name": "Inteligencia de Negocios - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 46
+  },
+  {
+      "name": "Diseño de Proyectos - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 38
+  },
+  {
+      "name": "Auditoria de TI - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 49
+  },
+  {
+      "name": "Seguridad de la Información en Redes de Comunicación de Dat - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 41
+  },
+  {
+      "name": "Integración de Sistemas - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 50
+  },
+  {
+      "name": "Desarrollo de Proyectos - A",
+      "semester": "Noveno Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 3,
+      "teacherId": 38
+  },
+  {
+      "name": "Química - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 26
+  },
+  {
+      "name": "Química - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 26
+  },
+  {
+      "name": "Física - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 25
+  },
+  {
+      "name": "Física - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 25
+  },
+  {
+      "name": "Matemática - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 2
+  },
+  {
+      "name": "Matemática - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 2
+  },
+  {
+      "name": "Universidad y Sociedad - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 2
+  },
+  {
+      "name": "Universidad y Sociedad - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 51
+  },
+  {
+      "name": "Tecnologías de la Información y la Comunicación (Tic) - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 52
+  },
+  {
+      "name": "Tecnologías de la Información y la Comunicación (Tic) - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 52
+  },
+  {
+      "name": "Lógica Matemática - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 52
+  },
+  {
+      "name": "Lógica Matemática - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 52
+  },
+  {
+      "name": "Introducción a la Ingeniería Industrial - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 53
+  },
+  {
+      "name": "Introducción a la Ingeniería Industrial - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 54
+  },
+  {
+      "name": "Algebra - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 55
+  },
+  {
+      "name": "Algebra - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 56
+  },
+  {
+      "name": "Física Básica - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 39
+  },
+  {
+      "name": "Física Básica - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 39
+  },
+  {
+      "name": "Química - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 57
+  },
+  {
+      "name": "Química - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 57
+  },
+  {
+      "name": "Programación - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 52
+  },
+  {
+      "name": "Programación - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 52
+  },
+  {
+      "name": "Algebra Lineal - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 58
+  },
+  {
+      "name": "Algebra Lineal - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 58
+  },
+  {
+      "name": "Realidad Nacional - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 58
+  },
+  {
+      "name": "Realidad Nacional - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 43
+  },
+  {
+      "name": "Metodología de la Investigación - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 43
+  },
+  {
+      "name": "Metodología de la Investigación - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 43
+  },
+  {
+      "name": "Calculo Diferencial - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 59
+  },
+  {
+      "name": "Calculo Diferencial - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 59
+  },
+  {
+      "name": "Física Aplicada - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 59
+  },
+  {
+      "name": "Física Aplicada - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 59
+  },
+  {
+      "name": "Calculo Integral - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 57
+  },
+  {
+      "name": "Tecnología de Materiales - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 55
+  },
+  {
+      "name": "Investigación de Operaciones - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 45
+  },
+  {
+      "name": "Electrónica y Electricidad - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 58
+  },
+  {
+      "name": "Termodinámica - B",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 60
+  },
+  {
+      "name": "Termodinámica - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 60
+  },
+  {
+      "name": "Estadística y Probabilidades - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 39
+  },
+  {
+      "name": "Ingeniería de Métodos - B",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 61
+  },
+  {
+      "name": "Ingeniería de Métodos - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 61
+  },
+  {
+      "name": "Dibujo Asistido Por Computador - B",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 61
+  },
+  {
+      "name": "Dibujo Asistido Por Computador - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 61
+  },
+  {
+      "name": "Maquinas Eléctricas - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 58
+  },
+  {
+      "name": "Operaciones Unitarias - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 55
+  },
+  {
+      "name": "Contabilidad y Costos Industriales - B",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 27
+  },
+  {
+      "name": "Contabilidad y Costos Industriales - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 27
+  },
+  {
+      "name": "Seguridad Industrial - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 60
+  },
+  {
+      "name": "Instrumentación Industrial - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 62
+  },
+  {
+      "name": "Instrumentación Industrial - B",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 34
+  },
+  {
+      "name": "Gestión de Operaciones - B",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 63
+  },
+  {
+      "name": "Gestión de Operaciones - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 63
+  },
+  {
+      "name": "Procesos Industriales - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 55
+  },
+  {
+      "name": "Ergonomía - B",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 64
+  },
+  {
+      "name": "Ergonomía - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 64
+  },
+  {
+      "name": "Administración de la Producción - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 65
+  },
+  {
+      "name": "Maquinas Herramientas - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 56
+  },
+  {
+      "name": "Gestión Ambiental y Energías Alternativas - B",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 62
+  },
+  {
+      "name": "Gestión Ambiental y Energías Alternativas - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 62
+  },
+  {
+      "name": "Diseño y Organización de Plantas - B",
+      "semester": "Sexto Semestre",
+      "description": "Clave: DOP2022",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 66
+  },
+  {
+      "name": "Diseño y Organización de Plantas - A",
+      "semester": "Sexto Semestre",
+      "description": "Clave: DOP2022",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 66
+  },
+  {
+      "name": "Higiene Industrial - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 62
+  },
+  {
+      "name": "Higiene Industrial - B",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 64
+  },
+  {
+      "name": "Gestión Por Procesos - B",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 55
+  },
+  {
+      "name": "Gestión Por Procesos - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 63
+  },
+  {
+      "name": "Control Neumático y Oleo hidráulica - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 67
+  },
+  {
+      "name": "Control Neumático y Oleo hidráulica - B",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 34
+  },
+  {
+      "name": "Sistemas Cad/Cam - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 68
+  },
+  {
+      "name": "Sistemas Cad/Cam - B",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 56
+  },
+  {
+      "name": "Instrumentación Virtual - B",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 69
+  },
+  {
+      "name": "Instrumentación Virtual - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 69
+  },
+  {
+      "name": "Gestión del Mantenimiento - B",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 64
+  },
+  {
+      "name": "Gestión del Mantenimiento - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 64
+  },
+  {
+      "name": "Control de Calidad - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 62
+  },
+  {
+      "name": "Control de Calidad - B",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 56
+  },
+  {
+      "name": "Gerencia Empresarial - B",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 51
+  },
+  {
+      "name": "Gerencia Empresarial - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 51
+  },
+  {
+      "name": "Emprendimiento e Innovación - B",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 68
+  },
+  {
+      "name": "Emprendimiento e Innovación - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 45
+  },
+  {
+      "name": "Gestión de Calidad - B",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 53
+  },
+  {
+      "name": "Gestión de Calidad - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 53
+  },
+  {
+      "name": "Diseño de Proyectos - B",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 68
+  },
+  {
+      "name": "Diseño de Proyectos - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 68
+  },
+  {
+      "name": "Simulación y Laboratorio - B",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 65
+  },
+  {
+      "name": "Simulación y Laboratorio - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 65
+  },
+  {
+      "name": "Logística y Cadena de Abastecimiento - B",
+      "semester": "Octavo Semestre",
+      "description": "Clave: LCA2022",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 66
+  },
+  {
+      "name": "Logística y Cadena de Abastecimiento - A",
+      "semester": "Octavo Semestre",
+      "description": "Clave: LCA2022",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 66
+  },
+  {
+      "name": "Automatización Industrial y Robótica - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 69
+  },
+  {
+      "name": "Automatización Industrial y Robótica - B",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 34
+  },
+  {
+      "name": "Desarrollo de Proyectos - A",
+      "semester": "Noveno Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 4,
+      "teacherId": 53
+  },
+  {
+      "name": "Lógica de Programación - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 3
+  },
+  {
+      "name": "Lógica de Programación - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 3
+  },
+  {
+      "name": "Física - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 25
+  },
+  {
+      "name": "Física - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 25
+  },
+  {
+      "name": "Matemática - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 5
+  },
+  {
+      "name": "Matemática - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 5
+  },
+  {
+      "name": "Universidad y Sociedad - B",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 26
+  },
+  {
+      "name": "Universidad y Sociedad - A",
+      "semester": "Nivelación",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 5
+  },
+  {
+      "name": "Lógica Matemática - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 28
+  },
+  {
+      "name": "Lógica Matemática - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 37
+  },
+  {
+      "name": "Algoritmos y Lógica de Programación - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 70
+  },
+  {
+      "name": "Algoritmos y Lógica de Programación - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 70
+  },
+  {
+      "name": "Calculo Diferencial - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 28
+  },
+  {
+      "name": "Calculo Diferencial - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 29
+  },
+  {
+      "name": "Algebra Lineal - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 13
+  },
+  {
+      "name": "Algebra Lineal - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 32
+  },
+  {
+      "name": "Física - B",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 35
+  },
+  {
+      "name": "Física - A",
+      "semester": "Primer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 35
+  },
+  {
+      "name": "Metodología de la Investigación - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 32
+  },
+  {
+      "name": "Metodología de la Investigación - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 70
+  },
+  {
+      "name": "Sistemas Operativos - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 29
+  },
+  {
+      "name": "Sistemas Operativos - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 38
+  },
+  {
+      "name": "Programación Orientada A Objetos - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 42
+  },
+  {
+      "name": "Programación Orientada A Objetos - B",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 29
+  },
+  {
+      "name": "Calculo Integral - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 35
+  },
+  {
+      "name": "Fundamentos de Ingeniería de Software - A",
+      "semester": "Segundo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 42
+  },
+  {
+      "name": "Modelamiento y Diseño de Software - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 30
+  },
+  {
+      "name": "Introducción A Redes - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 13
+  },
+  {
+      "name": "Probabilidad y Estadística - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 28
+  },
+  {
+      "name": "Estructura de Datos - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 33
+  },
+  {
+      "name": "Métodos Numéricos - A",
+      "semester": "Tercer Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 43
+  },
+  {
+      "name": "Manejo y Configuración del Software - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 71
+  },
+  {
+      "name": "Computación Visual - B",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 42
+  },
+  {
+      "name": "Computación Visual - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 48
+  },
+  {
+      "name": "Base de Datos - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 37
+  },
+  {
+      "name": "Redes - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 41
+  },
+  {
+      "name": "Metodologías Agiles - A",
+      "semester": "Cuarto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 40
+  },
+  {
+      "name": "Interacción Humano / Computador - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 31
+  },
+  {
+      "name": "Aplicaciones Orientadas A Servicios - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 48
+  },
+  {
+      "name": "Patrones de Software - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 31
+  },
+  {
+      "name": "Sistemas de Soporte de Decisiones - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 46
+  },
+  {
+      "name": "Investigación Operativa - A",
+      "semester": "Quinto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 45
+  },
+  {
+      "name": "Realidad Nacional - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 51
+  },
+  {
+      "name": "Gestión de Prueba e Implantación de Software - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 49
+  },
+  {
+      "name": "Aplicaciones Distribuidas - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 71
+  },
+  {
+      "name": "Inteligencia de Negocios - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 50
+  },
+  {
+      "name": "Aplicaciones Web y Móviles - A",
+      "semester": "Sexto Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 36
+  },
+  {
+      "name": "Inteligencia Artificial - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 50
+  },
+  {
+      "name": "Gestión de Calidad del Software - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 71
+  },
+  {
+      "name": "Gestión de Proyectos de Software - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 30
+  },
+  {
+      "name": "Auditoria de Sistemas de Información - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 49
+  },
+  {
+      "name": "Desarrollo Asistido Por Software - A",
+      "semester": "Séptimo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 71
+  },
+  {
+      "name": "Diseño de Proyectos - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 49
+  },
+  {
+      "name": "Ingeniería Económica para Software - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 71
+  },
+  {
+      "name": "Seguridad en el Desarrollo del Software - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 33
+  },
+  {
+      "name": "Emprendimiento y Legislación Laboral - A",
+      "semester": "Octavo Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 51
+  },
+  {
+      "name": "Desarrollo de Proyectos - A",
+      "semester": "Noveno Semestre",
+      "description": "",
+      "image": "image random",
+      "careerId": 2,
+      "teacherId": 47
   }
 ]

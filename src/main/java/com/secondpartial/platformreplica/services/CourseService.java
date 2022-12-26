@@ -46,4 +46,16 @@ public class CourseService {
     response.put("status", 200);
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
   }
+
+  public ResponseEntity<HashMap<String, Object>> createCourses(ArrayList<CourseCreationDTO> courses) {
+    HashMap<String, Object> response = new HashMap<>();
+
+    for (CourseCreationDTO course : courses) {
+      this.createCourse(course);
+    }
+    
+    response.put("message", "Courses created successfully");
+    response.put("status", 200);
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
+  }
 }
