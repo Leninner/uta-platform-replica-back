@@ -52,7 +52,7 @@ public class UserService {
   CourseRepository courseRepository;
 
   public List<UserModel> getUsers(String token) {
-    if (!validarToken(token)) {
+    if (!validateToken(token)) {
       return null;
     }
 
@@ -61,38 +61,39 @@ public class UserService {
 
   public ResponseEntity<HashMap<String, Object>> register(UserDTO user) {
     HashMap<String, Object> response = new HashMap<>();
-    UserModel userExists = this.getByEmail(user.getEmail());
-    Boolean exists = userExists != null;
-    if (exists) {
-      response.put("message", "Un usuario con esa información ya existe");
+
+    if (this.validateIfExists(user.getEmail())) {
+      response.put("message", "An user with this email already exists!");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
       return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
-    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-    String hash = argon2.hash(1, 1024, 1, user.getPassword());
-    user.setPassword(hash);
-    
-    CityModel city = cityRepository.findById(user.getCityId()).get();
-    CareerModel career = careerRepository.findById(user.getCareerId()).get();
-
-    UserModel userModel = new UserModel(
-        null,
-        user.getName(),
-        user.getEmail(),
-        user.getPassword(),
-        user.getAddress(),
-        RolEnum.getRolEnum(user.getRol()),
-        user.getPhoneNumber(),
-        user.getImage(),
-        city, null, null, career);
-    
+    UserModel userModel = this.convertRequestDataToUserModelData(user);
     userRepository.save(userModel);
+    this.processUserByRol(userModel, user);
 
+    response.put("message", "User registered successfully!");
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
+  public ResponseEntity<HashMap<String, Object>> registerBulk(List<UserDTO> users) {
+    HashMap<String, Object> response = new HashMap<>();
+    List<UserModel> userss = new ArrayList<UserModel>();
+    
+    for (UserDTO user : users) {
+      UserModel userToSave = this.convertRequestDataToUserModelData(user);
+      userss.add(userToSave);
+    }
+
+    userRepository.saveAll(userss);
+    response.put("message", "Usuarios registrados");
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
+  public void processUserByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
       StudentModel student = new StudentModel(null, userModel, null);
       List<Long> courseIds = user.getCourseIds();
-
-      System.out.println(courseIds);
 
       if(courseIds != null) {
         List<CourseModel> courses = student.getCourses();
@@ -109,22 +110,49 @@ public class UserService {
       }
       
       studentRepository.save(student);
-    } else if (userModel.getRol() == RolEnum.TEACHER) {
-      TeacherModel teacher = new TeacherModel(null, userModel, null);
-      teacherRepository.save(teacher);
+      return;
     }
 
-    response.put("message", "Usuario registrado");
+    if (userModel.getRol() == RolEnum.TEACHER) {
+      TeacherModel teacher = new TeacherModel(null, userModel, null);
+      teacherRepository.save(teacher);
+      return;
+    }
+  }
 
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  public UserModel convertRequestDataToUserModelData(UserDTO user) {
+    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+    String hash = argon2.hash(1, 1024, 1, user.getPassword());
+    user.setPassword(hash);
+
+    CityModel city = cityRepository.findById(user.getCityId()).get();
+    CareerModel career = careerRepository.findById(user.getCareerId()).get();
+
+    UserModel userModel = new UserModel(
+        null,
+        user.getName(),
+        user.getEmail(),
+        user.getPassword(),
+        user.getAddress(),
+        RolEnum.getRolEnum(user.getRol()),
+        user.getPhoneNumber(),
+        user.getImage(),
+        city, null, null, career);
+
+    return userModel;
   }
 
   public UserModel getByEmail(String email) {
     return userRepository.getByEmail(email);
   }
 
-  private boolean validarToken(String token) {
+  private Boolean validateToken(String token) {
     String usuarioId = jwtUtil.getKey(token);
     return usuarioId != null;
+  }
+
+  private Boolean validateIfExists(String email) {
+    UserModel user = userRepository.getByEmail(email);
+    return user != null;
   }
 }

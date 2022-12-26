@@ -1,29 +1,29 @@
-const semesters = document.getElementsByClassName('category with_children loaded')
-const careers = ['Telecomunicaciones', 'Tecnologías de la Información', 'Ingeniería Industrial', 'Software']
-const childBySemester = Array.from(semesters)
-  .map(semester => {
-    return {
-      career: careers.find(career => semester.children[0].innerText.includes(career)),
-      semester: semester.children[0].innerText,
-      subjects: Array.from(semester.children[1].children[0].children).map(subject => {
-        console.log(subject.children[1].children, semester.children[0].innerText)
-        const name = subject.children[0].innerText
-        const hasDescription = subject.children[1].children.length > 1
+// const semesters = document.getElementsByClassName('category with_children loaded')
+// const careers = ['Telecomunicaciones', 'Tecnologías de la Información', 'Ingeniería Industrial', 'Software']
+// const childBySemester = Array.from(semesters)
+//   .map(semester => {
+//     return {
+//       career: careers.find(career => semester.children[0].innerText.includes(career)),
+//       semester: semester.children[0].innerText,
+//       subjects: Array.from(semester.children[1].children[0].children).map(subject => {
+//         console.log(subject.children[1].children, semester.children[0].innerText)
+//         const name = subject.children[0].innerText
+//         const hasDescription = subject.children[1].children.length > 1
 
-        if (hasDescription) {
-          const description = subject.children[1].children[0].innerText
-          const teacher = subject.children[1].children[1].innerText
-          return { name, description, teacher }
-        }
+//         if (hasDescription) {
+//           const description = subject.children[1].children[0].innerText
+//           const teacher = subject.children[1].children[1].innerText
+//           return { name, description, teacher }
+//         }
 
-        const teacher = subject.children[1].children[0].innerText
+//         const teacher = subject.children[1].children[0].innerText
 
-        return { name, teacher, description: '' }
-      })
-    }
-  }
-  )
-copy(childBySemester)
+//         return { name, teacher, description: '' }
+//       })
+//     }
+//   }
+//   )
+// copy(childBySemester)
 
 
 const courses = [
@@ -1637,14 +1637,861 @@ const courses = [
       }
     ]
   },
+]
+
+const careers = {
+  1: 'Telecomunicaciones',
+  2: 'Software',
+  3: 'Tecnologías de la Información',
+  4: 'Ingeniería Industrial',
+}
+
+const generatePassword = () => {
+  const password = Math.random().toString(36).slice(-8)
+  return password
+}
+
+const generateAddress = () => {
+  const indexRandom = Math.floor(Math.random() * 10)
+
+  const addresses = [
+    'Calle 12 de Octubre y Av. 6 de Diciembre',
+    'Calle 13 de Mayo y Av. 6 de Diciembre',
+    'Avenida 6 de Diciembre y Av. 12 de Octubre',
+    'Avenida siempre viva y Av. 12 de Octubre',
+    'Avenida 78 y Av. 12 de Octubre',
+    'Av. 12 de Octubre',
+    'Av. 6 de Diciembre',
+    'Corredor interprovincial',
+    'Av. 9 de Diciembre',
+    'Av. 10 de Agosto',
+  ]
+
+  return addresses[indexRandom]
+}
+
+const generateEcuadorianNumber = () => {
+  const start = '09'
+  const middle = Math.floor(Math.random() * 10000000)
+  const end = Math.floor(Math.random() * 10)
+
+  return `${start}${middle}${end}`
+}
+
+const generateCityId = () => {
+  return Math.floor(Math.random() * 23) + 1
+}
+
+// const teachers = courses.map(course => {
+//   return course.subjects.map(subject => {
+//     return {
+//       name: subject.teacher,
+//       email: `${subject.teacher?.replace(/ /g, '.').toLowerCase()}@uta.edu.ec`,
+//       password: generatePassword(),
+//       address: generateAddress(),
+//       phoneNumber: generateEcuadorianNumber(),
+//       image: 'image url',
+//       rol: 'TEACHER',
+//       cityId: generateCityId(),
+//       careerId: Number(Object.keys(careers).find(key => careers[key] === course.career)),
+//     }
+//   })
+// })
+// copy(teachers.flat())
+// console.log(teachers)
+
+// const uniqueTeachers = teachers.reduce((acc, current) => {
+//   const x = acc.find(item => item.email === current.email);
+//   if (!x) {
+//     return acc.concat([current]);
+//   } else {
+//     return acc;
+//   }
+// }, [])
+
+// copy(uniqueTeachers)
+// console.log(uniqueTeachers)
+
+const uniqueTeachers = [
   {
-    "semester": "Complexivos",
-    "subjects": [
-      {
-        "name": "Complexivo - TI",
-        "teacher": "MARITZA ELIZABETH CASTRO MAYORGA",
-        "description": ""
-      }
-    ]
+      "name": "ALEXANDRA VIRGINIA LASCANO SUMBANA",
+      "email": "alexandra.virginia.lascano.sumbana@uta.edu.ec",
+      "password": "27f783g3",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0987075019",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 22,
+      "careerId": 1
+  },
+  {
+      "name": "MAURICIO XAVIER LOPEZ FLORES",
+      "email": "mauricio.xavier.lopez.flores@uta.edu.ec",
+      "password": "hzg5chn4",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0979741572",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 11,
+      "careerId": 1
+  },
+  {
+      "name": "LUIS ARMANDO CAMPAÑA MUQUINCHE",
+      "email": "luis.armando.campaña.muquinche@uta.edu.ec",
+      "password": "2yvp2b0o",
+      "address": "Av. 9 de Diciembre",
+      "phoneNumber": "0994409537",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 7,
+      "careerId": 1
+  },
+  {
+      "name": "CLARA AUGUSTA SANCHEZ BENITEZ",
+      "email": "clara.augusta.sanchez.benitez@uta.edu.ec",
+      "password": "tkx3949x",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0952470019",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 11,
+      "careerId": 1
+  },
+  {
+      "name": "DANIEL SEBASTIAN JEREZ MAYORGA",
+      "email": "daniel.sebastian.jerez.mayorga@uta.edu.ec",
+      "password": "ag5u2sqk",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0935019310",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 3,
+      "careerId": 1
+  },
+  {
+      "name": "MARTHA ESPERANZA SEVILLA ABARCA",
+      "email": "martha.esperanza.sevilla.abarca@uta.edu.ec",
+      "password": "qfqdmhje",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0925512163",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 5,
+      "careerId": 1
+  },
+  {
+      "name": "JOSE VICENTE MORALES LOZADA",
+      "email": "jose.vicente.morales.lozada@uta.edu.ec",
+      "password": "v5hk97ku",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0910200467",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 13,
+      "careerId": 1
+  },
+  {
+      "name": "FREDDY GEOVANNY BENALCAZAR PALACIOS",
+      "email": "freddy.geovanny.benalcazar.palacios@uta.edu.ec",
+      "password": "2ltrff4f",
+      "address": "Calle 12 de Octubre y Av. 6 de Diciembre",
+      "phoneNumber": "0915645367",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 5,
+      "careerId": 1
+  },
+  {
+      "name": "PERCY ALBERTO RIOS VILLACORTA",
+      "email": "percy.alberto.rios.villacorta@uta.edu.ec",
+      "password": "edorn7ta",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0961724376",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 3,
+      "careerId": 1
+  },
+  {
+      "name": "FABIAN RODRIGO SALAZAR ESCOBAR",
+      "email": "fabian.rodrigo.salazar.escobar@uta.edu.ec",
+      "password": "9k55c9ce",
+      "address": "Calle 12 de Octubre y Av. 6 de Diciembre",
+      "phoneNumber": "0981730222",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 10,
+      "careerId": 1
+  },
+  {
+      "name": "JAIME RODRIGO GUILCAPI MOSQUERA",
+      "email": "jaime.rodrigo.guilcapi.mosquera@uta.edu.ec",
+      "password": "4bmr85ju",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0982907384",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 12,
+      "careerId": 1
+  },
+  {
+      "name": "ELIZABETH PAULINA AYALA BAÑO",
+      "email": "elizabeth.paulina.ayala.baño@uta.edu.ec",
+      "password": "l1ycq2un",
+      "address": "Avenida 78 y Av. 12 de Octubre",
+      "phoneNumber": "0936313989",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 17,
+      "careerId": 1
+  },
+  {
+      "name": "ANDREA PATRICIA SANCHEZ ZUMBA",
+      "email": "andrea.patricia.sanchez.zumba@uta.edu.ec",
+      "password": "jghc2thw",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0966733000",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 1,
+      "careerId": 1
+  },
+  {
+      "name": "VICTOR SANTIAGO MANZANO VILLAFUERTE",
+      "email": "victor.santiago.manzano.villafuerte@uta.edu.ec",
+      "password": "rdbpy3w9",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0946347755",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 6,
+      "careerId": 1
+  },
+  {
+      "name": "SANTIAGO MAURICIO ALTAMIRANO MELENDEZ",
+      "email": "santiago.mauricio.altamirano.melendez@uta.edu.ec",
+      "password": "2fh5dj47",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0952258677",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 1,
+      "careerId": 1
+  },
+  {
+      "name": "ANA PAMELA CASTRO MARTIN",
+      "email": "ana.pamela.castro.martin@uta.edu.ec",
+      "password": "o1n6b1qh",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0987187225",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 21,
+      "careerId": 1
+  },
+  {
+      "name": "EDGAR FREDDY ROBALINO PEÑA",
+      "email": "edgar.freddy.robalino.peña@uta.edu.ec",
+      "password": "ijw45yip",
+      "address": "Av. 10 de Agosto",
+      "phoneNumber": "0960271042",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 1,
+      "careerId": 1
+  },
+  {
+      "name": "CARLOS DIEGO GORDON GALLEGOS",
+      "email": "carlos.diego.gordon.gallegos@uta.edu.ec",
+      "password": "2qbd9dkm",
+      "address": "Calle 12 de Octubre y Av. 6 de Diciembre",
+      "phoneNumber": "0996722642",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 2,
+      "careerId": 1
+  },
+  {
+      "name": "MARIO GEOVANNY GARCIA CARRILLO",
+      "email": "mario.geovanny.garcia.carrillo@uta.edu.ec",
+      "password": "9kvctqsn",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "092024288",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 18,
+      "careerId": 1
+  },
+  {
+      "name": "EDGAR PATRICIO CORDOVA CORDOVA",
+      "email": "edgar.patricio.cordova.cordova@uta.edu.ec",
+      "password": "4iktf3at",
+      "address": "Calle 12 de Octubre y Av. 6 de Diciembre",
+      "phoneNumber": "0920917237",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 3,
+      "careerId": 1
+  },
+  {
+      "name": "MARCO ANTONIO JURADO LOZADA",
+      "email": "marco.antonio.jurado.lozada@uta.edu.ec",
+      "password": "vctclo0r",
+      "address": "Avenida 78 y Av. 12 de Octubre",
+      "phoneNumber": "0975260152",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 18,
+      "careerId": 1
+  },
+  {
+      "name": "GEOVANNI DANILO BRITO MONCAYO",
+      "email": "geovanni.danilo.brito.moncayo@uta.edu.ec",
+      "password": "de9wt73u",
+      "address": "Av. 9 de Diciembre",
+      "phoneNumber": "0953129085",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 4,
+      "careerId": 1
+  },
+  {
+      "name": "JULIO ENRIQUE CUJI RODRIGUEZ",
+      "email": "julio.enrique.cuji.rodriguez@uta.edu.ec",
+      "password": "y17ivd54",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0986557483",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 7,
+      "careerId": 1
+  },
+  {
+      "name": "JUAN PABLO PALLO NOROÑA",
+      "email": "juan.pablo.pallo.noroña@uta.edu.ec",
+      "password": "c0l10vwk",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0984305905",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 23,
+      "careerId": 1
+  },
+  {
+      "name": "JUAN CAMILO ESCOBAR NARANJO",
+      "email": "juan.camilo.escobar.naranjo@uta.edu.ec",
+      "password": "cj5bkwzd",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0933479949",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 3,
+      "careerId": 3
+  },
+  {
+      "name": "GLADYS ISABEL TITUAÑA PULLUQUITIN",
+      "email": "gladys.isabel.tituaña.pulluquitin@uta.edu.ec",
+      "password": "26zncn0e",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0991681040",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 15,
+      "careerId": 3
+  },
+  {
+      "name": "ANITA LUCIA LARREA BUSTOS",
+      "email": "anita.lucia.larrea.bustos@uta.edu.ec",
+      "password": "v81he5a5",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0926370862",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 19,
+      "careerId": 3
+  },
+  {
+      "name": "PABLO RAFAEL MUÑOZ VALVERDE",
+      "email": "pablo.rafael.muñoz.valverde@uta.edu.ec",
+      "password": "bvyae8q8",
+      "address": "Av. 10 de Agosto",
+      "phoneNumber": "0955325148",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 17,
+      "careerId": 3
+  },
+  {
+      "name": "PAULO CESAR TORRES ABRIL",
+      "email": "paulo.cesar.torres.abril@uta.edu.ec",
+      "password": "hufpsm2k",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0916106445",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 4,
+      "careerId": 3
+  },
+  {
+      "name": "LEONARDO DAVID TORRES VALVERDE",
+      "email": "leonardo.david.torres.valverde@uta.edu.ec",
+      "password": "e4uoesgd",
+      "address": "Av. 9 de Diciembre",
+      "phoneNumber": "0933807154",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 2,
+      "careerId": 3
+  },
+  {
+      "name": "MARCO VINICIO GUACHIMBOZA VILLALVA",
+      "email": "marco.vinicio.guachimboza.villalva@uta.edu.ec",
+      "password": "hd45l624",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0928386470",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 22,
+      "careerId": 3
+  },
+  {
+      "name": "MARITZA ELIZABETH CASTRO MAYORGA",
+      "email": "maritza.elizabeth.castro.mayorga@uta.edu.ec",
+      "password": "p5ndgm6l",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0975462718",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 13,
+      "careerId": 3
+  },
+  {
+      "name": "FELIX OSCAR FERNANDEZ PEÑA",
+      "email": "felix.oscar.fernandez.peña@uta.edu.ec",
+      "password": "q9881sei",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0986125962",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 7,
+      "careerId": 3
+  },
+  {
+      "name": "FRANKLIN WILFRIDO SALAZAR LOGROÑO",
+      "email": "franklin.wilfrido.salazar.logroño@uta.edu.ec",
+      "password": "6fhpduwk",
+      "address": "Calle 12 de Octubre y Av. 6 de Diciembre",
+      "phoneNumber": "0929568542",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 15,
+      "careerId": 3
+  },
+  {
+      "name": "MARLON ANTONIO SANTAMARIA VILLACIS",
+      "email": "marlon.antonio.santamaria.villacis@uta.edu.ec",
+      "password": "iowadeap",
+      "address": "Avenida siempre viva y Av. 12 de Octubre",
+      "phoneNumber": "0980568085",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 15,
+      "careerId": 3
+  },
+  {
+      "name": "DENNIS VINICIO CHICAIZA CASTILLO",
+      "email": "dennis.vinicio.chicaiza.castillo@uta.edu.ec",
+      "password": "infmkl12",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0971535142",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 12,
+      "careerId": 3
+  },
+  {
+      "name": "EDWIN HERNANDO BUENAÑO VALENCIA",
+      "email": "edwin.hernando.buenaño.valencia@uta.edu.ec",
+      "password": "3kd76lsb",
+      "address": "Avenida 78 y Av. 12 de Octubre",
+      "phoneNumber": "0924630735",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 21,
+      "careerId": 3
+  },
+  {
+      "name": "FRANKLIN OSWALDO MAYORGA MAYORGA",
+      "email": "franklin.oswaldo.mayorga.mayorga@uta.edu.ec",
+      "password": "u20xzgqy",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0927642622",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 5,
+      "careerId": 3
+  },
+  {
+      "name": "BOLIVAR EFRAIN MORALES OÑATE",
+      "email": "bolivar.efrain.morales.oñate@uta.edu.ec",
+      "password": "fbrweazb",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0998164524",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 16,
+      "careerId": 3
+  },
+  {
+      "name": "HERNAN FABRICIO NARANJO AVALOS",
+      "email": "hernan.fabricio.naranjo.avalos@uta.edu.ec",
+      "password": "d75vdr2i",
+      "address": "Avenida siempre viva y Av. 12 de Octubre",
+      "phoneNumber": "0982410397",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 7,
+      "careerId": 3
+  },
+  {
+      "name": "DAVID OMAR GUEVARA AULESTIA",
+      "email": "david.omar.guevara.aulestia@uta.edu.ec",
+      "password": "g0lod3p8",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0965202347",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 13,
+      "careerId": 3
+  },
+  {
+      "name": "OSCAR FERNANDO IBARRA TORRES",
+      "email": "oscar.fernando.ibarra.torres@uta.edu.ec",
+      "password": "09pw0rwq",
+      "address": "Avenida siempre viva y Av. 12 de Octubre",
+      "phoneNumber": "0997653469",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 18,
+      "careerId": 3
+  },
+  {
+      "name": "SANDRA LUCRECIA CARRILLO RIOS",
+      "email": "sandra.lucrecia.carrillo.rios@uta.edu.ec",
+      "password": "59ltyopa",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0928566452",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 12,
+      "careerId": 3
+  },
+  {
+      "name": "ELSA PILAR URRUTIA URRUTIA",
+      "email": "elsa.pilar.urrutia.urrutia@uta.edu.ec",
+      "password": "ousqw3wz",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "099751251",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 21,
+      "careerId": 3
+  },
+  {
+      "name": "VICTOR HUGO GUACHIMBOSA VILLALBA",
+      "email": "victor.hugo.guachimbosa.villalba@uta.edu.ec",
+      "password": "56ytrhio",
+      "address": "Avenida siempre viva y Av. 12 de Octubre",
+      "phoneNumber": "0980947690",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 10,
+      "careerId": 3
+  },
+  {
+      "name": "EDISON HOMERO ALVAREZ MAYORGA",
+      "email": "edison.homero.alvarez.mayorga@uta.edu.ec",
+      "password": "49tpma0n",
+      "address": "Avenida siempre viva y Av. 12 de Octubre",
+      "phoneNumber": "0969716924",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 6,
+      "careerId": 3
+  },
+  {
+      "name": "CLAY FERNANDO ALDAS FLORES",
+      "email": "clay.fernando.aldas.flores@uta.edu.ec",
+      "password": "xz7164v7",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0913854484",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 13,
+      "careerId": 3
+  },
+  {
+      "name": "CARLOS ISRAEL NUÑEZ MIRANDA",
+      "email": "carlos.israel.nuñez.miranda@uta.edu.ec",
+      "password": "8fo7hrgb",
+      "address": "Calle 12 de Octubre y Av. 6 de Diciembre",
+      "phoneNumber": "0974157325",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 17,
+      "careerId": 3
+  },
+  {
+      "name": "JULIO ENRIQUE BALAREZO LOPEZ",
+      "email": "julio.enrique.balarezo.lopez@uta.edu.ec",
+      "password": "tpsb8q1c",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0984440081",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 3,
+      "careerId": 3
+  },
+  {
+      "name": "RUBEN EDUARDO NOGALES PORTERO",
+      "email": "ruben.eduardo.nogales.portero@uta.edu.ec",
+      "password": "9a89aeir",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0913352047",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 3,
+      "careerId": 3
+  },
+  {
+      "name": "ANGEL MAURICIO CARRANZA GARCES",
+      "email": "angel.mauricio.carranza.garces@uta.edu.ec",
+      "password": "cu9v8j71",
+      "address": "Avenida 78 y Av. 12 de Octubre",
+      "phoneNumber": "093386196",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 23,
+      "careerId": 4
+  },
+  {
+      "name": "JAIME BOLIVAR RUIZ BANDA",
+      "email": "jaime.bolivar.ruiz.banda@uta.edu.ec",
+      "password": "76usw8xd",
+      "address": "Avenida 78 y Av. 12 de Octubre",
+      "phoneNumber": "0966281860",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 15,
+      "careerId": 4
+  },
+  {
+      "name": "DAYSI MARGARITA ORTIZ GUERRERO",
+      "email": "daysi.margarita.ortiz.guerrero@uta.edu.ec",
+      "password": "zlyxp212",
+      "address": "Avenida siempre viva y Av. 12 de Octubre",
+      "phoneNumber": "091228333",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 5,
+      "careerId": 4
+  },
+  {
+      "name": "CARLOS HUMBERTO SANCHEZ ROSERO",
+      "email": "carlos.humberto.sanchez.rosero@uta.edu.ec",
+      "password": "ub5e3b9w",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0921425459",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 11,
+      "careerId": 4
+  },
+  {
+      "name": "CHRISTIAN ISMAEL ORTIZ SAILEMA",
+      "email": "christian.ismael.ortiz.sailema@uta.edu.ec",
+      "password": "gs6qqxmc",
+      "address": "Av. 6 de Diciembre",
+      "phoneNumber": "0924115222",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 8,
+      "careerId": 4
+  },
+  {
+      "name": "JOSE LUIS GAVIDIA GARCIA",
+      "email": "jose.luis.gavidia.garcia@uta.edu.ec",
+      "password": "5rkdezid",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0939188527",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 16,
+      "careerId": 4
+  },
+  {
+      "name": "FREDDY ROBERTO LEMA CHICAIZA",
+      "email": "freddy.roberto.lema.chicaiza@uta.edu.ec",
+      "password": "sh83ovjc",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0992334063",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 19,
+      "careerId": 4
+  },
+  {
+      "name": "JOSE EZEQUIEL NARANJO ROBALINO",
+      "email": "jose.ezequiel.naranjo.robalino@uta.edu.ec",
+      "password": "rxlp9bp8",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0954104679",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 2,
+      "careerId": 4
+  },
+  {
+      "name": "EDITH ELENA TUBÓN NÚÑEZ",
+      "email": "edith.elena.tubón.núñez@uta.edu.ec",
+      "password": "1603stcu",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0970908209",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 16,
+      "careerId": 4
+  },
+  {
+      "name": "EDISSON PATRICIO JORDAN HIDALGO",
+      "email": "edisson.patricio.jordan.hidalgo@uta.edu.ec",
+      "password": "yj0k3r0h",
+      "address": "Corredor interprovincial",
+      "phoneNumber": "0999936371",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 17,
+      "careerId": 4
+  },
+  {
+      "name": "FRANKLIN GEOVANNY TIGRE ORTEGA",
+      "email": "franklin.geovanny.tigre.ortega@uta.edu.ec",
+      "password": "vzdrftie",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0940642246",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 4,
+      "careerId": 4
+  },
+  {
+      "name": "LUIS ALBERTO MORALES PERRAZO",
+      "email": "luis.alberto.morales.perrazo@uta.edu.ec",
+      "password": "khqr8f9g",
+      "address": "Av. 9 de Diciembre",
+      "phoneNumber": "0996934493",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 8,
+      "careerId": 4
+  },
+  {
+      "name": "CESAR ANIBAL ROSERO MANTILLA",
+      "email": "cesar.anibal.rosero.mantilla@uta.edu.ec",
+      "password": "7q01013m",
+      "address": "Avenida 6 de Diciembre y Av. 12 de Octubre",
+      "phoneNumber": "0963294543",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 1,
+      "careerId": 4
+  },
+  {
+      "name": "FERNANDO URRUTIA URRUTIA",
+      "email": "fernando.urrutia.urrutia@uta.edu.ec",
+      "password": "61p5umyp",
+      "address": "Av. 9 de Diciembre",
+      "phoneNumber": "0914905312",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 17,
+      "careerId": 4
+  },
+  {
+      "name": "JOHN PAUL REYES VASQUEZ",
+      "email": "john.paul.reyes.vasquez@uta.edu.ec",
+      "password": "h1g4e1aa",
+      "address": "Avenida 78 y Av. 12 de Octubre",
+      "phoneNumber": "0922549060",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 15,
+      "careerId": 4
+  },
+  {
+      "name": "ISRAEL ERNESTO NARANJO CHIRIBOGA",
+      "email": "israel.ernesto.naranjo.chiriboga@uta.edu.ec",
+      "password": "jqarx48l",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0960640279",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 12,
+      "careerId": 4
+  },
+  {
+      "name": "CHRISTIAN JOSE MARIÑO RIVERA",
+      "email": "christian.jose.mariño.rivera@uta.edu.ec",
+      "password": "ggen9moa",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0985375336",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 2,
+      "careerId": 4
+  },
+  {
+      "name": "JESSICA PAOLA LOPEZ ARBOLEDA",
+      "email": "jessica.paola.lopez.arboleda@uta.edu.ec",
+      "password": "kxg1md3k",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "095836934",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 12,
+      "careerId": 4
+  },
+  {
+      "name": "MARCELO VLADIMIR GARCIA SANCHEZ",
+      "email": "marcelo.vladimir.garcia.sanchez@uta.edu.ec",
+      "password": "kdkp81nm",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "0960391638",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 14,
+      "careerId": 4
+  },
+  {
+      "name": "MARCOS RAPHAEL BENITEZ ALDAS",
+      "email": "marcos.raphael.benitez.aldas@uta.edu.ec",
+      "password": "njzvcfzk",
+      "address": "Av. 12 de Octubre",
+      "phoneNumber": "0921579985",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 20,
+      "careerId": 2
+  },
+  {
+      "name": "SANTIAGO DAVID JARA MOYA",
+      "email": "santiago.david.jara.moya@uta.edu.ec",
+      "password": "h9xpxbbi",
+      "address": "Calle 13 de Mayo y Av. 6 de Diciembre",
+      "phoneNumber": "095340811",
+      "image": "image url",
+      "rol": "TEACHER",
+      "cityId": 17,
+      "careerId": 2
   }
 ]
