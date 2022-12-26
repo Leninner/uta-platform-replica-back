@@ -1,6 +1,6 @@
 package com.secondpartial.platformreplica.dtos;
 
-import java.util.Optional;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,4 +16,6 @@ public class UserDTO {
   private String image;
   private Long cityId;
   private String rol;
+  private Long careerId;
+  private List<Long> courseIds;
 }

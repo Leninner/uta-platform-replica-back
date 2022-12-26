@@ -33,8 +33,7 @@ public class CourseModel {
   @Column(nullable = true)
   private String image;
 
-  @ManyToMany()
-  @JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+  @ManyToMany(mappedBy = "courses")
   private List<StudentModel> students;
 
   @ManyToOne()

@@ -1,5 +1,6 @@
 package com.secondpartial.platformreplica.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,11 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
+import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CityModel;
+import com.secondpartial.platformreplica.models.CourseModel;
 import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.models.UserModel;
+import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CityRepository;
+import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.StudentRepository;
 import com.secondpartial.platformreplica.repositories.TeacherRepository;
 import com.secondpartial.platformreplica.repositories.UserRepository;
@@ -40,6 +45,12 @@ public class UserService {
   @Autowired
   TeacherRepository teacherRepository;
 
+  @Autowired
+  CareerRepository careerRepository;
+
+  @Autowired
+  CourseRepository courseRepository;
+
   public List<UserModel> getUsers(String token) {
     if (!validarToken(token)) {
       return null;
@@ -62,6 +73,8 @@ public class UserService {
     user.setPassword(hash);
     
     CityModel city = cityRepository.findById(user.getCityId()).get();
+    CareerModel career = careerRepository.findById(user.getCareerId()).get();
+
     UserModel userModel = new UserModel(
         null,
         user.getName(),
@@ -71,12 +84,30 @@ public class UserService {
         RolEnum.getRolEnum(user.getRol()),
         user.getPhoneNumber(),
         user.getImage(),
-        city, null, null);
+        city, null, null, career);
     
     userRepository.save(userModel);
 
     if (userModel.getRol() == RolEnum.STUDENT) {
       StudentModel student = new StudentModel(null, userModel, null);
+      List<Long> courseIds = user.getCourseIds();
+
+      System.out.println(courseIds);
+
+      if(courseIds != null) {
+        List<CourseModel> courses = student.getCourses();
+
+        if(courses == null) {
+          courses = new ArrayList<CourseModel>();
+        }
+        
+        for (Long courseId : courseIds) {
+          courses.add(courseRepository.findById(courseId).get());
+        }
+  
+        student.setCourses(courses);
+      }
+      
       studentRepository.save(student);
     } else if (userModel.getRol() == RolEnum.TEACHER) {
       TeacherModel teacher = new TeacherModel(null, userModel, null);

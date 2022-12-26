@@ -9,4 +9,7 @@ import com.secondpartial.platformreplica.models.CourseModel;
 public interface CourseRepository extends JpaRepository<CourseModel, Long> {
   @Query(value = "select * from courses c join users u on u.course_id = c.id where u.rol = ?1", nativeQuery = true)
   public Iterable<CourseModel> findByRol(String rol);
+
+  @Query(value = "", nativeQuery = true)
+  public Iterable<CourseModel> findByCareerId(Long careerId);
 }

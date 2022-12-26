@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import com.secondpartial.platformreplica.dtos.CourseCreationDTO;
-import com.secondpartial.platformreplica.enums.SemesterEnum;
 import com.secondpartial.platformreplica.models.CourseModel;
 import com.secondpartial.platformreplica.services.CourseService;
 
