@@ -1,7 +1,5 @@
 package com.secondpartial.platformreplica.models;
 
-import java.util.List;
-
 import com.secondpartial.platformreplica.enums.RolEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

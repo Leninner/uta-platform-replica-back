@@ -2,14 +2,18 @@ package com.secondpartial.platformreplica.models;
 
 import java.util.List;
 
+import com.secondpartial.platformreplica.enums.SemesterEnum;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "courses")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CourseModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +24,8 @@ public class CourseModel {
   private String name;
 
   @Column(nullable = false)
-  private String semester;
+  @Enumerated(EnumType.STRING)
+  private SemesterEnum semester;
 
   @Column(nullable = true)
   private String description;
@@ -28,7 +33,7 @@ public class CourseModel {
   @Column(nullable = true)
   private String image;
 
-  @ManyToMany
+  @ManyToMany()
   @JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
   private List<StudentModel> students;
 
