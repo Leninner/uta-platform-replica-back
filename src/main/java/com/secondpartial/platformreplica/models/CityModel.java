@@ -9,18 +9,18 @@ import lombok.Data;
 @Table(name = "cities")
 @Data
 public class CityModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false, unique = true)
+  private Long id;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserModel> users;
+  @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserModel> users;
 
-    @ManyToOne()
-    @JoinColumn(name = "province_id")
-    private ProvincesModel province;
+  @ManyToOne()
+  @JoinColumn(name = "province_id")
+  private ProvincesModel province;
 }

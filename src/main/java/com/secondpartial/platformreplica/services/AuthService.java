@@ -3,6 +3,8 @@ package com.secondpartial.platformreplica.services;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.CityDTO;
@@ -20,23 +22,20 @@ public class AuthService {
   @Autowired
   UserService userService;
 
-  public HashMap<String, Object> login(
-    String mail,
-    String password
-  ) throws Exception {
+  public ResponseEntity<HashMap<String, Object>> login(
+      String mail,
+      String password) {
     UserModel user = userService.getByEmail(mail);
     HashMap<String, Object> response = new HashMap<>();
-    if(user == null) {
+    if (user == null) {
       response.put("message", "El usuario no existe");
-      response.put("status", 400);
-      return response;
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     Boolean validUser = this.validateUser(user, password);
     if (!validUser) {
       response.put("message", "Contraseña incorrecta");
-      response.put("status", 400);
-      return response;
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     HashMap<String, String> userInfo = new HashMap<>();
@@ -47,26 +46,26 @@ public class AuthService {
     userInfo.put("rol", user.getRol().toString());
     userInfo.put("image", user.getImage());
     userInfo.put("city", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getName());
-    userInfo.put("province", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getProvinceName());
+    userInfo.put("province",
+        new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getProvinceName());
     userInfo.put("id", user.getId().toString());
-    
 
     String token = jwtUtil.create(mail, password);
     response.put("token", token);
     response.put("user", userInfo);
 
-    return response;
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  private Boolean validateUser(UserModel user, String passwordToVerify){
+  private Boolean validateUser(UserModel user, String passwordToVerify) {
     return this.checkPassword(passwordToVerify, user.getPassword());
   }
 
   private Boolean checkPassword(String loginPassword, String userPassword) {
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-    
+
     if (argon2.verify(userPassword, loginPassword)) {
-        return true;
+      return true;
     }
 
     return false;

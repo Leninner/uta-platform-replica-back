@@ -14,38 +14,38 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false, unique = true)
+  private Long id;
 
-    @Column(nullable = false)
-    private String name;
-    
-    @Column(nullable = false, unique = true)
-    private String email;
-    
-    @Column(nullable = false)
-    private String password;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false)
-    private String address;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Column(nullable = true)
-    @Enumerated(EnumType.STRING) 
-    private RolEnum rol;
-    
-    @Column(name = "phone_number", nullable = true)
-    private String phoneNumber;
+  @Column(nullable = false)
+  private String password;
 
-    @Column(nullable = true)
-    private String image;
+  @Column(nullable = false)
+  private String address;
 
-    @ManyToOne()
-    @JoinColumn(name = "city_id")
-    private CityModel city;
+  @Column(nullable = true)
+  @Enumerated(EnumType.STRING)
+  private RolEnum rol;
 
-    @ManyToMany()
-    @JoinColumn(name = "course_id", nullable = false)
-    private List<CourseModel> courses;
+  @Column(name = "phone_number", nullable = true)
+  private String phoneNumber;
+
+  @Column(nullable = true)
+  private String image;
+
+  @ManyToOne()
+  @JoinColumn(name = "city_id")
+  private CityModel city;
+
+  @ManyToMany()
+  @JoinColumn(name = "course_id", nullable = false)
+  private List<CourseModel> courses;
 }

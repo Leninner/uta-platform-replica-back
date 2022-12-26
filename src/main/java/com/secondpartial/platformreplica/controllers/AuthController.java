@@ -3,6 +3,7 @@ package com.secondpartial.platformreplica.controllers;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,31 +19,7 @@ public class AuthController {
   AuthService authService;
 
   @PostMapping("/login")
-  public HashMap<String, Object> login(@RequestBody LoginDTO loginDto) {
-    try {
-      return authService.login(loginDto.getEmail(), loginDto.getPassword());
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
+  public ResponseEntity<HashMap<String, Object>> login(@RequestBody LoginDTO loginDto) {
+    return authService.login(loginDto.getEmail(), loginDto.getPassword());
   }
-  /**
-   * 
-  @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ accessToken: string }> {
-    return this.authService.login(loginDto.username, loginDto.password)
-  }
-
-  @Get('register')
-  async generateTokens(@Query('code') code: string): Promise<boolean> {
-    return this.authService.requestAccessToken(code)
-  }
-
-  @Get('register-user/:password')
-  async generateSaltPassword(
-    @Param('password') password: string,
-  ): Promise<string> {
-    return this.authService.generateSaltPassword(password)
-  }
-   */
 }

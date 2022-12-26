@@ -22,14 +22,12 @@ public class CourseController {
   @PostMapping()
   public CourseModel createCourse(@RequestBody CourseCreationDTO course) {
     return courseService.createCourse(
-      new CourseModel(
-        null,
-        course.getName(),
-        course.getSemester(),
-        course.getDescription(),
-        course.getImage(),
-        course.getUsers()
-      )
-    );
+        new CourseModel(
+            null,
+            course.getName(),
+            course.getSemester(),
+            course.getDescription(),
+            course.getImage(),
+            course.getUsers()));
   }
 }

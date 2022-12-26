@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.UserDTO;
@@ -32,18 +34,17 @@ public class UserService {
     if (!validarToken(token)) {
       return null;
     }
-    
+
     return (List<UserModel>) userRepository.findAll();
   }
 
-  public HashMap<String, Object> register(UserDTO user) {
+  public ResponseEntity<HashMap<String, Object>> register(UserDTO user) {
     HashMap<String, Object> response = new HashMap<>();
     UserModel userExists = this.getByEmail(user.getEmail());
     Boolean exists = userExists != null;
-    if(exists) {    
+    if (exists) {
       response.put("message", "Un usuario con esa información ya existe");
-      response.put("status", 400);
-      return response;
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
@@ -51,21 +52,20 @@ public class UserService {
     user.setPassword(hash);
     CityModel city = cityRepository.findById(user.getCityId()).get();
     UserModel userModel = new UserModel(
-      null, 
-      user.getName(), 
-      user.getEmail(), 
-      user.getPassword(), 
-      user.getAddress(), 
-      RolEnum.getRolEnum(user.getRol()), 
-      user.getPhoneNumber(), 
-      user.getImage(), 
-      city, 
-      null
-    );
+        null,
+        user.getName(),
+        user.getEmail(),
+        user.getPassword(),
+        user.getAddress(),
+        RolEnum.getRolEnum(user.getRol()),
+        user.getPhoneNumber(),
+        user.getImage(),
+        city,
+        null);
     userRepository.save(userModel);
     response.put("message", "Usuario registrado");
-    response.put("status", 200);
-    return response;
+
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
   public UserModel getByEmail(String email) {
