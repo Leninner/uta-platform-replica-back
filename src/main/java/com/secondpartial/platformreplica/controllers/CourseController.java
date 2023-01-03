@@ -1,10 +1,14 @@
 package com.secondpartial.platformreplica.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import com.secondpartial.platformreplica.dtos.CourseCreationDTO;
+import com.secondpartial.platformreplica.enums.SemesterEnum;
 import com.secondpartial.platformreplica.models.CourseModel;
 import com.secondpartial.platformreplica.services.CourseService;
 
@@ -20,15 +24,7 @@ public class CourseController {
   }
 
   @PostMapping()
-  public CourseModel createCourse(@RequestBody CourseCreationDTO course) {
-    return courseService.createCourse(
-      new CourseModel(
-        course.getName(),
-        course.getSemester(),
-        course.getDescription(),
-        course.getImage(),
-        course.getUsers()
-      )
-    );
+  public ResponseEntity<HashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course) {
+    return courseService.createCourse(course);
   }
 }
