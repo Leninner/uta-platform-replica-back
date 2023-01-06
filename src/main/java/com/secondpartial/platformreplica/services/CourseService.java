@@ -41,7 +41,13 @@ public class CourseService {
     HashMap<String, Object> response = new HashMap<>();
     ArrayList<CourseModel> courses = null;
 
-    if(jwtUtil.getKey(token) == null) {
+    try {
+      if(jwtUtil.getKey(token) == null) {
+        response.put("message", "Invalid token");
+        response.put("status", 401);
+        return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
+      }
+    } catch (Exception e) {
       response.put("message", "Invalid token");
       response.put("status", 401);
       return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
