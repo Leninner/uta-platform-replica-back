@@ -48,4 +48,8 @@ public class UserModel {
 
   @OneToOne(mappedBy = "user")
   private TeacherModel teacher;
+
+  @ManyToOne()
+  @JoinColumn(name = "career_id")
+  private CareerModel career;
 }

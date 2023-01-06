@@ -35,4 +35,9 @@ public class UserController {
   public ResponseEntity<HashMap<String, Object>> registerUser(@RequestBody UserDTO user) {
     return userService.register(user);
   }
+
+  @PostMapping("/bulk")
+  public ResponseEntity<HashMap<String, Object>> registerUsers(@RequestBody List<UserDTO> users) {
+    return userService.registerBulk(users);
+  }
 }

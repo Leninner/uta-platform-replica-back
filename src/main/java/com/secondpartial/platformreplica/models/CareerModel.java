@@ -26,4 +26,7 @@ public class CareerModel {
 
   @OneToMany(mappedBy = "career", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CourseModel> courses;
+
+  @OneToMany(mappedBy = "career", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserModel> users;
 }
