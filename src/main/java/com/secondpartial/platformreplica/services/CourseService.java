@@ -1,7 +1,6 @@
 package com.secondpartial.platformreplica.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +12,11 @@ import com.secondpartial.platformreplica.dtos.CourseResponseDTO;
 import com.secondpartial.platformreplica.enums.SemesterEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CourseModel;
+import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
+import com.secondpartial.platformreplica.repositories.StudentRepository;
 import com.secondpartial.platformreplica.repositories.TeacherRepository;
 import com.secondpartial.platformreplica.utils.JWTUtil;
 
@@ -31,6 +32,9 @@ public class CourseService {
   TeacherRepository teacherRepository;
 
   @Autowired
+  StudentRepository studentRepository;
+
+  @Autowired
   AuthService authService;
 
   @Autowired
@@ -42,7 +46,7 @@ public class CourseService {
     ArrayList<CourseModel> courses = null;
 
     try {
-      if(jwtUtil.getKey(token) == null) {
+      if (jwtUtil.getKey(token) == null) {
         response.put("message", "Invalid token");
         response.put("status", 401);
         return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
@@ -113,5 +117,14 @@ public class CourseService {
     response.put("message", "Courses created successfully");
     response.put("status", 200);
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
+  }
+
+  public Boolean addStudentToCourse(Long studentId, Long courseId) {
+    CourseModel course = courseRepository.findById(courseId).get();
+    List<StudentModel> students = course.getStudents();
+    students.add(studentRepository.findById(studentId).get());
+    course.setStudents(course.getStudents());
+    courseRepository.save(course);
+    return true;
   }
 }
