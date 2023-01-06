@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.secondpartial.platformreplica.dtos.CourseCreationDTO;
 import com.secondpartial.platformreplica.dtos.CourseResponseDTO;
@@ -18,6 +17,7 @@ import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.TeacherRepository;
+import com.secondpartial.platformreplica.utils.JWTUtil;
 
 @Service
 public class CourseService {
@@ -33,12 +33,19 @@ public class CourseService {
   @Autowired
   AuthService authService;
 
+  @Autowired
+  JWTUtil jwtUtil;
+
   public ResponseEntity<HashMap<String, Object>> getCoursesByRolAndId(String token, String rol, Long userId) {
     System.out.println("token: " + token);
     HashMap<String, Object> response = new HashMap<>();
     ArrayList<CourseModel> courses = null;
 
-    // TODO: Validate token 
+    if(jwtUtil.getKey(token) == null) {
+      response.put("message", "Invalid token");
+      response.put("status", 401);
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
+    }
 
     if (rol.compareTo("STUDENT") == 0) {
       courses = (ArrayList<CourseModel>) courseRepository.findByIdStudent(userId);
