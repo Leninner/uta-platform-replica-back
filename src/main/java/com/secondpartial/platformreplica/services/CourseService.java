@@ -122,8 +122,9 @@ public class CourseService {
   public Boolean addStudentToCourse(Long studentId, Long courseId) {
     CourseModel course = courseRepository.findById(courseId).get();
     List<StudentModel> students = course.getStudents();
+    System.out.println("*****************************" + students);
     students.add(studentRepository.findById(studentId).get());
-    course.setStudents(course.getStudents());
+    course.setStudents(students);
     courseRepository.save(course);
     return true;
   }
