@@ -12,10 +12,11 @@ import com.secondpartial.platformreplica.dtos.CourseResponseDTO;
 import com.secondpartial.platformreplica.enums.SemesterEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CourseModel;
-import com.secondpartial.platformreplica.models.StudentModel;
+import com.secondpartial.platformreplica.models.CourseStudentModel;
 import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
+import com.secondpartial.platformreplica.repositories.CourseStudentRepository;
 import com.secondpartial.platformreplica.repositories.StudentRepository;
 import com.secondpartial.platformreplica.repositories.TeacherRepository;
 import com.secondpartial.platformreplica.utils.JWTUtil;
@@ -39,6 +40,9 @@ public class CourseService {
 
   @Autowired
   JWTUtil jwtUtil;
+
+  @Autowired
+  CourseStudentRepository courseStudentRepository;
 
   public ResponseEntity<HashMap<String, Object>> getCoursesByRolAndId(String token, String rol, Long userId) {
     System.out.println("token: " + token);
@@ -120,12 +124,9 @@ public class CourseService {
   }
 
   public Boolean addStudentToCourse(Long studentId, Long courseId) {
-    CourseModel course = courseRepository.findById(courseId).get();
-    List<StudentModel> students = course.getStudents();
-    System.out.println("*****************************" + students);
-    students.add(studentRepository.findById(studentId).get());
-    course.setStudents(students);
-    courseRepository.save(course);
+    CourseStudentModel courseStudent = new CourseStudentModel(null, studentId, courseId);
+    courseStudentRepository.save(courseStudent);
+
     return true;
   }
 }
