@@ -56,7 +56,7 @@ public class AuthService {
 
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
-  
+
   private Boolean validateUser(UserModel user, String passwordToVerify) {
     return this.checkPassword(passwordToVerify, user.getPassword());
   }

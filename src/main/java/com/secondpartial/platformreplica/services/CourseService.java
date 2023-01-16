@@ -129,4 +129,51 @@ public class CourseService {
 
     return true;
   }
+
+  public ArrayList<CourseModel> orderCourseBySemester(ArrayList<CourseModel> courses) {
+    ArrayList<CourseModel> orderedCourses = new ArrayList<>();
+    final String[] SEMESTERS = SemesterEnum.getSemestersEnumToString();
+
+    for (String semester : SEMESTERS) {
+      for (CourseModel course : courses) {
+        if (course.getSemester().toString().compareTo(semester) == 0) {
+          orderedCourses.add(course);
+        }
+        System.out.println(course.getSemester().toString() + " " + semester);
+      }
+    }
+
+    return orderedCourses;
+  }
+
+  public HashMap<String, Object> getCoursesOfEachSemester(Long careerId) {
+    HashMap<String, Object> response = new HashMap<>();
+    ArrayList<CourseModel> courses = (ArrayList<CourseModel>) courseRepository.findByIdCareer(careerId);
+    final String[] SEMESTERS = SemesterEnum.getSemestersEnumToString();
+
+    for (String semester : SEMESTERS) {
+      ArrayList<CourseResponseDTO> coursesResponse = new ArrayList<>();
+      for (CourseModel course : courses) {
+        if (course.getSemester().toString().compareTo(semester) == 0) {
+          CourseResponseDTO courseResponse = new CourseResponseDTO() {
+            {
+              setId(course.getId());
+              setName(course.getName());
+              setSemester(course.getSemester().toString());
+              setDescription(course.getDescription());
+              setImage(course.getImage());
+              setCareerName(course.getCareer().getName());
+              setTeacherName(course.getTeacher().getUser().getName());
+            }
+          };
+          coursesResponse.add(courseResponse);
+        }
+      }
+      response.put(semester, coursesResponse);
+    }
+
+    response.put("status", 200);
+
+    return new HashMap<String, Object>(response);
+  }
 }

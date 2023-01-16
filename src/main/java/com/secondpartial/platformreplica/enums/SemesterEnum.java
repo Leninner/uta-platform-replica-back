@@ -52,4 +52,13 @@ public enum SemesterEnum {
   public void setName(String name) {
     this.name = name;
   }
+
+  public static String[] getSemestersEnumToString() {
+    String[] semesters = new String[SemesterEnum.values().length];
+    for (int i = 0; i < SemesterEnum.values().length; i++) {
+      semesters[i] = SemesterEnum.values()[i].toString();
+    }
+    return semesters;
+  }
+
 }
