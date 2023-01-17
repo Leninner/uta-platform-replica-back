@@ -23,7 +23,6 @@ public class EnrollmentService {
     private CourseService courseService;
 
     public ResponseEntity<HashMap<String, Object>> enrollStudentToCourse(EnrollStudentDTO enrollStudentDTO) {
-        HashMap<String, Object> response = new HashMap<String, Object>();
         String studentSemester = enrollStudentDTO.getStudent().getSemester();
         String courseSemester = enrollStudentDTO.getCourse().getSemester();
         Long studentID = enrollStudentDTO.getStudent().getId();

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.CourseCreationDTO;
 import com.secondpartial.platformreplica.dtos.CourseResponseDTO;
+import com.secondpartial.platformreplica.dtos.StudentResponseDTO;
 import com.secondpartial.platformreplica.enums.SemesterEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CourseModel;
 import com.secondpartial.platformreplica.models.CourseStudentModel;
+import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
@@ -175,5 +177,28 @@ public class CourseService {
     response.put("status", 200);
 
     return new HashMap<String, Object>(response);
+  }
+
+  public ResponseEntity<HashMap<String, Object>> getStudentsByCourseId(Long courseId) {
+    HashMap<String, Object> response = new HashMap<>();
+    ArrayList<CourseStudentModel> courseStudents = (ArrayList<CourseStudentModel>) courseStudentRepository
+        .findByCourseId(courseId);
+    ArrayList<StudentResponseDTO> studentsResponse = new ArrayList<>();
+
+    for (CourseStudentModel courseStudent : courseStudents) {
+      StudentModel student = studentRepository.findById(courseStudent.getStudentId()).get();
+      StudentResponseDTO studentResponse = new StudentResponseDTO() {
+        {
+          setId(student.getId());
+          setName(student.getUser().getName());
+          setEmail(student.getUser().getEmail());
+        }
+      };
+      studentsResponse.add(studentResponse);
+    }
+
+    response.put("status", 200);
+    response.put("students", studentsResponse);
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 }

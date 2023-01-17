@@ -22,6 +22,11 @@ public class CourseController {
     return courseService.getCoursesByRolAndId(token, rol, userId);
   }
 
+  @GetMapping(path = "/{courseId}/students")
+  public ResponseEntity<HashMap<String, Object>> getStudentsByCourseId(@PathVariable("courseId") Long courseId) {
+    return courseService.getStudentsByCourseId(courseId);
+  }
+
   @PostMapping()
   public ResponseEntity<HashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course) {
     return courseService.createCourse(course);

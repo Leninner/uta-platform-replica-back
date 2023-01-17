@@ -79,7 +79,7 @@ public class UserService {
   public ResponseEntity<HashMap<String, Object>> registerBulk(List<UserDTO> users) {
     HashMap<String, Object> response = new HashMap<>();
     List<UserModel> userss = new ArrayList<UserModel>();
-    
+
     for (UserDTO user : users) {
       UserModel userToSave = this.convertRequestDataToUserModelData(user);
       userss.add(userToSave);
@@ -95,20 +95,20 @@ public class UserService {
       StudentModel student = new StudentModel(null, userModel, null);
       List<Long> courseIds = user.getCourseIds();
 
-      if(courseIds != null) {
+      if (courseIds != null) {
         List<CourseModel> courses = student.getCourses();
 
-        if(courses == null) {
+        if (courses == null) {
           courses = new ArrayList<CourseModel>();
         }
-        
+
         for (Long courseId : courseIds) {
           courses.add(courseRepository.findById(courseId).get());
         }
-  
+
         student.setCourses(courses);
       }
-      
+
       studentRepository.save(student);
       return;
     }
@@ -154,5 +154,22 @@ public class UserService {
   private Boolean validateIfExists(String email) {
     UserModel user = userRepository.getByEmail(email);
     return user != null;
+  }
+
+  public ResponseEntity<HashMap<String, Object>> ModifyUser(UserDTO user, String token) {
+    HashMap<String, Object> response = new HashMap<>();
+
+    if (!validateToken(token)) {
+      response.put("message", "Invalid token");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    UserModel userModel = this.convertRequestDataToUserModelData(user);
+    userRepository.save(userModel);
+    this.processUserByRol(userModel, user);
+
+    response.put("message", "User modified successfully!");
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 }
