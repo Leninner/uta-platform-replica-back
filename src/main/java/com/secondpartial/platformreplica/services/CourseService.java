@@ -192,6 +192,8 @@ public class CourseService {
           setId(student.getId());
           setName(student.getUser().getName());
           setEmail(student.getUser().getEmail());
+          setImage(student.getUser().getImage());
+          setRol(student.getUser().getRol().toString());
         }
       };
       studentsResponse.add(studentResponse);

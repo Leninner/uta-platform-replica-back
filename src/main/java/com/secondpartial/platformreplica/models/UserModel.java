@@ -39,6 +39,9 @@ public class UserModel {
   @Column(nullable = true)
   private String image;
 
+  @Column(nullable = true)
+  private String dni;
+
   @ManyToOne()
   @JoinColumn(name = "city_id")
   private CityModel city;

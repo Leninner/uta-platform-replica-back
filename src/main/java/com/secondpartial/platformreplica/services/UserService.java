@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.secondpartial.platformreplica.dtos.UserDTO;
+import com.secondpartial.platformreplica.dtos.UserModifyDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CityModel;
@@ -136,6 +138,7 @@ public class UserService {
         user.getAddress(),
         RolEnum.getRolEnum(user.getRol()),
         user.getPhoneNumber(),
+        user.getDni(),
         user.getImage(),
         city, null, null, career);
 
@@ -156,7 +159,8 @@ public class UserService {
     return user != null;
   }
 
-  public ResponseEntity<HashMap<String, Object>> ModifyUser(UserDTO user, String token) {
+  public ResponseEntity<HashMap<String, Object>> ModifyUser(Long id, UserModifyDTO user,
+      String token) {
     HashMap<String, Object> response = new HashMap<>();
 
     if (!validateToken(token)) {
@@ -165,9 +169,9 @@ public class UserService {
       return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
-    UserModel userModel = this.convertRequestDataToUserModelData(user);
+    UserModel userModel = userRepository.findById(id).get();
+    userModel.setName(user.getName());
     userRepository.save(userModel);
-    this.processUserByRol(userModel, user);
 
     response.put("message", "User modified successfully!");
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
