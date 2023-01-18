@@ -107,7 +107,7 @@ public class CourseService {
 
     CourseModel courseModel = new CourseModel(
         null, course.getName(), SemesterEnum.getSemesterEnum(course.getSemester()), course.getDescription(),
-        course.getImage(), null, teacher, career);
+        course.getImage(), null, teacher, career, null);
 
     courseRepository.save(courseModel);
     response.put("message", "Course created successfully");

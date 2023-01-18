@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,15 +19,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class HomeworkModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "course_id")
-    private Long courseId;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private CourseModel course;
 
     @Column(name = "teacher_id")
     private Long teacherId;
@@ -35,6 +37,9 @@ public class HomeworkModel {
 
     @Column(name = "description")
     private String description;
+
+    // @Column(name = "indications_file")
+    // private String indicationsFile;
 
     @Column(name = "date_init")
     private Date dateInit;
