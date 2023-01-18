@@ -1,5 +1,7 @@
 package com.secondpartial.platformreplica.dtos;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,11 @@ public class StudentResponseDTO {
     private String email;
     private String image;
     private String rol;
+    private String adress;
+    private String phoneNumber;
+    private String city;
+    private String province;
+    private List<CoursePartInfoDTO> courses;
 
     public StudentResponseDTO(Long id, String name, String email) {
         this.id = id;

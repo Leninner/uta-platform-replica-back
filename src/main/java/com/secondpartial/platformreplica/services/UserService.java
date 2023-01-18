@@ -170,10 +170,45 @@ public class UserService {
     }
 
     UserModel userModel = userRepository.findById(id).get();
-    userModel.setName(user.getName());
+    if (userModel == null) {
+      response.put("message", "User not found");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (user.getName() != null) {
+      userModel.setName(user.getName());
+    }
+
+    if (user.getEmail() != null) {
+      userModel.setEmail(user.getEmail());
+    }
+
+    if (user.getAddress() != null) {
+      userModel.setAddress(user.getAddress());
+    }
+
+    if (user.getPhoneNumber() != null) {
+      userModel.setPhoneNumber(user.getPhoneNumber());
+    }
+
+    if (user.getDni() != null) {
+      userModel.setDni(user.getDni());
+    }
+
+    if (user.getImage() != null) {
+      userModel.setImage(user.getImage());
+    }
+
+    if (user.getCityId() != null) {
+      CityModel city = cityRepository.findById(user.getCityId()).get();
+      userModel.setCity(city);
+    }
+
     userRepository.save(userModel);
 
     response.put("message", "User modified successfully!");
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
+
 }
