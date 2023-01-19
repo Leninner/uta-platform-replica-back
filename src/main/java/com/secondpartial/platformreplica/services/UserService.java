@@ -94,7 +94,7 @@ public class UserService {
 
   public void processUserByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
-      StudentModel student = new StudentModel(null, userModel, null);
+      StudentModel student = new StudentModel(null, userModel, null, null);
       List<Long> courseIds = user.getCourseIds();
 
       if (courseIds != null) {
