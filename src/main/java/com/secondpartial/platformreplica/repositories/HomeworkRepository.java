@@ -17,7 +17,7 @@ public interface HomeworkRepository extends JpaRepository<HomeworkModel, Long> {
     public Iterable<HomeworkModel> findHomeworksByCourseID(@Param("courseID") Long courseID);
 
     @Query(value = "select * from homeworks h where h.course_id = :courseID and h.title = :title and h.partial = :partial ", nativeQuery = true)
-    public Boolean existsHomeworkByCourseIdAndTitleAndPartial(@Param("courseId") Long courseId,
+    public Boolean existsHomeworkByCourseIdAndTitleAndPartial(@Param("courseID") Long courseId,
             @Param("title") String title, @Param("partial") PartialEnum partial);
 
 }

@@ -28,7 +28,7 @@ public class HomeworkStudentModel {
     @JoinColumn(name = "homework_id")
     private HomeworkModel homework;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private StudentModel student;
 
