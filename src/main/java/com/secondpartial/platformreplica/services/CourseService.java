@@ -176,8 +176,6 @@ public class CourseService {
       response.put(semester, coursesResponse);
     }
 
-    response.put("status", 200);
-
     return new HashMap<String, Object>(response);
   }
 
