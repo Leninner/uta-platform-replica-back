@@ -17,7 +17,6 @@ public class HomeworkResponseDTO {
     Long courseId;
     String description;
     String partial;
-    Long teacherId;
     String dateInit;
     String dateEnd;
     String status;

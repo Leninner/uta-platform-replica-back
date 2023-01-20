@@ -42,7 +42,6 @@ public class HomeworkService {
                         setDateEnd(String.valueOf(homework.getDateEnd()));
                         setPartial(homework.getPartial().getParcial());
                         setStatus(getStatus());
-                        setTeacherId(homework.getTeacherId());
                         setIndicationsFile(homework.getIndicationsFile());
                     }
                 };
@@ -88,7 +87,6 @@ public class HomeworkService {
                 setDateEnd(Timestamp.valueOf(homework.getDateEnd().replace('T', ' ')));
                 setPartial(PartialEnum.getPartialEnum(homework.getPartial()));
                 setStatus(homework.getStatus());
-                setTeacherId(homework.getTeacherId());
                 setIndicationsFile(homework.getIndicationsFile());
             }
         };

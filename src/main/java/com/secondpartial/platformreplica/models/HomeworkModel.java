@@ -35,9 +35,6 @@ public class HomeworkModel {
     @JoinColumn(name = "course_id")
     private CourseModel course;
 
-    @Column(name = "teacher_id")
-    private Long teacherId;
-
     @Column(name = "title")
     private String title;
 
