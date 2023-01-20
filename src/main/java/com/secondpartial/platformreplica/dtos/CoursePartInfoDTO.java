@@ -7,13 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseResponseDTO {
-  Long id;
-  String name;
-  String semester;
-  String description;
-  String image;
-  String careerName;
-  String teacherName;
-
+public class CoursePartInfoDTO {
+    Long id;
+    String name;
+    String semester;
+    String careerName;
 }

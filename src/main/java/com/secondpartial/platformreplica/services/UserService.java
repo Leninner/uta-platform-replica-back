@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.secondpartial.platformreplica.dtos.UserDTO;
+import com.secondpartial.platformreplica.dtos.UserModifyDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CityModel;
@@ -79,7 +81,7 @@ public class UserService {
   public ResponseEntity<HashMap<String, Object>> registerBulk(List<UserDTO> users) {
     HashMap<String, Object> response = new HashMap<>();
     List<UserModel> userss = new ArrayList<UserModel>();
-    
+
     for (UserDTO user : users) {
       UserModel userToSave = this.convertRequestDataToUserModelData(user);
       userss.add(userToSave);
@@ -92,23 +94,23 @@ public class UserService {
 
   public void processUserByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
-      StudentModel student = new StudentModel(null, userModel, null);
+      StudentModel student = new StudentModel(null, userModel, null, null);
       List<Long> courseIds = user.getCourseIds();
 
-      if(courseIds != null) {
+      if (courseIds != null) {
         List<CourseModel> courses = student.getCourses();
 
-        if(courses == null) {
+        if (courses == null) {
           courses = new ArrayList<CourseModel>();
         }
-        
+
         for (Long courseId : courseIds) {
           courses.add(courseRepository.findById(courseId).get());
         }
-  
+
         student.setCourses(courses);
       }
-      
+
       studentRepository.save(student);
       return;
     }
@@ -136,6 +138,7 @@ public class UserService {
         user.getAddress(),
         RolEnum.getRolEnum(user.getRol()),
         user.getPhoneNumber(),
+        user.getDni(),
         user.getImage(),
         city, null, null, career);
 
@@ -155,4 +158,57 @@ public class UserService {
     UserModel user = userRepository.getByEmail(email);
     return user != null;
   }
+
+  public ResponseEntity<HashMap<String, Object>> ModifyUser(Long id, UserModifyDTO user,
+      String token) {
+    HashMap<String, Object> response = new HashMap<>();
+
+    if (!validateToken(token)) {
+      response.put("message", "Invalid token");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    UserModel userModel = userRepository.findById(id).get();
+    if (userModel == null) {
+      response.put("message", "User not found");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (user.getName() != null) {
+      userModel.setName(user.getName());
+    }
+
+    if (user.getEmail() != null) {
+      userModel.setEmail(user.getEmail());
+    }
+
+    if (user.getAddress() != null) {
+      userModel.setAddress(user.getAddress());
+    }
+
+    if (user.getPhoneNumber() != null) {
+      userModel.setPhoneNumber(user.getPhoneNumber());
+    }
+
+    if (user.getDni() != null) {
+      userModel.setDni(user.getDni());
+    }
+
+    if (user.getImage() != null) {
+      userModel.setImage(user.getImage());
+    }
+
+    if (user.getCityId() != null) {
+      CityModel city = cityRepository.findById(user.getCityId()).get();
+      userModel.setCity(city);
+    }
+
+    userRepository.save(userModel);
+
+    response.put("message", "User modified successfully!");
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
 }

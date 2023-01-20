@@ -17,8 +17,14 @@ public class CourseController {
   CourseService courseService;
 
   @GetMapping(path = "/{rol}/{userId}")
-  public ResponseEntity<HashMap<String, Object>> getCoursesByUserRol(@RequestHeader("Authorization") String token, @PathVariable("rol") String rol, @PathVariable("userId") Long userId) {
+  public ResponseEntity<HashMap<String, Object>> getCoursesByUserRol(@RequestHeader("Authorization") String token,
+      @PathVariable("rol") String rol, @PathVariable("userId") Long userId) {
     return courseService.getCoursesByRolAndId(token, rol, userId);
+  }
+
+  @GetMapping(path = "/{courseId}/students")
+  public ResponseEntity<HashMap<String, Object>> getStudentsByCourseId(@PathVariable("courseId") Long courseId) {
+    return courseService.getStudentsByCourseId(courseId);
   }
 
   @PostMapping()

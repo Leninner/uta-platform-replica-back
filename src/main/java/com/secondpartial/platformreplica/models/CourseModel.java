@@ -43,4 +43,7 @@ public class CourseModel {
   @ManyToOne()
   @JoinColumn(name = "career_id")
   private CareerModel career;
+
+  @OneToMany(mappedBy = "course")
+  private List<HomeworkModel> homeworks;
 }

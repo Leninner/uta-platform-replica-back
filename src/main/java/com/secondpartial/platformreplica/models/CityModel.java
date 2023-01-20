@@ -23,4 +23,5 @@ public class CityModel {
   @ManyToOne()
   @JoinColumn(name = "province_id")
   private ProvincesModel province;
+
 }
