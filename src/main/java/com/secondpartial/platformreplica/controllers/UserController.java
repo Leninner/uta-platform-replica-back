@@ -50,6 +50,6 @@ public class UserController {
   public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
       @RequestBody UserModifyDTO user,
       @RequestHeader(value = "Authorization") String token) {
-    return userService.ModifyUser(id, user, token);
+    return userService.modifyUser(id, user, token);
   }
 }
