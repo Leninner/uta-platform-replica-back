@@ -150,8 +150,8 @@ public class CourseService {
     return orderedCourses;
   }
 
-  public HashMap<String, Object> getCoursesOfEachSemester(Long careerId) {
-    HashMap<String, Object> response = new HashMap<>();
+  public LinkedHashMap<String, Object> getCoursesOfEachSemester(Long careerId) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
     ArrayList<CourseModel> courses = (ArrayList<CourseModel>) courseRepository.findByIdCareer(careerId);
     final String[] SEMESTERS = SemesterEnum.getSemestersEnumToString();
 
@@ -176,7 +176,8 @@ public class CourseService {
       response.put(semester, coursesResponse);
     }
 
-    return new HashMap<String, Object>(response);
+
+    return new LinkedHashMap<String, Object>(response);
   }
 
   public ResponseEntity<HashMap<String, Object>> getStudentsByCourseId(Long courseId) {

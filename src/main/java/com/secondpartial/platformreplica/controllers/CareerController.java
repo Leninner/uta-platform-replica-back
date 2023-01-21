@@ -1,6 +1,7 @@
 package com.secondpartial.platformreplica.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CareerController {
     CareerService careerService;
 
     @GetMapping()
-    public ResponseEntity<HashMap<String, HashMap<String, Object>>> getAllCarreersWithSemestersAndCourses() {
+    public ResponseEntity<LinkedHashMap<String, LinkedHashMap<String, Object>>> getAllCarreersWithSemestersAndCourses() {
         return careerService.getAllCarreersWithSemestersAndCourses();
     }
 
