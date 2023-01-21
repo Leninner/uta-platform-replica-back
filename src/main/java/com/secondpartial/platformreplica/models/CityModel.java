@@ -1,0 +1,27 @@
+package com.secondpartial.platformreplica.models;
+
+import java.util.List;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Table(name = "cities")
+@Data
+public class CityModel {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false, unique = true)
+  private Long id;
+
+  @Column(nullable = false)
+  private String name;
+
+  @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserModel> users;
+
+  @ManyToOne()
+  @JoinColumn(name = "province_id")
+  private ProvincesModel province;
+
+}
