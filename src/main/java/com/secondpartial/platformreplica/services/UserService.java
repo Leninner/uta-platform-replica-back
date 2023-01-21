@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.dtos.UserModifyDTO;
@@ -72,7 +71,7 @@ public class UserService {
 
     UserModel userModel = this.convertRequestDataToUserModelData(user);
     userRepository.save(userModel);
-    this.processUserByRol(userModel, user);
+    this.processUserCreationByRol(userModel, user);
 
     response.put("message", "User registered successfully!");
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
@@ -92,7 +91,7 @@ public class UserService {
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public void processUserByRol(UserModel userModel, UserDTO user) {
+  public void processUserCreationByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
       StudentModel student = new StudentModel(null, userModel, null, null);
       List<Long> courseIds = user.getCourseIds();

@@ -24,7 +24,7 @@ public class CourseController {
 
   @GetMapping(path = "/{courseId}/students")
   public ResponseEntity<HashMap<String, Object>> getStudentsByCourseId(@PathVariable("courseId") Long courseId) {
-    return courseService.getStudentsByCourseId(courseId);
+    return new courseService.getStudentsByCourseId(courseId);
   }
 
   @PostMapping()

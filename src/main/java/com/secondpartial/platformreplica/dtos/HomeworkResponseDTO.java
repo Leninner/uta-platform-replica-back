@@ -1,9 +1,5 @@
 package com.secondpartial.platformreplica.dtos;
 
-import java.sql.Date;
-
-import com.secondpartial.platformreplica.models.CourseModel;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
