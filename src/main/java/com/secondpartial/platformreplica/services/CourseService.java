@@ -176,6 +176,7 @@ public class CourseService {
       response.put(semester, coursesResponse);
     }
 
+
     return new LinkedHashMap<String, Object>(response);
   }
 

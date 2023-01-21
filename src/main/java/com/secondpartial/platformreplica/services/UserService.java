@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.secondpartial.platformreplica.dtos.CityDTO;
 import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.dtos.UserModifyDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
@@ -158,7 +159,7 @@ public class UserService {
     return user != null;
   }
 
-  public ResponseEntity<HashMap<String, Object>> ModifyUser(Long id, UserModifyDTO user,
+  public ResponseEntity<HashMap<String, Object>> modifyUser(Long id, UserModifyDTO user,
       String token) {
     HashMap<String, Object> response = new HashMap<>();
 
@@ -206,7 +207,22 @@ public class UserService {
 
     userRepository.save(userModel);
 
+    
+    HashMap<String, String> userInfo = new HashMap<>();
+    userInfo.put("name", userModel.getName());
+    userInfo.put("email", userModel.getEmail());
+    userInfo.put("address", userModel.getAddress());
+    userInfo.put("phoneNumber", userModel.getPhoneNumber());
+    userInfo.put("rol", userModel.getRol().toString());
+    userInfo.put("image", userModel.getImage());
+    userInfo.put("city", new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
+    userInfo.put("province",
+    new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
+    userInfo.put("id", userModel.getId().toString());
+    
     response.put("message", "User modified successfully!");
+    response.put("userInfo", userInfo);
+    response.put("status", HttpStatus.OK.value());
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
