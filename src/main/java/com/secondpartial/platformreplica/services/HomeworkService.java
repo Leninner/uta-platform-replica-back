@@ -19,6 +19,8 @@ import com.secondpartial.platformreplica.models.HomeworkStudentModel;
 import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.HomeworkRepository;
+import com.secondpartial.platformreplica.repositories.HomeworkStudentRepository;
+import com.secondpartial.platformreplica.repositories.StudentRepository;
 
 @Service
 public class HomeworkService {
@@ -26,10 +28,13 @@ public class HomeworkService {
     private HomeworkRepository homeworkRepository;
 
     @Autowired
-    private CourseService courseService;
+    private HomeworkStudentRepository homeworkStudentRepository;
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     public ResponseEntity<HashMap<String, Object>> getHomeworksByCourseID(Long courseID) {
         ResponseEntity<HashMap<String, Object>> response = null;
@@ -111,12 +116,13 @@ public class HomeworkService {
             HomeworkStudentModel homeworkStudentModel = new HomeworkStudentModel() {
                 {
                     setHomework(homeworkRepository.getReferenceById(homeworkId));
-                    setStudent(courseService.getStudentsByCourseId(studentId));
+                    setStudent(studentRepository.getReferenceById(studentId));
                     setGrade(null);
                     setStudentFile(null);
                     setComment(null);
                 }
             };
+            homeworkStudentRepository.save(homeworkStudentModel);
         }
 
     }

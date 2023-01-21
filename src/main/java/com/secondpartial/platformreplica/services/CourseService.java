@@ -176,7 +176,6 @@ public class CourseService {
       response.put(semester, coursesResponse);
     }
 
-
     return new LinkedHashMap<String, Object>(response);
   }
 
@@ -225,6 +224,17 @@ public class CourseService {
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public Lis
+  public List<StudentModel> getStudentModelsByCourseId(Long courseId) {
+    ArrayList<CourseStudentModel> courseStudents = (ArrayList<CourseStudentModel>) courseStudentRepository
+        .findByCourseId(courseId);
+    ArrayList<StudentModel> students = new ArrayList<>();
+
+    for (CourseStudentModel courseStudent : courseStudents) {
+      StudentModel student = studentRepository.findById(courseStudent.getStudentId()).get();
+      students.add(student);
+    }
+
+    return students;
+  }
 
 }

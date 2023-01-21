@@ -130,18 +130,19 @@ public class UserService {
     CityModel city = cityRepository.findById(user.getCityId()).get();
     CareerModel career = careerRepository.findById(user.getCareerId()).get();
 
-    UserModel userModel = new UserModel(
-        null,
-        user.getName(),
-        user.getEmail(),
-        user.getPassword(),
-        user.getAddress(),
-        RolEnum.getRolEnum(user.getRol()),
-        user.getPhoneNumber(),
-        user.getDni(),
-        user.getImage(),
-        city, null, null, career);
-
+    UserModel userModel = new UserModel();
+    userModel.setName(user.getName());
+    userModel.setEmail(user.getEmail());
+    userModel.setPassword(user.getPassword());
+    userModel.setAddress(user.getAddress());
+    userModel.setRol(RolEnum.getRolEnum(user.getRol()));
+    userModel.setPhoneNumber(user.getPhoneNumber());
+    userModel.setDni(user.getDni());
+    userModel.setCity(city);
+    userModel.setCareer(career);
+    userModel.setStudent(null);
+    userModel.setTeacher(null);
+    ;
     return userModel;
   }
 
@@ -207,7 +208,6 @@ public class UserService {
 
     userRepository.save(userModel);
 
-    
     HashMap<String, String> userInfo = new HashMap<>();
     userInfo.put("name", userModel.getName());
     userInfo.put("email", userModel.getEmail());
@@ -215,11 +215,12 @@ public class UserService {
     userInfo.put("phoneNumber", userModel.getPhoneNumber());
     userInfo.put("rol", userModel.getRol().toString());
     userInfo.put("image", userModel.getImage());
-    userInfo.put("city", new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
+    userInfo.put("city",
+        new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
     userInfo.put("province",
-    new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
+        new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
     userInfo.put("id", userModel.getId().toString());
-    
+
     response.put("message", "User modified successfully!");
     response.put("userInfo", userInfo);
     response.put("status", HttpStatus.OK.value());
