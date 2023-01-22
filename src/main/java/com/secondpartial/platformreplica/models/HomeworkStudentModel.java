@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,13 +21,11 @@ public class HomeworkStudentModel {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "homework_id")
-    private HomeworkModel homework;
+    @Column(name = "homework_id")
+    private Long homework;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private StudentModel student;
+    @Column(name = "student_id")
+    private Long student;
 
     @Column(name = "grade")
     private Double grade;

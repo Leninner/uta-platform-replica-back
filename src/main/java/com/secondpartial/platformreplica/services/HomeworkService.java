@@ -4,23 +4,19 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.secondpartial.platformreplica.enums.PartialEnum;
 import com.secondpartial.platformreplica.dtos.HomeworkCreationDTO;
 import com.secondpartial.platformreplica.dtos.HomeworkResponseDTO;
+import com.secondpartial.platformreplica.enums.PartialEnum;
 import com.secondpartial.platformreplica.models.HomeworkModel;
-import com.secondpartial.platformreplica.models.HomeworkStudentModel;
-import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.HomeworkRepository;
 import com.secondpartial.platformreplica.repositories.HomeworkStudentRepository;
-import com.secondpartial.platformreplica.repositories.StudentRepository;
 
 @Service
 public class HomeworkService {
@@ -32,9 +28,6 @@ public class HomeworkService {
 
     @Autowired
     private CourseRepository courseRepository;
-
-    @Autowired
-    private StudentRepository studentRepository;
 
     public ResponseEntity<HashMap<String, Object>> getHomeworksByCourseID(Long courseID) {
         ResponseEntity<HashMap<String, Object>> response = null;
@@ -76,7 +69,12 @@ public class HomeworkService {
     }
 
     public Boolean existsHomeworkByCourseIdAndTitleAndPartial(Long courseId, String title, PartialEnum partial) {
-        return homeworkRepository.existsHomeworkByCourseIdAndTitleAndPartial(courseId, title, partial);
+        List<HomeworkModel> homework = homeworkRepository.getHomeworkByCourseIdAndTitleAndPartial(courseId, title,
+                partial);
+        if (homework.size() > 0) {
+            return true;
+        }
+        return false;
     }
 
     public ResponseEntity<HashMap<String, Object>> createHomework(HomeworkCreationDTO homework) {
@@ -95,35 +93,18 @@ public class HomeworkService {
                 setCourse(courseRepository.getReferenceById(homework.getCourseId()));
                 setTitle(homework.getTitle());
                 setDescription(homework.getDescription());
-                setDateInit(Timestamp.valueOf(homework.getDateInit().replace('T', ' ')));
-                setDateEnd(Timestamp.valueOf(homework.getDateEnd().replace('T', ' ')));
+                setDateInit(Timestamp.valueOf(homework.getDateInit()));
+                setDateEnd(Timestamp.valueOf(homework.getDateEnd()));
                 setPartial(PartialEnum.getPartialEnum(homework.getPartial()));
                 setStatus(homework.getStatus());
                 setIndicationsFile(homework.getIndicationsFile());
             }
         };
-        List<Long> studentIds = homeworkModel.getCourse().getStudents().stream().map(StudentModel::getId)
-                .collect(Collectors.toList());
-        Long homeworkID = homeworkRepository.save(homeworkModel).getId();
-        processHomeworkCreation(homeworkID, studentIds);
+
+        homeworkRepository.save(homeworkModel);
 
         response.put("message", "Homework created");
         return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    public void processHomeworkCreation(Long homeworkId, List<Long> studentIds) {
-        for (Long studentId : studentIds) {
-            HomeworkStudentModel homeworkStudentModel = new HomeworkStudentModel() {
-                {
-                    setHomework(homeworkRepository.getReferenceById(homeworkId));
-                    setStudent(studentRepository.getReferenceById(studentId));
-                    setGrade(null);
-                    setStudentFile(null);
-                    setComment(null);
-                }
-            };
-            homeworkStudentRepository.save(homeworkStudentModel);
-        }
-
-    }
 }

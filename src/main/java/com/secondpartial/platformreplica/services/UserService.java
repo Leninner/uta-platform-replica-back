@@ -140,9 +140,6 @@ public class UserService {
     userModel.setDni(user.getDni());
     userModel.setCity(city);
     userModel.setCareer(career);
-    userModel.setStudent(null);
-    userModel.setTeacher(null);
-    ;
     return userModel;
   }
 

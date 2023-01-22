@@ -13,8 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,7 +58,8 @@ public class HomeworkModel {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "homework")
-    private List<HomeworkStudentModel> homeworkStudents;
+    @ManyToMany()
+    @JoinTable(name = "homework_student", joinColumns = @JoinColumn(name = "homework_id"), inverseJoinColumns = @JoinColumn(name = "studen_id"))
+    private List<StudentModel> students;
 
 }

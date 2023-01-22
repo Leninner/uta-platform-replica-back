@@ -36,6 +36,6 @@ public class StudentModel {
   @JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
   private List<CourseModel> courses;
 
-  @OneToMany(mappedBy = "student")
-  private List<HomeworkStudentModel> homeworks;
+  @ManyToMany(mappedBy = "students")
+  private List<HomeworkModel> homework;
 }
