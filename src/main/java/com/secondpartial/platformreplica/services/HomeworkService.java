@@ -16,15 +16,11 @@ import com.secondpartial.platformreplica.enums.PartialEnum;
 import com.secondpartial.platformreplica.models.HomeworkModel;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.HomeworkRepository;
-import com.secondpartial.platformreplica.repositories.HomeworkStudentRepository;
 
 @Service
 public class HomeworkService {
     @Autowired
     private HomeworkRepository homeworkRepository;
-
-    @Autowired
-    private HomeworkStudentRepository homeworkStudentRepository;
 
     @Autowired
     private CourseRepository courseRepository;
