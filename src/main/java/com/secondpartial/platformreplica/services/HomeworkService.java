@@ -3,6 +3,8 @@ package com.secondpartial.platformreplica.services;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +15,12 @@ import com.secondpartial.platformreplica.enums.PartialEnum;
 import com.secondpartial.platformreplica.dtos.HomeworkCreationDTO;
 import com.secondpartial.platformreplica.dtos.HomeworkResponseDTO;
 import com.secondpartial.platformreplica.models.HomeworkModel;
+import com.secondpartial.platformreplica.models.HomeworkStudentModel;
+import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.HomeworkRepository;
+import com.secondpartial.platformreplica.repositories.HomeworkStudentRepository;
+import com.secondpartial.platformreplica.repositories.StudentRepository;
 
 @Service
 public class HomeworkService {
@@ -22,7 +28,13 @@ public class HomeworkService {
     private HomeworkRepository homeworkRepository;
 
     @Autowired
+    private HomeworkStudentRepository homeworkStudentRepository;
+
+    @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     public ResponseEntity<HashMap<String, Object>> getHomeworksByCourseID(Long courseID) {
         ResponseEntity<HashMap<String, Object>> response = null;
@@ -90,9 +102,28 @@ public class HomeworkService {
                 setIndicationsFile(homework.getIndicationsFile());
             }
         };
-        homeworkRepository.save(homeworkModel);
+        List<Long> studentIds = homeworkModel.getCourse().getStudents().stream().map(StudentModel::getId)
+                .collect(Collectors.toList());
+        Long homeworkID = homeworkRepository.save(homeworkModel).getId();
+        processHomeworkCreation(homeworkID, studentIds);
+
         response.put("message", "Homework created");
         return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
     }
 
+    public void processHomeworkCreation(Long homeworkId, List<Long> studentIds) {
+        for (Long studentId : studentIds) {
+            HomeworkStudentModel homeworkStudentModel = new HomeworkStudentModel() {
+                {
+                    setHomework(homeworkRepository.getReferenceById(homeworkId));
+                    setStudent(studentRepository.getReferenceById(studentId));
+                    setGrade(null);
+                    setStudentFile(null);
+                    setComment(null);
+                }
+            };
+            homeworkStudentRepository.save(homeworkStudentModel);
+        }
+
+    }
 }
