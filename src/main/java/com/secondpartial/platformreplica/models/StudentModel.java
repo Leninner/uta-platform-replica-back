@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,5 +36,5 @@ public class StudentModel {
   private List<CourseModel> courses;
 
   @ManyToMany(mappedBy = "students")
-  private List<HomeworkModel> homework;
+  private List<AssignmentModel> assignments;
 }
