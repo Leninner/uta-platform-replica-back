@@ -232,6 +232,74 @@ public class AssignmentService {
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object> setAssignmentStudentGrade
+  public ResponseEntity<HashMap<String, Object>> setAssignmentStudentGrade(String rol, Long studentId,
+      Long assignmentId) {
+    HashMap<String, Object> response = new HashMap<>();
+    if (!rol.equals("teacher")) {
+      response.put("message", "You don't have permission to do this action");
+      return ResponseEntity.badRequest().body(response);
+    }
 
+    AssignmentStudentModel assignmentStudent = assignmentStudentRepository
+        .findByStudentAndAssignment(studentRepository.getReferenceById(studentId),
+            assignmentRepository.getReferenceById(assignmentId));
+
+    if (assignmentStudent == null) {
+      response.put("message", "Assignment not found");
+      return ResponseEntity.badRequest().body(response);
+    }
+
+    assignmentStudent.setGrade(assignmentStudent.getGrade());
+    assignmentStudentRepository.save(assignmentStudent);
+
+    response.put("message", "Assignment grade set successfully");
+
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
+  /*
+   * public ResponseEntity<HashMap<String, Object>> updateStudentFile (String rol,
+   * Long studentId,
+   * Long assignmentId, MultipartFile file) {
+   * HashMap<String, Object> response = new HashMap<>();
+   * if(!rol.equals("student")){
+   * response.put("message", "You don't have permission to do this action");
+   * return ResponseEntity.badRequest().body(response);
+   * }
+   * 
+   * AssignmentStudentModel assignmentStudent = assignmentStudentRepository
+   * .findByStudentAndAssignment(studentRepository.getReferenceById(studentId),
+   * assignmentRepository.getReferenceById(assignmentId));
+   * 
+   * if (assignmentStudent == null) {
+   * response.put("message", "Assignment not found");
+   * return ResponseEntity.badRequest().body(response);
+   * }
+   * 
+   * String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+   * try {
+   * // Check if the file's name contains invalid characters
+   * if (fileName.contains("..")) {
+   * response.put("message", "Sorry! Filename contains invalid path sequence " +
+   * fileName);
+   * return ResponseEntity.badRequest().body(response);
+   * }
+   * 
+   * assignmentStudent.setStudentFile(fileName);
+   * assignmentStudentRepository.save(assignmentStudent);
+   * 
+   * String uploadDir = "assignment-student-files/" + assignmentStudent.getId();
+   * 
+   * FileUploadUtil.saveFile(uploadDir, fileName, file);
+   * 
+   * } catch (IOException ex) {
+   * response.put("message", "Could not save file " + fileName +
+   * ". Please try again!");
+   * return ResponseEntity.badRequest().body(response);
+   * }
+   * 
+   * response.put("message", "File uploaded successfully: " + fileName);
+   * return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+   * }
+   */
 }
