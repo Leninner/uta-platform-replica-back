@@ -45,5 +45,5 @@ public class CourseModel {
   private CareerModel career;
 
   @OneToMany(mappedBy = "course")
-  private List<HomeworkModel> homeworks;
+  private List<AssignmentModel> assignments;
 }

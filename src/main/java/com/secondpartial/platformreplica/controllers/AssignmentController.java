@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.secondpartial.platformreplica.dtos.HomeworkCreationDTO;
-import com.secondpartial.platformreplica.services.HomeworkService;
+import com.secondpartial.platformreplica.dtos.AssignmentCreationDTO;
+import com.secondpartial.platformreplica.services.AssignmentService;
 
 @RestController
-@RequestMapping("/homeworks")
-public class HomeworkController {
-    @Autowired
-    HomeworkService homeworkService;
+@RequestMapping("/assignments")
+public class AssignmentController {
+  @Autowired
+  AssignmentService assignmentService;
 
-    @PostMapping()
-    public ResponseEntity<HashMap<String, Object>> createHomework(@RequestBody HomeworkCreationDTO homework) {
-        return homeworkService.createHomework(homework);
-    }
+  @PostMapping()
+  public ResponseEntity<HashMap<String, Object>> createAssignment(@RequestBody AssignmentCreationDTO assignment) {
+    return assignmentService.createAssignment(assignment);
+  }
 }

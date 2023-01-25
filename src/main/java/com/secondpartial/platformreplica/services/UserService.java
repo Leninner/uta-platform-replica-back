@@ -116,7 +116,7 @@ public class UserService {
     }
 
     if (userModel.getRol() == RolEnum.TEACHER) {
-      TeacherModel teacher = new TeacherModel(null, userModel, null);
+      TeacherModel teacher = new TeacherModel(null, userModel, null, null);
       teacherRepository.save(teacher);
       return;
     }
@@ -140,9 +140,6 @@ public class UserService {
     userModel.setDni(user.getDni());
     userModel.setCity(city);
     userModel.setCareer(career);
-    userModel.setStudent(null);
-    userModel.setTeacher(null);
-    ;
     return userModel;
   }
 
