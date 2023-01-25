@@ -3,6 +3,7 @@ package com.secondpartial.platformreplica.models;
 import java.util.List;
 
 import com.secondpartial.platformreplica.enums.PartialEnum;
+import com.secondpartial.platformreplica.enums.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,11 +48,14 @@ public class AssignmentModel {
   @JoinColumn(name = "course_id")
   private CourseModel course;
 
-  @ManyToOne()
-  @JoinColumn(name = "teacher_id")
-  private TeacherModel teacher;
+  @Column(name = "status", nullable = true)
+  @Enumerated(EnumType.STRING)
+  private StatusEnum status;
+
+  @Column(name = "indication_file", nullable = true)
+  private String indicationsFile;
 
   @ManyToMany()
-  @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "assignment_id"))
+  @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "assignment_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
   private List<StudentModel> students;
 }
