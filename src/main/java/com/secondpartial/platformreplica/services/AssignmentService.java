@@ -3,6 +3,7 @@ package com.secondpartial.platformreplica.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.AssignmentCreationDTO;
 import com.secondpartial.platformreplica.enums.PartialEnum;
+import com.secondpartial.platformreplica.enums.StatusEnum;
 import com.secondpartial.platformreplica.models.AssignmentModel;
 import com.secondpartial.platformreplica.models.CourseModel;
 import com.secondpartial.platformreplica.models.StudentModel;
-import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.repositories.AssignmentRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 
@@ -33,21 +34,19 @@ public class AssignmentService {
 
     List<StudentModel> students = course.getStudents();
 
-    TeacherModel teacher = course.getTeacher();
-
     AssignmentModel newAssignment = new AssignmentModel();
     newAssignment.setName(assignment.getName());
     newAssignment.setDescription(assignment.getDescription());
     newAssignment.setPartial(PartialEnum.valueOf(assignment.getPartial()));
-    newAssignment.setDateInit(assignment.getDateInit());
-    newAssignment.setDateEnd(assignment.getDateEnd());
+    newAssignment.setDateInit(Timestamp.valueOf(assignment.getDateInit()));
+    newAssignment.setDateEnd(Timestamp.valueOf(assignment.getDateEnd()));
     newAssignment.setCourse(course);
-    newAssignment.setTeacher(teacher);
+    newAssignment.setStatus(StatusEnum.valueOf(assignment.getStatus()));
+    newAssignment.setIndicationsFile(assignment.getIndicationsFile());
 
     ArrayList<StudentModel> studentsToAdd = new ArrayList<>();
     for (StudentModel student : students) {
-      System.out.println(student.getId());
-      studentsToAdd.add(student);      
+      studentsToAdd.add(student);
     }
 
     assignmentRepository.save(newAssignment);
@@ -57,6 +56,17 @@ public class AssignmentService {
     assignmentRepository.save(newAssignment);
 
     response.put("message", "Assignment created successfully");
+    return ResponseEntity.ok(response);
+  }
+
+  public ResponseEntity<HashMap<String, Object>> getAssignmentsByCourseId(Long courseId) {
+    HashMap<String, Object> response = new HashMap<>();
+
+    CourseModel course = courseRepository.findById(courseId).orElse(null);
+
+    List<AssignmentModel> assignments = course.getAssignments();
+
+    response.put("assignments", assignments);
     return ResponseEntity.ok(response);
   }
 }
