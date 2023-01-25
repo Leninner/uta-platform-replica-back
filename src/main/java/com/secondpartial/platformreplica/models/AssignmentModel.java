@@ -1,5 +1,6 @@
 package com.secondpartial.platformreplica.models;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.secondpartial.platformreplica.enums.PartialEnum;
@@ -39,10 +40,10 @@ public class AssignmentModel {
   private PartialEnum partial;
 
   @Column(nullable = false)
-  private String dateInit;
+  private Timestamp dateInit;
 
   @Column(nullable = false)
-  private String dateEnd;
+  private Timestamp dateEnd;
 
   @ManyToOne()
   @JoinColumn(name = "course_id")
