@@ -35,6 +35,7 @@ public class FirebaseService {
     BlobId blobId = BlobId.of(FIREBASE_BUCKET, objectName);
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
 
+    System.out.println("Uploading file to Firebase " + blobInfo.getName());
     storage.create(blobInfo, Files.readAllBytes(filePath));
 
     return ResponseEntity.status(HttpStatus.CREATED).body("file uploaded successfully");
