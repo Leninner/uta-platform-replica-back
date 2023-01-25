@@ -52,4 +52,25 @@ public class FirebaseService {
   private String generateFileName(MultipartFile multiPart) {
     return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
   }
+
+  public ResponseEntity<String> uploadUserImage(MultipartFile multipartFile, Long id) throws IOException {
+    if (id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("id is required");
+
+    String objectName = generateFileName(multipartFile);
+
+    FileInputStream serviceAccount = new FileInputStream(FIREBASE_SDK_JSON);
+    File file = convertMultiPartToFile(multipartFile);
+    Path filePath = file.toPath();
+
+    Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount))
+        .setProjectId(FIREBASE_PROJECT_ID).build().getService();
+    BlobId blobId = BlobId.of(FIREBASE_BUCKET, "users/" + id + "/" + objectName);
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
+
+    String url = storage.create(blobInfo, Files.readAllBytes(filePath)).getMediaLink();
+
+    System.out.println("url: " + url);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body("file user uploaded successfully");
+  }
 }

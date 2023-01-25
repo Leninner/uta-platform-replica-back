@@ -49,12 +49,10 @@ public class UserController {
 
   @PutMapping(value = "/{id}")
   public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
-      @RequestParam("image") MultipartFile image,
       @RequestBody UserModifyDTO user,
       @RequestHeader(value = "Authorization") String token) {
-        System.out.println("id: " + id);
-        System.out.println("image: " + image);
-        System.out.println("user: " + user);
+    System.out.println("id: " + id);
+    System.out.println("user: " + user);
     return userService.modifyUser(id, user, token);
   }
 }
