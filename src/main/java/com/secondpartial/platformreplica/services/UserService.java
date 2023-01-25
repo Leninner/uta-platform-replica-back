@@ -116,7 +116,7 @@ public class UserService {
     }
 
     if (userModel.getRol() == RolEnum.TEACHER) {
-      TeacherModel teacher = new TeacherModel(null, userModel, null, null);
+      TeacherModel teacher = new TeacherModel(null, userModel, null);
       teacherRepository.save(teacher);
       return;
     }
