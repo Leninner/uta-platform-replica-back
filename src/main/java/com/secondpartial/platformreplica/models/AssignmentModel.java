@@ -18,11 +18,16 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "assignments")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class AssignmentModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +60,9 @@ public class AssignmentModel {
 
   @Column(name = "indication_file", nullable = true)
   private String indicationsFile;
+
+  @Transient
+  private String indicationsFileUrl;
 
   @ManyToMany()
   @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "assignment_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))

@@ -2,7 +2,9 @@ package com.secondpartial.platformreplica.enums;
 
 public enum PartialEnum {
     FIRST("Primer Parcial"),
-    SECOND("Segundo Parcial");
+    SECOND("Segundo Parcial"),
+    APE("Ape"),
+    CIERRE("Cierre");
 
     private String parcial;
 
