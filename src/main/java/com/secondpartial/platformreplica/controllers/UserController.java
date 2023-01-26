@@ -55,4 +55,6 @@ public class UserController {
     System.out.println("user: " + user);
     return userService.modifyUser(id, user, token);
   }
+
+  // endpoint para retornar las ciudades
 }
