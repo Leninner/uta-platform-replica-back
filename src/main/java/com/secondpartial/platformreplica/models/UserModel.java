@@ -4,13 +4,13 @@ import com.secondpartial.platformreplica.enums.RolEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "users")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserModel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +55,7 @@ public class UserModel {
   @ManyToOne()
   @JoinColumn(name = "career_id")
   private CareerModel career;
+
+  @Transient
+  private String userImageUrl;
 }

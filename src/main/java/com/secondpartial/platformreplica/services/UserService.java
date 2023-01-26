@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.secondpartial.platformreplica.dtos.CityDTO;
 import com.secondpartial.platformreplica.dtos.UserDTO;
@@ -175,6 +176,7 @@ public class UserService {
     }
 
     if (user.getName() != null) {
+      System.out.println(user.getName());
       userModel.setName(user.getName());
     }
 
@@ -192,10 +194,6 @@ public class UserService {
 
     if (user.getDni() != null) {
       userModel.setDni(user.getDni());
-    }
-
-    if (user.getImage() != null) {
-      userModel.setImage(user.getImage());
     }
 
     if (user.getCityId() != null) {

@@ -6,11 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "assignment_student")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class AssignmentStudentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +36,8 @@ public class AssignmentStudentModel {
 
     @Column(name = "student_file")
     private String studentFile;
+
+    @Transient
+    private String studentFileUrl;
 
 }

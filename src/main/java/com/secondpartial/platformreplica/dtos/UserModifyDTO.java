@@ -14,6 +14,5 @@ public class UserModifyDTO {
     private String address;
     private String phoneNumber;
     private String dni;
-    private String image;
     private Long cityId;
 }

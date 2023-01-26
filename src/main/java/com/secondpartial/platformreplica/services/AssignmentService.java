@@ -1,7 +1,7 @@
 package com.secondpartial.platformreplica.services;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -39,8 +39,8 @@ public class AssignmentService {
   @Autowired
   AssignmentStudentRepository assignmentStudentRepository;
 
-  public ResponseEntity<HashMap<String, Object>> createAssignment(AssignmentCreationDTO assignment) {
-    HashMap<String, Object> response = new HashMap<>();
+  public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(AssignmentCreationDTO assignment) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     CourseModel course = courseRepository.findById(assignment.getCourseId()).orElse(null);
 
@@ -68,11 +68,11 @@ public class AssignmentService {
     assignmentRepository.save(newAssignment);
 
     response.put("message", "Assignment created successfully");
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> getAssignmentsByCourseId(Long courseId) {
-    HashMap<String, Object> response = new HashMap<>();
+  public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentsByCourseId(Long courseId) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     CourseModel course = courseRepository.findById(courseId).orElse(null);
 
@@ -92,12 +92,12 @@ public class AssignmentService {
     }
 
     response.put("assignments", assignmentsResponse);
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> modifyAssignment(Long assigmentId,
+  public ResponseEntity<LinkedHashMap<String, Object>> modifyAssignment(Long assigmentId,
       AssignmentCreationDTO assignmentCreationDTO) {
-    HashMap<String, Object> response = new HashMap<>();
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     AssignmentModel assignment = assignmentRepository.getReferenceById(assigmentId);
 
@@ -138,7 +138,7 @@ public class AssignmentService {
 
     response.put("message", "Assignment modified successfully");
 
-    HashMap<String, String> assignmentResponse = new HashMap<>();
+    LinkedHashMap<String, String> assignmentResponse = new LinkedHashMap<>();
     assignmentResponse.put("id", assignment.getId().toString());
     assignmentResponse.put("name", assignment.getName());
     assignmentResponse.put("description", assignment.getDescription());
@@ -150,12 +150,12 @@ public class AssignmentService {
 
     response.put("assignment", assignmentResponse);
 
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
 
   }
 
-  public ResponseEntity<HashMap<String, Object>> deleteAssignment(Long assignmentId) {
-    HashMap<String, Object> response = new HashMap<>();
+  public ResponseEntity<LinkedHashMap<String, Object>> deleteAssignment(Long assignmentId) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
 
@@ -167,11 +167,11 @@ public class AssignmentService {
     assignmentRepository.delete(assignment);
 
     response.put("message", "Assignment deleted successfully");
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> getAssignmentById(Long assignmentId) {
-    HashMap<String, Object> response = new HashMap<>();
+  public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentById(Long assignmentId) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
 
@@ -180,7 +180,7 @@ public class AssignmentService {
       return ResponseEntity.badRequest().body(response);
     }
 
-    HashMap<String, String> assignmentResponse = new HashMap<>();
+    LinkedHashMap<String, String> assignmentResponse = new LinkedHashMap<>();
     assignmentResponse.put("id", assignment.getId().toString());
     assignmentResponse.put("name", assignment.getName());
     assignmentResponse.put("description", assignment.getDescription());
@@ -192,12 +192,12 @@ public class AssignmentService {
 
     response.put("assignment", assignmentResponse);
 
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> getAssignmentByStudentIdAndAssignmentId(Long studentId,
+  public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentByStudentIdAndAssignmentId(Long studentId,
       Long assignmentId) {
-    HashMap<String, Object> response = new HashMap<>();
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     StudentModel student = studentRepository.getReferenceById(studentId);
 
@@ -229,12 +229,12 @@ public class AssignmentService {
 
     response.put("assignment", assignmentStudentResponse);
 
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> setAssignmentStudentGrade(String rol, Long studentId,
+  public ResponseEntity<LinkedHashMap<String, Object>> setAssignmentStudentGrade(String rol, Long studentId,
       Long assignmentId) {
-    HashMap<String, Object> response = new HashMap<>();
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
     if (!rol.equals("teacher")) {
       response.put("message", "You don't have permission to do this action");
       return ResponseEntity.badRequest().body(response);
@@ -254,7 +254,7 @@ public class AssignmentService {
 
     response.put("message", "Assignment grade set successfully");
 
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
   /*
