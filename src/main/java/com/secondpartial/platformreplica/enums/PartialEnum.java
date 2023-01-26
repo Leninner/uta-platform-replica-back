@@ -18,6 +18,10 @@ public enum PartialEnum {
                 return PartialEnum.FIRST;
             case "Segundo Parcial":
                 return PartialEnum.SECOND;
+            case "Ape":
+                return PartialEnum.APE;
+            case "Cierre":
+                return PartialEnum.CIERRE;
             default:
                 return null;
         }
