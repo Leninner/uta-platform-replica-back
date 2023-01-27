@@ -66,9 +66,6 @@ public class AssignmentModel {
   @Column(name = "indication_file", nullable = true)
   private String indicationsFile;
 
-  @Transient
-  private String indicationsFileUrl;
-
   @ManyToMany()
   @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "assignment_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
   private List<StudentModel> students;

@@ -192,7 +192,7 @@ public class CourseService {
           setId(student.getId());
           setName(student.getUser().getName());
           setEmail(student.getUser().getEmail());
-          setImage(student.getUser().getImage());
+          setUserImageUrl(student.getUser().getUserImageUrl());
           setRol(student.getUser().getRol().toString());
           setAdress(student.getUser().getAddress());
           setPhoneNumber(student.getUser().getPhoneNumber());

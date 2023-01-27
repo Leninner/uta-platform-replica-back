@@ -37,7 +37,7 @@ public class UserModel {
   private String phoneNumber;
 
   @Column(nullable = true)
-  private String image;
+  private String userImageUrl;
 
   @Column(nullable = true)
   private String dni;
@@ -56,6 +56,4 @@ public class UserModel {
   @JoinColumn(name = "career_id")
   private CareerModel career;
 
-  @Transient
-  private String userImageUrl;
 }

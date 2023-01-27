@@ -182,7 +182,6 @@ public class UserService {
     if (userImage != null) {
       System.out.println(userImage.getOriginalFilename() + " leninsin");
       LinkedHashMap<String, String> userImageMap = s3Service.setUserImage(userModel, userImage);
-      userModel.setImage(userImageMap.get("userImageKey"));
       userModel.setUserImageUrl(userImageMap.get("userImageUrl"));
     }
 
@@ -220,7 +219,6 @@ public class UserService {
     userInfo.put("address", userModel.getAddress());
     userInfo.put("phoneNumber", userModel.getPhoneNumber());
     userInfo.put("rol", userModel.getRol().toString());
-    userInfo.put("userImagePath", userModel.getImage());
     userInfo.put("userImageUrl", userModel.getUserImageUrl());
     userInfo.put("city",
         new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
