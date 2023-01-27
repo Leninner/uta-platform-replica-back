@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.secondpartial.platformreplica.enums.PartialEnum;
+import com.secondpartial.platformreplica.enums.SendStatus;
 import com.secondpartial.platformreplica.enums.StatusEnum;
 
 import jakarta.persistence.Column;
@@ -57,6 +58,10 @@ public class AssignmentModel {
   @Column(name = "status", nullable = true)
   @Enumerated(EnumType.STRING)
   private StatusEnum status;
+
+  @Column(name = "sendStatus", nullable = true)
+  @Enumerated(EnumType.STRING)
+  private SendStatus sendStatus;
 
   @Column(name = "indication_file", nullable = true)
   private String indicationsFile;

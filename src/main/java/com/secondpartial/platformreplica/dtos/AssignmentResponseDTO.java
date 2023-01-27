@@ -16,5 +16,6 @@ public class AssignmentResponseDTO {
     private String dateInit;
     private String dateEnd;
     private String status;
+    private String sendStatus;
 
 }
