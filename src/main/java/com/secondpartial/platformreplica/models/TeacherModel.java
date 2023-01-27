@@ -32,4 +32,5 @@ public class TeacherModel {
 
   @OneToMany(mappedBy = "teacher")
   private List<CourseModel> courses;
+
 }

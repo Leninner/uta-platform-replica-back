@@ -2,7 +2,9 @@ package com.secondpartial.platformreplica.enums;
 
 public enum PartialEnum {
     FIRST("Primer Parcial"),
-    SECOND("Segundo Parcial");
+    SECOND("Segundo Parcial"),
+    APE("Ape"),
+    CIERRE("Cierre");
 
     private String parcial;
 
@@ -16,6 +18,10 @@ public enum PartialEnum {
                 return PartialEnum.FIRST;
             case "Segundo Parcial":
                 return PartialEnum.SECOND;
+            case "Ape":
+                return PartialEnum.APE;
+            case "Cierre":
+                return PartialEnum.CIERRE;
             default:
                 return null;
         }

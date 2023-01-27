@@ -5,37 +5,39 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name = "homework_student")
+@Table(name = "assignment_student")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class HomeworkStudentModel {
+@RequiredArgsConstructor
+public class AssignmentStudentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "homework_id")
-    private HomeworkModel homework;
+    @Column(name = "assignment_id")
+    private Long assignmentId;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private StudentModel student;
+    @Column(name = "student_id")
+    private Long studentId;
 
     @Column(name = "grade")
     private Double grade;
 
+    @Column(name = "comment")
+    private String comment;
+
     @Column(name = "student_file")
     private String studentFile;
+
+    @Transient
+    private String studentFileUrl;
 
 }

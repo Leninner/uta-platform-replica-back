@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    username: ${env.DATABASE_USERNAME}
+    url: ${env.DATABASE_URL}
+    password: ${env.DATABASE_PASSWORD}
+  http:
+    multipart:
+      max-request-size: 11MB
+      max-file-size: 10MB
+  jackson:
+    serialization:
+      fail-on-empty-beans: "false"
+  jpa:
+    hibernate:
+      ddl-auto: update
+security:
+  jwt:
+    ttlMillis: ${env.JWT_TTL_MILLIS}
+    issuer: ${env.JWT_ISSUER}
+    secret: ${env.JWT_SECRET}
+cloud:
+  aws:
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+    credentials:
+      accessKey: ${env.AWS_ACCESS_KEY_ID}
+      secretKey: ${env.AWS_SECRET_ACCESS_KEY}
+logging:
+  level:
+    com:
+      amazonaws:
+        internal:
+          InstanceMetadataService: error
+        util:
+          EC2MetadataUtils: error
