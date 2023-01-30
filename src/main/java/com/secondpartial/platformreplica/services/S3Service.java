@@ -66,6 +66,10 @@ public class S3Service {
     public LinkedHashMap<String, String> setUserImage(UserModel userModel, MultipartFile userImage) {
         LinkedHashMap<String, String> userImageMap = new LinkedHashMap<>();
         String extension = StringUtils.getFilenameExtension(userImage.getOriginalFilename());
+
+        if (extension == null) {
+            extension = "jpg";
+        }
         String key = String.format("users/%s/userImage/%s_img.%s", userModel.getId(), userModel.getId(), extension);
         String url = "";
 
