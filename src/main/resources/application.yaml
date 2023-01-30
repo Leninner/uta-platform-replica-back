@@ -35,3 +35,7 @@ logging:
           InstanceMetadataService: error
         util:
           EC2MetadataUtils: error
+servlet:
+  multipart:
+    max-request-size: ${env.MAX_REQUEST_SIZE}
+    max-file-size: ${env.MAX_FILE_SIZE}
