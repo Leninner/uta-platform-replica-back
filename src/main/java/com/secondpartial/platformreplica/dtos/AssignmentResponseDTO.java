@@ -17,5 +17,5 @@ public class AssignmentResponseDTO {
     private String dateInit;
     private String dateEnd;
     private String status;
-    private List<String> indicationsFiles;
+    private String indicationsFiles;
 }

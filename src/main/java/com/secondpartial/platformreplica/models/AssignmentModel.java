@@ -60,7 +60,7 @@ public class AssignmentModel {
 
   // antes era un string, ahora es una lista de strings
   @Column(name = "indications_files", nullable = true)
-  private List<String> indicationsFiles;
+  private String indicationsFiles;
 
   @ManyToMany()
   @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "assignment_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))

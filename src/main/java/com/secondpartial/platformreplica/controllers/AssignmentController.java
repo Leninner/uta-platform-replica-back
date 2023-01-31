@@ -65,7 +65,7 @@ public class AssignmentController {
     return assignmentService.createAssignment(rol, assignment, assignment.getIndicationsFiles());
   }
 
-  @PostMapping(value = "/{assignmentId}/student/{studentId}", consumes = { "multipart/form-data" })
+  @PutMapping(value = "/{assignmentId}/student/{studentId}", consumes = { "multipart/form-data" })
   public ResponseEntity<LinkedHashMap<String, Object>> updateStudentFiles(
       @RequestHeader("rol") String rol,
       @PathVariable("assignmentId") Long assignmentId,

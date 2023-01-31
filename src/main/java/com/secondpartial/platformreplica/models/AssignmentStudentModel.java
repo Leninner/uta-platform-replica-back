@@ -36,8 +36,7 @@ public class AssignmentStudentModel {
     @Column(name = "comment")
     private String comment;
 
-    // antes era un string, ahora es una lista de strings
     @Column(name = "student_files")
-    private List<String> studentFiles;
+    private String studentFiles;
 
 }

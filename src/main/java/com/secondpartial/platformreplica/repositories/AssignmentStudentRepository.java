@@ -10,12 +10,8 @@ import com.secondpartial.platformreplica.models.AssignmentStudentModel;
 @Repository
 public interface AssignmentStudentRepository extends JpaRepository<AssignmentStudentModel, Long> {
 
-        @Query(value = "select * from assignment_student ast where ast.student_id = :studentId and ast.assignment_id = :assignmentId", nativeQuery = true)
-        AssignmentStudentModel findByStudentAndAssignment(@Param("studentId") Long studentId,
-                        @Param("assignmentId") Long assignmentId);
-
-        @Query(value = "SELECT x.* FROM public.assignment_student x where assignment_id = :assignmentId and student_id = :studentId", nativeQuery = true)
-        AssignmentStudentModel getAssignmentStudentByStudentIdAndAssignmentId(@Param("studentId") Long studentId,
-                        @Param("assignmentId") Long assignmentId);
+        @Query(value = "SELECT * FROM assignment_student ast where ast.assignment_id = :assignmentId and ast.student_id = :studentId", nativeQuery = true)
+        AssignmentStudentModel findByStudentAndAssignment(@Param("assignmentId") Long assignmentId,
+                        @Param("studentId") Long studentId);
 
 }

@@ -95,17 +95,20 @@ public class S3Service {
         }
     }
 
-    public List<String> setStudentFiles(AssignmentStudentModel assignmentStudentModel,
+    public String setStudentFiles(AssignmentStudentModel assignmentStudentModel,
             List<MultipartFile> files) {
-        List<String> studentFilesMap = new ArrayList<>();
+        String studentFilesMap = "";
         String key = "";
         String url = "";
         String extension = "";
+        String fileName = "";
 
         for (MultipartFile file : files) {
             extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            fileName = file.getOriginalFilename().replace("." + extension, "");
+
             key = String.format("assignments/%s/students/%s/%s.%s", assignmentStudentModel.getAssignmentId(),
-                    assignmentStudentModel.getStudentId(), file.getName(), extension);
+                    assignmentStudentModel.getStudentId(), fileName, extension);
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
@@ -117,7 +120,12 @@ public class S3Service {
                 s3Client.putObject(putObjectRequest);
                 url = String.format("https://%s.s3.amazonaws.com/%s", BUCKET_NAME, key);
 
-                studentFilesMap.add(url);
+                if (studentFilesMap.equals("")) {
+                    studentFilesMap += url;
+                }
+
+                studentFilesMap += ", " + url;
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -125,16 +133,20 @@ public class S3Service {
         return studentFilesMap;
     }
 
-    public List<String> setAssignmentFiles(AssignmentModel assignmentModel,
+    public String setAssignmentFiles(AssignmentModel assignmentModel,
             List<MultipartFile> files) {
-        List<String> assignmentFilesMap = new ArrayList<>();
+        String assignmentFilesMap = "";
         String key = "";
         String url = "";
         String extension = "";
+        String fileName = "";
 
         for (MultipartFile file : files) {
             extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
-            key = String.format("assignments/%s/indicationsFiles/%s.%s", assignmentModel.getId(), file.getName(),
+
+            fileName = file.getOriginalFilename().replace("." + extension, "");
+
+            key = String.format("assignments/%s/indicationsFiles/%s.%s", assignmentModel.getId(), fileName,
                     extension);
 
             ObjectMetadata metadata = new ObjectMetadata();
@@ -147,7 +159,11 @@ public class S3Service {
                 s3Client.putObject(putObjectRequest);
                 url = String.format("https://%s.s3.amazonaws.com/%s", BUCKET_NAME, key);
 
-                assignmentFilesMap.add(url);
+                if (assignmentFilesMap.equals("")) {
+                    assignmentFilesMap += url;
+                }
+
+                assignmentFilesMap += ", " + url;
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

@@ -12,12 +12,12 @@ import lombok.RequiredArgsConstructor;
 public class AssignmentStudentResponseDTO {
     private String name;
     private String partial;
-    private List<String> indicationsFiles;
+    private String indicationsFiles;
     private String description;
     private String dateInit;
     private String dateEnd;
     private String status;
     private Double grade;
     private String comment;
-    private List<String> studentFiles;
+    private String studentFiles;
 }
