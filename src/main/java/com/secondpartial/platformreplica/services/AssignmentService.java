@@ -88,6 +88,7 @@ public class AssignmentService {
       assignmentResponse.setDateInit(assignment.getDateInit().toString());
       assignmentResponse.setDateEnd(assignment.getDateEnd().toString());
       assignmentResponse.setStatus(assignment.getStatus().toString());
+      assignmentResponse.setSendStatus(assignment.getSendStatus().toString());
       assignmentsResponse.add(assignmentResponse);
     }
 

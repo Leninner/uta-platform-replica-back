@@ -2,6 +2,7 @@ package com.secondpartial.platformreplica.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class UserService {
 
   @Autowired
   CourseRepository courseRepository;
+
+  @Autowired
+  S3Service s3Service;
 
   public List<UserModel> getUsers(String token) {
     if (!validateToken(token)) {
@@ -159,7 +163,7 @@ public class UserService {
   }
 
   public ResponseEntity<HashMap<String, Object>> modifyUser(Long id, UserModifyDTO user,
-      String token) {
+      String token, MultipartFile userImage) {
     HashMap<String, Object> response = new HashMap<>();
 
     if (!validateToken(token)) {
@@ -173,6 +177,12 @@ public class UserService {
       response.put("message", "User not found");
       response.put("status", HttpStatus.BAD_REQUEST.value());
       return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (userImage != null) {
+      System.out.println(userImage.getOriginalFilename() + " leninsin");
+      LinkedHashMap<String, String> userImageMap = s3Service.setUserImage(userModel, userImage);
+      userModel.setUserImageUrl(userImageMap.get("userImageUrl"));
     }
 
     if (user.getName() != null) {
@@ -209,7 +219,7 @@ public class UserService {
     userInfo.put("address", userModel.getAddress());
     userInfo.put("phoneNumber", userModel.getPhoneNumber());
     userInfo.put("rol", userModel.getRol().toString());
-    userInfo.put("image", userModel.getImage());
+    userInfo.put("userImageUrl", userModel.getUserImageUrl());
     userInfo.put("city",
         new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
     userInfo.put("province",

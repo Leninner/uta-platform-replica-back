@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.secondpartial.platformreplica.enums.PartialEnum;
+import com.secondpartial.platformreplica.enums.SendStatus;
 import com.secondpartial.platformreplica.enums.StatusEnum;
 
 import jakarta.persistence.Column;
@@ -58,11 +59,12 @@ public class AssignmentModel {
   @Enumerated(EnumType.STRING)
   private StatusEnum status;
 
+  @Column(name = "sendStatus", nullable = true)
+  @Enumerated(EnumType.STRING)
+  private SendStatus sendStatus;
+
   @Column(name = "indication_file", nullable = true)
   private String indicationsFile;
-
-  @Transient
-  private String indicationsFileUrl;
 
   @ManyToMany()
   @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "assignment_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))

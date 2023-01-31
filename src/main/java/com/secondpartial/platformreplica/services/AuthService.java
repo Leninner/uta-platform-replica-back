@@ -44,7 +44,8 @@ public class AuthService {
     userInfo.put("address", user.getAddress());
     userInfo.put("phoneNumber", user.getPhoneNumber());
     userInfo.put("rol", user.getRol().toString());
-    userInfo.put("image", user.getImage());
+    userInfo.put("userImageUrl", user.getUserImageUrl());
+    System.out.println(user.getUserImageUrl());
     userInfo.put("city", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getName());
     userInfo.put("province",
         new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getProvinceName());

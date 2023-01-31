@@ -1,6 +1,7 @@
 package com.secondpartial.platformreplica.services;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.secondpartial.platformreplica.models.UserModel;
 import com.secondpartial.platformreplica.models.vm.AssetModel;
 
 @Service
@@ -59,5 +61,33 @@ public class S3Service {
 
     public String getObjectURL(String key) {
         return String.format("https://%s.s3.amazonaws.com/%s", BUCKET_NAME, key);
+    }
+
+    public LinkedHashMap<String, String> setUserImage(UserModel userModel, MultipartFile userImage) {
+        LinkedHashMap<String, String> userImageMap = new LinkedHashMap<>();
+        String extension = StringUtils.getFilenameExtension(userImage.getOriginalFilename());
+
+        if (extension == null) {
+            extension = "jpg";
+        }
+        String key = String.format("users/%s/userImage/%s_img.%s", userModel.getId(), userModel.getId(), extension);
+        String url = "";
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(userImage.getContentType());
+
+        try {
+            PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, key, userImage.getInputStream(),
+                    metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+
+            s3Client.putObject(putObjectRequest);
+            url = String.format("https://%s.s3.amazonaws.com/%s", BUCKET_NAME, key);
+
+            userImageMap.put("userImageKey", key);
+            userImageMap.put("userImageUrl", url);
+            return userImageMap;
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

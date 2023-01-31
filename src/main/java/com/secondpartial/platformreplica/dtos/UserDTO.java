@@ -16,21 +16,21 @@ public class UserDTO {
   private String address;
   private String phoneNumber;
   private String dni;
-  private String image;
+  private String userImageUrl;
   private Long cityId;
   private String rol;
   private Long careerId;
   private List<Long> courseIds;
 
   public UserDTO(String name, String email, String password, String address, String phoneNumber, String dni,
-      String image, Long cityId) {
+      String userImageUrl, Long cityId) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.address = address;
     this.phoneNumber = phoneNumber;
     this.dni = dni;
-    this.image = image;
+    this.userImageUrl = userImageUrl;
     this.cityId = cityId;
   }
 }

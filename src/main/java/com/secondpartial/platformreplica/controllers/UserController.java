@@ -47,13 +47,14 @@ public class UserController {
     return userService.registerBulk(users);
   }
 
-  @PutMapping(value = "/{id}")
+  @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
   public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
-      @RequestBody UserModifyDTO user,
+      @ModelAttribute UserModifyDTO user,
       @RequestHeader(value = "Authorization") String token) {
     System.out.println("id: " + id);
     System.out.println("user: " + user);
-    return userService.modifyUser(id, user, token);
+    System.out.println("userImage: " + user.getUserImage());
+    return userService.modifyUser(id, user, token, user.getUserImage());
   }
 
   // endpoint para retornar las ciudades

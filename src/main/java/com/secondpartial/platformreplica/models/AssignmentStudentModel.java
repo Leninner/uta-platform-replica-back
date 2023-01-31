@@ -37,7 +37,4 @@ public class AssignmentStudentModel {
     @Column(name = "student_file")
     private String studentFile;
 
-    @Transient
-    private String studentFileUrl;
-
 }

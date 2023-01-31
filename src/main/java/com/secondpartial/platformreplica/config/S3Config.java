@@ -19,9 +19,6 @@ public class S3Config {
     @Value("${env.AWS_SECRET_ACCESS_KEY}")
     private String AWS_SECRET_ACCESS_KEY;
 
-    @Value("${env.AWS_S3_BUCKET}")
-    private String AWS_S3_BUCKET;
-
     @Bean
     public AmazonS3Client S3() {
         AWSCredentials awsCredentials = new BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
