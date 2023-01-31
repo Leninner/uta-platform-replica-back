@@ -2,8 +2,12 @@ package com.secondpartial.platformreplica.models;
 
 import java.util.List;
 
+import com.secondpartial.platformreplica.enums.SemesterEnum;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,4 +41,8 @@ public class StudentModel {
 
   @ManyToMany(mappedBy = "students")
   private List<AssignmentModel> assignments;
+
+  @Column(nullable = true)
+  @Enumerated(EnumType.STRING)
+  private SemesterEnum semester;
 }
