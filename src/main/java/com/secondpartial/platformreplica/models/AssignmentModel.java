@@ -58,6 +58,7 @@ public class AssignmentModel {
   @Enumerated(EnumType.STRING)
   private StatusEnum status;
 
+  // antes era un string, ahora es una lista de strings
   @Column(name = "indications_files", nullable = true)
   private List<String> indicationsFiles;
 

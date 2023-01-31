@@ -249,7 +249,7 @@ public class AssignmentService {
     }
 
     AssignmentStudentModel assignmentStudent = assignmentStudentRepository
-        .getAssignmentStudentByStudentIdAndAssignmentId(studentId, assignmentId);
+        .findByStudentAndAssignment(studentId, assignmentId);
 
     AssignmentStudentResponseDTO assignmentStudentResponse = new AssignmentStudentResponseDTO();
     assignmentStudentResponse.setName(assignment.getName());
