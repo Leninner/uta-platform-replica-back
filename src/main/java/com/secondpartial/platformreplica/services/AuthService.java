@@ -46,9 +46,12 @@ public class AuthService {
     userInfo.put("rol", user.getRol().toString());
     userInfo.put("userImageUrl", user.getUserImageUrl());
     System.out.println(user.getUserImageUrl());
-    userInfo.put("city", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getName());
+    userInfo.put("city",
+        new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
+            .getName());
     userInfo.put("province",
-        new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getProvinceName());
+        new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
+            .getProvinceName());
     userInfo.put("id", user.getId().toString());
 
     String token = jwtUtil.create(mail, password);

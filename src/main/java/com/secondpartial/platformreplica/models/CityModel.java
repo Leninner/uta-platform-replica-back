@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "cities")
+@Table(name = "cities", indexes = { @Index(name = "city_name_index", columnList = "name") })
 @Data
 public class CityModel {
   @Id
