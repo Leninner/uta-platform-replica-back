@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.secondpartial.platformreplica.dtos.enrollment.*;
-import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.StudentRepository;
 import com.secondpartial.platformreplica.utils.ResponseApiUtil;
