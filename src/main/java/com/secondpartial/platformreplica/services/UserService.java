@@ -180,7 +180,6 @@ public class UserService {
     }
 
     if (userImage != null) {
-      System.out.println(userImage.getOriginalFilename() + " leninsin");
       LinkedHashMap<String, String> userImageMap = s3Service.setUserImage(userModel, userImage);
       userModel.setUserImageUrl(userImageMap.get("userImageUrl"));
     }
@@ -221,9 +220,11 @@ public class UserService {
     userInfo.put("rol", userModel.getRol().toString());
     userInfo.put("userImageUrl", userModel.getUserImageUrl());
     userInfo.put("city",
-        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
+        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(),
+            userModel.getCity().getProvince().getName()).getName());
     userInfo.put("province",
-        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
+        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(),
+            userModel.getCity().getProvince().getName()).getProvinceName());
     userInfo.put("id", userModel.getId().toString());
 
     response.put("message", "User modified successfully!");

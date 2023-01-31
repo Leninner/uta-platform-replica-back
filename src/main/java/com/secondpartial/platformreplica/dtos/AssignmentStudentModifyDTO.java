@@ -11,13 +11,9 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class AssignmentCreationDTO implements java.io.Serializable {
-  Long courseId;
-  String name;
-  String description;
-  String partial;
-  String dateInit;
-  String dateEnd;
-  String status;
-  List<MultipartFile> indicationsFiles;
+public class AssignmentStudentModifyDTO implements java.io.Serializable {
+    Long StudentId;
+    Long AssignmentId;
+    String comment;
+    List<MultipartFile> studentFiles;
 }

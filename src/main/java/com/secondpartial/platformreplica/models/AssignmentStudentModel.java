@@ -1,5 +1,7 @@
 package com.secondpartial.platformreplica.models;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +36,7 @@ public class AssignmentStudentModel {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "student_file")
-    private String studentFile;
+    @Column(name = "student_files")
+    private List<String> studentFiles;
 
 }

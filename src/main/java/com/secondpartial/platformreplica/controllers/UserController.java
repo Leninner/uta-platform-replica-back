@@ -49,9 +49,6 @@ public class UserController {
   public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
       @ModelAttribute UserModifyDTO user,
       @RequestHeader(value = "Authorization") String token) {
-    System.out.println("id: " + id);
-    System.out.println("user: " + user);
-    System.out.println("userImage: " + user.getUserImage());
     return userService.modifyUser(id, user, token, user.getUserImage());
   }
 
