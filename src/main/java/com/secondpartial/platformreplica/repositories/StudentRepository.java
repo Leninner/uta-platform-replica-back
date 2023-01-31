@@ -11,4 +11,7 @@ import com.secondpartial.platformreplica.models.StudentModel;
 public interface StudentRepository extends JpaRepository<StudentModel, Long> {
     @Query(value = "select * from students s where s.id = :studentId", nativeQuery = true)
     public Iterable<StudentModel> findByStudentId(@Param("studentId") Long studentId);
+
+    @Query(value = "select * from students s where s.user_id = :userId", nativeQuery = true)
+    public StudentModel findByUserId(@Param("userId") Long userId);
 }

@@ -2,6 +2,8 @@ package com.secondpartial.platformreplica.dtos;
 
 import java.util.List;
 
+import com.secondpartial.platformreplica.enums.SemesterEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class UserDTO {
   private Long cityId;
   private String rol;
   private Long careerId;
+  private SemesterEnum semester;
   private List<Long> courseIds;
 
   public UserDTO(String name, String email, String password, String address, String phoneNumber, String dni,

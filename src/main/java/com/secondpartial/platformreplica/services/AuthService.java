@@ -53,6 +53,7 @@ public class AuthService {
         new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
             .getProvinceName());
     userInfo.put("id", user.getId().toString());
+    userInfo.put("semester", user.getStudent().getSemester().toString());
 
     String token = jwtUtil.create(mail, password);
     response.put("token", token);
