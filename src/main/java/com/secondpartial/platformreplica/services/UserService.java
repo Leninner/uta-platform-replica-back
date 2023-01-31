@@ -99,7 +99,7 @@ public class UserService {
 
   public void processUserCreationByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
-      StudentModel student = new StudentModel(null, userModel, null, null);
+      StudentModel student = new StudentModel(null, userModel, null, null, null);
       List<Long> courseIds = user.getCourseIds();
 
       if (courseIds != null) {
