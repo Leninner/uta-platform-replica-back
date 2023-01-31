@@ -221,13 +221,27 @@ public class UserService {
     userInfo.put("rol", userModel.getRol().toString());
     userInfo.put("userImageUrl", userModel.getUserImageUrl());
     userInfo.put("city",
-        new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
+        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
     userInfo.put("province",
-        new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
+        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
     userInfo.put("id", userModel.getId().toString());
 
     response.put("message", "User modified successfully!");
     response.put("userInfo", userInfo);
+    response.put("status", HttpStatus.OK.value());
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
+  public ResponseEntity<HashMap<String, Object>> getCities() {
+    HashMap<String, Object> response = new HashMap<>();
+    List<CityModel> cities = cityRepository.findAll();
+    List<CityDTO> citiesDTO = new ArrayList<CityDTO>();
+
+    for (CityModel city : cities) {
+      citiesDTO.add(new CityDTO(city.getId(), city.getName(), city.getProvince().getName()));
+    }
+
+    response.put("cities", citiesDTO);
     response.put("status", HttpStatus.OK.value());
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }

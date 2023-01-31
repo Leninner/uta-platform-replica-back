@@ -198,7 +198,7 @@ public class CourseService {
           setPhoneNumber(student.getUser().getPhoneNumber());
           setCity(student.getUser().getCity().getName());
           setProvince(
-              new CityDTO(student.getUser().getCity().getName(), student.getUser().getCity().getProvince().getName())
+              new CityDTO(student.getUser().getCity().getId(), student.getUser().getCity().getName(), student.getUser().getCity().getProvince().getName())
                   .getProvinceName());
 
           List<CoursePartInfoDTO> courses = new ArrayList<>();
