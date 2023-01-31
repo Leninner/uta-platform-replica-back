@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.secondpartial.platformreplica.dtos.AssignmentCreationDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentResponseDTO;
+import com.secondpartial.platformreplica.dtos.AssignmentStudentModifyDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentStudentResponseDTO;
 import com.secondpartial.platformreplica.enums.PartialEnum;
+import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.enums.StatusEnum;
 import com.secondpartial.platformreplica.models.AssignmentModel;
 import com.secondpartial.platformreplica.models.AssignmentStudentModel;
@@ -39,8 +42,17 @@ public class AssignmentService {
   @Autowired
   AssignmentStudentRepository assignmentStudentRepository;
 
-  public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(AssignmentCreationDTO assignment) {
+  @Autowired
+  S3Service s3Service;
+
+  public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(String rol, AssignmentCreationDTO assignment,
+      List<MultipartFile> files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+
+    if (!rol.equals(RolEnum.TEACHER.toString())) {
+      response.put("message", "You don't have permission to create an assignment");
+      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 
     CourseModel course = courseRepository.findById(assignment.getCourseId()).orElse(null);
 
@@ -53,8 +65,13 @@ public class AssignmentService {
     newAssignment.setDateInit(Timestamp.valueOf(assignment.getDateInit()));
     newAssignment.setDateEnd(Timestamp.valueOf(assignment.getDateEnd()));
     newAssignment.setCourse(course);
-    newAssignment.setStatus(StatusEnum.valueOf(assignment.getStatus()));
-    newAssignment.setIndicationsFile(assignment.getIndicationsFile());
+
+    Timestamp now = new Timestamp(System.currentTimeMillis());
+    if (newAssignment.getDateInit().before(now)) {
+      newAssignment.setStatus(StatusEnum.AVAILABLE);
+    } else {
+      newAssignment.setStatus(StatusEnum.UNAVAILABLE);
+    }
 
     ArrayList<StudentModel> studentsToAdd = new ArrayList<>();
     for (StudentModel student : students) {
@@ -65,7 +82,21 @@ public class AssignmentService {
 
     newAssignment.setStudents(studentsToAdd);
 
+    newAssignment.setIndicationsFiles(s3Service.setAssignmentFiles(newAssignment, files));
+
     assignmentRepository.save(newAssignment);
+
+    AssignmentResponseDTO assignmentResponse = new AssignmentResponseDTO();
+    assignmentResponse.setId(newAssignment.getId());
+    assignmentResponse.setName(newAssignment.getName());
+    assignmentResponse.setDescription(newAssignment.getDescription());
+    assignmentResponse.setPartial(newAssignment.getPartial().toString());
+    assignmentResponse.setDateInit(newAssignment.getDateInit().toString());
+    assignmentResponse.setDateEnd(newAssignment.getDateEnd().toString());
+    assignmentResponse.setStatus(newAssignment.getStatus().toString());
+    assignmentResponse.setIndicationsFiles(newAssignment.getIndicationsFiles());
+
+    response.put("assignment", assignmentResponse);
 
     response.put("message", "Assignment created successfully");
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
@@ -88,7 +119,6 @@ public class AssignmentService {
       assignmentResponse.setDateInit(assignment.getDateInit().toString());
       assignmentResponse.setDateEnd(assignment.getDateEnd().toString());
       assignmentResponse.setStatus(assignment.getStatus().toString());
-      assignmentResponse.setSendStatus(assignment.getSendStatus().toString());
       assignmentsResponse.add(assignmentResponse);
     }
 
@@ -96,9 +126,14 @@ public class AssignmentService {
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<LinkedHashMap<String, Object>> modifyAssignment(Long assigmentId,
-      AssignmentCreationDTO assignmentCreationDTO) {
+  public ResponseEntity<LinkedHashMap<String, Object>> modifyAssignment(String rol, Long assigmentId,
+      AssignmentCreationDTO assignmentCreationDTO, List<MultipartFile> files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+
+    if (!rol.equals(RolEnum.TEACHER.toString())) {
+      response.put("message", "You don't have permission to modify an assignment");
+      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 
     AssignmentModel assignment = assignmentRepository.getReferenceById(assigmentId);
 
@@ -131,15 +166,15 @@ public class AssignmentService {
       assignment.setStatus(StatusEnum.valueOf(assignmentCreationDTO.getStatus()));
     }
 
-    if (assignmentCreationDTO.getIndicationsFile() != null) {
-      assignment.setIndicationsFile(assignmentCreationDTO.getIndicationsFile());
+    if (assignmentCreationDTO.getIndicationsFiles() != null) {
+      assignment.setIndicationsFiles(s3Service.setAssignmentFiles(assignment, files));
     }
 
     assignmentRepository.save(assignment);
 
     response.put("message", "Assignment modified successfully");
 
-    LinkedHashMap<String, String> assignmentResponse = new LinkedHashMap<>();
+    LinkedHashMap<String, Object> assignmentResponse = new LinkedHashMap<>();
     assignmentResponse.put("id", assignment.getId().toString());
     assignmentResponse.put("name", assignment.getName());
     assignmentResponse.put("description", assignment.getDescription());
@@ -147,7 +182,7 @@ public class AssignmentService {
     assignmentResponse.put("dateInit", assignment.getDateInit().toString());
     assignmentResponse.put("dateEnd", assignment.getDateEnd().toString());
     assignmentResponse.put("status", assignment.getStatus().toString());
-    assignmentResponse.put("indicationsFile", assignment.getIndicationsFile());
+    assignmentResponse.put("indicationsFiles", assignment.getIndicationsFiles());
 
     response.put("assignment", assignmentResponse);
 
@@ -155,8 +190,13 @@ public class AssignmentService {
 
   }
 
-  public ResponseEntity<LinkedHashMap<String, Object>> deleteAssignment(Long assignmentId) {
+  public ResponseEntity<LinkedHashMap<String, Object>> deleteAssignment(String rol, Long assignmentId) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+
+    if (!rol.equals(RolEnum.TEACHER.toString())) {
+      response.put("message", "You don't have permission to delete an assignment");
+      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 
     AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
 
@@ -181,7 +221,7 @@ public class AssignmentService {
       return ResponseEntity.badRequest().body(response);
     }
 
-    LinkedHashMap<String, String> assignmentResponse = new LinkedHashMap<>();
+    LinkedHashMap<String, Object> assignmentResponse = new LinkedHashMap<>();
     assignmentResponse.put("id", assignment.getId().toString());
     assignmentResponse.put("name", assignment.getName());
     assignmentResponse.put("description", assignment.getDescription());
@@ -189,27 +229,29 @@ public class AssignmentService {
     assignmentResponse.put("dateInit", assignment.getDateInit().toString());
     assignmentResponse.put("dateEnd", assignment.getDateEnd().toString());
     assignmentResponse.put("status", assignment.getStatus().toString());
-    assignmentResponse.put("indicationsFile", assignment.getIndicationsFile());
+    assignmentResponse.put("indicationsFiles", assignment.getIndicationsFiles());
 
     response.put("assignment", assignmentResponse);
 
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentByStudentIdAndAssignmentId(Long studentId,
-      Long assignmentId) {
+  public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentByStudentIdAndAssignmentId(
+      Long assignmentId, Long studentId) {
+
+    System.out.println("studentId: " + studentId);
+    System.out.println("assignmentId: " + assignmentId);
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
-    StudentModel student = studentRepository.getReferenceById(studentId);
+    AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
 
-    if (student == null) {
-      response.put("message", "Student not found");
+    if (assignment == null) {
+      response.put("message", "Assignment not found xd");
       return ResponseEntity.badRequest().body(response);
     }
 
-    AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
     AssignmentStudentModel assignmentStudent = assignmentStudentRepository
-        .findByStudentAndAssignment(student, assignment);
+        .findByStudentAndAssignment(assignmentId, studentId);
 
     if (assignmentStudent == null) {
       response.put("message", "Assignment not found");
@@ -223,9 +265,10 @@ public class AssignmentService {
     assignmentStudentResponse.setDateInit(assignment.getDateInit().toString());
     assignmentStudentResponse.setDateEnd(assignment.getDateEnd().toString());
     assignmentStudentResponse.setStatus(assignment.getStatus().toString());
-    assignmentStudentResponse.setIndicationsFile(assignment.getIndicationsFile());
+    assignmentStudentResponse.setIndicationsFiles(assignment.getIndicationsFiles());
+
     assignmentStudentResponse.setGrade(assignmentStudent.getGrade());
-    assignmentStudentResponse.setStudentFile(assignmentStudent.getStudentFile());
+    assignmentStudentResponse.setStudentFiles(assignmentStudent.getStudentFiles());
     assignmentStudentResponse.setComment(assignmentStudent.getComment());
 
     response.put("assignment", assignmentStudentResponse);
@@ -234,73 +277,88 @@ public class AssignmentService {
   }
 
   public ResponseEntity<LinkedHashMap<String, Object>> setAssignmentStudentGrade(String rol, Long studentId,
-      Long assignmentId) {
+      Long assignmentId, double grade) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
-    if (!rol.equals("teacher")) {
+    if (!rol.equals(RolEnum.TEACHER.toString())) {
       response.put("message", "You don't have permission to do this action");
       return ResponseEntity.badRequest().body(response);
     }
 
     AssignmentStudentModel assignmentStudent = assignmentStudentRepository
-        .findByStudentAndAssignment(studentRepository.getReferenceById(studentId),
-            assignmentRepository.getReferenceById(assignmentId));
+        .findByStudentAndAssignment(studentId, assignmentId);
 
     if (assignmentStudent == null) {
       response.put("message", "Assignment not found");
       return ResponseEntity.badRequest().body(response);
     }
 
-    assignmentStudent.setGrade(assignmentStudent.getGrade());
+    AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
+
+    assignmentStudent.setGrade(grade);
     assignmentStudentRepository.save(assignmentStudent);
+
+    AssignmentStudentResponseDTO assignmentStudentResponse = new AssignmentStudentResponseDTO();
+    assignmentStudentResponse.setName(assignment.getName());
+    assignmentStudentResponse.setDescription(assignment.getDescription());
+    assignmentStudentResponse.setPartial(assignment.getPartial().toString());
+    assignmentStudentResponse.setDateInit(assignment.getDateInit().toString());
+    assignmentStudentResponse.setDateEnd(assignment.getDateEnd().toString());
+    assignmentStudentResponse.setStatus(assignment.getStatus().toString());
+    assignmentStudentResponse.setIndicationsFiles(assignment.getIndicationsFiles());
+    assignmentStudentResponse.setGrade(assignmentStudent.getGrade());
+    assignmentStudentResponse.setStudentFiles(assignmentStudent.getStudentFiles());
+    assignmentStudentResponse.setComment(assignmentStudent.getComment());
 
     response.put("message", "Assignment grade set successfully");
 
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  /*
-   * public ResponseEntity<HashMap<String, Object>> updateStudentFile (String rol,
-   * Long studentId,
-   * Long assignmentId, MultipartFile file) {
-   * HashMap<String, Object> response = new HashMap<>();
-   * if(!rol.equals("student")){
-   * response.put("message", "You don't have permission to do this action");
-   * return ResponseEntity.badRequest().body(response);
-   * }
-   * 
-   * AssignmentStudentModel assignmentStudent = assignmentStudentRepository
-   * .findByStudentAndAssignment(studentRepository.getReferenceById(studentId),
-   * assignmentRepository.getReferenceById(assignmentId));
-   * 
-   * if (assignmentStudent == null) {
-   * response.put("message", "Assignment not found");
-   * return ResponseEntity.badRequest().body(response);
-   * }
-   * 
-   * String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-   * try {
-   * // Check if the file's name contains invalid characters
-   * if (fileName.contains("..")) {
-   * response.put("message", "Sorry! Filename contains invalid path sequence " +
-   * fileName);
-   * return ResponseEntity.badRequest().body(response);
-   * }
-   * 
-   * assignmentStudent.setStudentFile(fileName);
-   * assignmentStudentRepository.save(assignmentStudent);
-   * 
-   * String uploadDir = "assignment-student-files/" + assignmentStudent.getId();
-   * 
-   * FileUploadUtil.saveFile(uploadDir, fileName, file);
-   * 
-   * } catch (IOException ex) {
-   * response.put("message", "Could not save file " + fileName +
-   * ". Please try again!");
-   * return ResponseEntity.badRequest().body(response);
-   * }
-   * 
-   * response.put("message", "File uploaded successfully: " + fileName);
-   * return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
-   * }
-   */
+  public ResponseEntity<LinkedHashMap<String, Object>> updateStudentFiles(String rol,
+      Long assignmentId,
+      Long studentId, List<MultipartFile> files) {
+
+    System.out.println("rol: " + rol);
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+    String url;
+
+    if (!rol.equals(RolEnum.STUDENT.toString())) {
+      response.put("message", "You don't have permission to do this action");
+      return ResponseEntity.badRequest().body(response);
+    }
+
+    AssignmentModel assignment = assignmentRepository.getReferenceById(assignmentId);
+
+    AssignmentStudentModel assignmentStudent = assignmentStudentRepository.findByStudentAndAssignment(assignmentId,
+        studentId);
+
+    if (assignmentStudent == null) {
+      response.put("message", "Assignment not found");
+      return ResponseEntity.badRequest().body(response);
+    }
+
+    if (assignment.getStatus().equals(StatusEnum.UNAVAILABLE)) {
+      return ResponseEntity.badRequest().body(response);
+    }
+    url = s3Service.setStudentFiles(assignmentStudent, files);
+    assignmentStudent.setStudentFiles(url);
+
+    assignmentStudentRepository.save(assignmentStudent);
+
+    AssignmentStudentResponseDTO assignmentStudentResponse = new AssignmentStudentResponseDTO();
+    assignmentStudentResponse.setName(assignment.getName());
+    assignmentStudentResponse.setDescription(assignment.getDescription());
+    assignmentStudentResponse.setPartial(assignment.getPartial().toString());
+    assignmentStudentResponse.setDateInit(assignment.getDateInit().toString());
+    assignmentStudentResponse.setDateEnd(assignment.getDateEnd().toString());
+    assignmentStudentResponse.setStatus(assignment.getStatus().toString());
+    assignmentStudentResponse.setIndicationsFiles(assignment.getIndicationsFiles());
+    assignmentStudentResponse.setGrade(assignmentStudent.getGrade());
+    assignmentStudentResponse.setStudentFiles(assignmentStudent.getStudentFiles());
+    assignmentStudentResponse.setComment(assignmentStudent.getComment());
+
+    response.put("message", "Files uploaded successfully:");
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
 }

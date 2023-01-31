@@ -1,7 +1,9 @@
 package com.secondpartial.platformreplica.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.secondpartial.platformreplica.models.AssignmentModel;
+import com.secondpartial.platformreplica.models.AssignmentStudentModel;
 import com.secondpartial.platformreplica.models.UserModel;
 import com.secondpartial.platformreplica.models.vm.AssetModel;
 
@@ -90,4 +94,81 @@ public class S3Service {
             throw new RuntimeException(ex);
         }
     }
+
+    public String setStudentFiles(AssignmentStudentModel assignmentStudentModel,
+            List<MultipartFile> files) {
+        String studentFilesMap = "";
+        String key = "";
+        String url = "";
+        String extension = "";
+        String fileName = "";
+
+        for (MultipartFile file : files) {
+            extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            fileName = file.getOriginalFilename().replace("." + extension, "");
+
+            key = String.format("assignments/%s/students/%s/%s.%s", assignmentStudentModel.getAssignmentId(),
+                    assignmentStudentModel.getStudentId(), fileName, extension);
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+
+            try {
+                PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, key, file.getInputStream(),
+                        metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+
+                s3Client.putObject(putObjectRequest);
+                url = String.format("https://%s.s3.amazonaws.com/%s", BUCKET_NAME, key);
+
+                if (studentFilesMap.equals("")) {
+                    studentFilesMap += url;
+                }
+
+                studentFilesMap += ", " + url;
+
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return studentFilesMap;
+    }
+
+    public String setAssignmentFiles(AssignmentModel assignmentModel,
+            List<MultipartFile> files) {
+        String assignmentFilesMap = "";
+        String key = "";
+        String url = "";
+        String extension = "";
+        String fileName = "";
+
+        for (MultipartFile file : files) {
+            extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+
+            fileName = file.getOriginalFilename().replace("." + extension, "");
+
+            key = String.format("assignments/%s/indicationsFiles/%s.%s", assignmentModel.getId(), fileName,
+                    extension);
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+
+            try {
+                PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, key, file.getInputStream(),
+                        metadata).withCannedAcl(CannedAccessControlList.PublicRead);
+
+                s3Client.putObject(putObjectRequest);
+                url = String.format("https://%s.s3.amazonaws.com/%s", BUCKET_NAME, key);
+
+                if (assignmentFilesMap.equals("")) {
+                    assignmentFilesMap += url;
+                }
+
+                assignmentFilesMap += ", " + url;
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return assignmentFilesMap;
+    }
+
 }
