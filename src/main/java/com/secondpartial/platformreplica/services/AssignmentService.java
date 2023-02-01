@@ -93,7 +93,11 @@ public class AssignmentService {
 
       newAssignment.setStudents(studentsToAdd);
 
-      newAssignment.setIndicationsFiles(s3Service.setAssignmentFiles(newAssignment, files));
+      if (files != null) {
+        newAssignment.setIndicationsFiles(s3Service.setAssignmentFiles(newAssignment, files));
+      } else {
+        newAssignment.setIndicationsFiles(null);
+      }
 
       assignmentRepository.save(newAssignment);
 
