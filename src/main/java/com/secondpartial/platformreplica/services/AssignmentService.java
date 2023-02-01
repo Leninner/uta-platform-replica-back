@@ -119,6 +119,7 @@ public class AssignmentService {
       assignmentResponse.setDateInit(assignment.getDateInit().toString());
       assignmentResponse.setDateEnd(assignment.getDateEnd().toString());
       assignmentResponse.setStatus(assignment.getStatus().toString());
+      assignmentResponse.setIndicationsFiles(assignment.getIndicationsFiles());
       assignmentsResponse.add(assignmentResponse);
     }
 
