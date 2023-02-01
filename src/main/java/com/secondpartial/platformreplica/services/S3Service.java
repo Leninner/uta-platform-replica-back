@@ -149,7 +149,7 @@ public class S3Service {
     for (MultipartFile file : files) {
       extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-      fileName = file.getOriginalFilename().replace("." + extension, "");
+      fileName = file.getOriginalFilename().replace("." + extension, "").replace(" ", "_");
 
       key = String.format("assignments/%s/indicationsFiles/%s.%s", assignmentModel.getId(), fileName,
           extension);

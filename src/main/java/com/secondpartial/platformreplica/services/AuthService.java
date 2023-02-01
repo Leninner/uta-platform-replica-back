@@ -53,9 +53,11 @@ public class AuthService {
         new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
             .getProvinceName());
     userInfo.put("id", user.getId().toString());
-    userInfo.put("semester", user.getStudent().getSemester().toString());
-
+    
+    System.out.println("rol + " + user.getRol().toString());
+    
     if (user.getRol().toString().equals("STUDENT")) {
+      userInfo.put("semester", user.getStudent().getSemester().toString());
       userInfo.put("roleId", user.getStudent().getId().toString());
     }
 
