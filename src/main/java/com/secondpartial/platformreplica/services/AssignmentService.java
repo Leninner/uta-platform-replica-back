@@ -51,6 +51,8 @@ public class AssignmentService {
       MultipartFile[] files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
+    System.out.println(assignment.toString());
+
     if (!rol.equals(RolEnum.TEACHER.toString())) {
       response.put("message", "You don't have permission to create an assignment");
       return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
