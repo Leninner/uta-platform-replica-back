@@ -62,6 +62,7 @@ public class AssignmentController {
   @PostMapping(consumes = { "multipart/form-data" })
   public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(@RequestHeader(value = "rol") String rol,
       @ModelAttribute AssignmentCreationDTO assignment) {
+        System.out.println("rol + " + rol);
     return assignmentService.createAssignment(rol, assignment, assignment.getIndicationsFiles());
   }
 
