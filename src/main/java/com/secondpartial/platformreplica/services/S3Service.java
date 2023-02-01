@@ -139,7 +139,7 @@ public class S3Service {
   }
 
   public String setAssignmentFiles(AssignmentModel assignmentModel,
-      List<MultipartFile> files) {
+      MultipartFile[] files) {
     String assignmentFilesMap = "";
     String key = "";
     String url = "";

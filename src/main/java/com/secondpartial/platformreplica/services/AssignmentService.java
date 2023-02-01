@@ -46,7 +46,7 @@ public class AssignmentService {
   S3Service s3Service;
 
   public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(String rol, AssignmentCreationDTO assignment,
-      List<MultipartFile> files) {
+      MultipartFile[] files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     if (!rol.equals(RolEnum.TEACHER.toString())) {
@@ -127,7 +127,7 @@ public class AssignmentService {
   }
 
   public ResponseEntity<LinkedHashMap<String, Object>> modifyAssignment(String rol, Long assigmentId,
-      AssignmentCreationDTO assignmentCreationDTO, List<MultipartFile> files) {
+      AssignmentCreationDTO assignmentCreationDTO, MultipartFile[] files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     if (!rol.equals(RolEnum.TEACHER.toString())) {

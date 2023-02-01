@@ -1,7 +1,5 @@
 package com.secondpartial.platformreplica.dtos;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
@@ -19,5 +17,5 @@ public class AssignmentCreationDTO implements java.io.Serializable {
   String dateInit;
   String dateEnd;
   String status;
-  List<MultipartFile> indicationsFiles;
+  MultipartFile[] indicationsFiles;
 }
