@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.secondpartial.platformreplica.enums.PartialEnum;
-import com.secondpartial.platformreplica.enums.SendStatus;
 import com.secondpartial.platformreplica.enums.StatusEnum;
 
 import jakarta.persistence.Column;

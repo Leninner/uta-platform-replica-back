@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.secondpartial.platformreplica.dtos.AssignmentCreationDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentResponseDTO;
-import com.secondpartial.platformreplica.dtos.AssignmentStudentModifyDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentStudentResponseDTO;
 import com.secondpartial.platformreplica.enums.PartialEnum;
 import com.secondpartial.platformreplica.enums.RolEnum;
@@ -26,6 +25,7 @@ import com.secondpartial.platformreplica.repositories.AssignmentRepository;
 import com.secondpartial.platformreplica.repositories.AssignmentStudentRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
 import com.secondpartial.platformreplica.repositories.StudentRepository;
+import com.secondpartial.platformreplica.utils.DateUtil;
 
 @Service
 public class AssignmentService {
@@ -45,6 +45,8 @@ public class AssignmentService {
   @Autowired
   S3Service s3Service;
 
+  DateUtil dateUtil = new DateUtil();
+
   public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(String rol, AssignmentCreationDTO assignment,
       MultipartFile[] files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
@@ -62,8 +64,8 @@ public class AssignmentService {
     newAssignment.setName(assignment.getName());
     newAssignment.setDescription(assignment.getDescription());
     newAssignment.setPartial(PartialEnum.valueOf(assignment.getPartial()));
-    newAssignment.setDateInit(Timestamp.valueOf(assignment.getDateInit()));
-    newAssignment.setDateEnd(Timestamp.valueOf(assignment.getDateEnd()));
+    newAssignment.setDateInit(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignment.getDateInit())));
+    newAssignment.setDateEnd(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignment.getDateEnd())));
     newAssignment.setCourse(course);
 
     Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -156,11 +158,11 @@ public class AssignmentService {
     }
 
     if (assignmentCreationDTO.getDateInit() != null) {
-      assignment.setDateInit(Timestamp.valueOf(assignmentCreationDTO.getDateInit()));
+      assignment.setDateInit(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignmentCreationDTO.getDateInit())));
     }
 
     if (assignmentCreationDTO.getDateEnd() != null) {
-      assignment.setDateEnd(Timestamp.valueOf(assignmentCreationDTO.getDateEnd()));
+      assignment.setDateEnd(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignmentCreationDTO.getDateEnd())));
     }
 
     if (assignmentCreationDTO.getStatus() != null) {

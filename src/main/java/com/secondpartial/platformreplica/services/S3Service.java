@@ -1,7 +1,6 @@
 package com.secondpartial.platformreplica.services;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -79,7 +78,8 @@ public class S3Service {
     if (extension == null) {
       extension = "jpg";
     }
-    String key = String.format("users/%s/userImage/%s_img_%s.%s", userModel.getId(), userModel.getId(), new Date().getTime(), extension);
+    String key = String.format("users/%s/userImage/%s_img_%s.%s", userModel.getId(), userModel.getId(),
+        new Date().getTime(), extension);
     String url = "";
 
     ObjectMetadata metadata = new ObjectMetadata();
@@ -127,9 +127,9 @@ public class S3Service {
 
         if (studentFilesMap.equals("")) {
           studentFilesMap += url;
+        } else {
+          studentFilesMap += ", " + url;
         }
-
-        studentFilesMap += ", " + url;
 
       } catch (IOException ex) {
         throw new RuntimeException(ex);
@@ -166,9 +166,10 @@ public class S3Service {
 
         if (assignmentFilesMap.equals("")) {
           assignmentFilesMap += url;
+        } else {
+          assignmentFilesMap += ", " + url;
         }
 
-        assignmentFilesMap += ", " + url;
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }
