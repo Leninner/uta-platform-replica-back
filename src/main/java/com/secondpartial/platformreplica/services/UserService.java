@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.secondpartial.platformreplica.dtos.CityDTO;
 import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.dtos.UserModifyDTO;
+import com.secondpartial.platformreplica.dtos.UserResponseDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CityModel;
@@ -85,7 +86,19 @@ public class UserService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
     }
 
-    response.put("user", user);
+    UserResponseDTO userResponse = new UserResponseDTO();
+    userResponse.setId(user.getId());
+    userResponse.setName(user.getName());
+    userResponse.setEmail(user.getEmail());
+    userResponse.setAddress(user.getAddress());
+    userResponse.setPhoneNumber(user.getPhoneNumber());
+    userResponse.setDni(user.getDni());
+    userResponse.setRol(user.getRol().toString());
+    userResponse.setCity(user.getCity().getName());
+    userResponse.setCareer(user.getCareer().getName());
+    userResponse.setCareer(user.getCareer().getName());
+
+    response.put("user", userResponse);
 
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }

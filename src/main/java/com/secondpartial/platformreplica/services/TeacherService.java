@@ -106,7 +106,7 @@ public class TeacherService extends CrudHandler {
         TeacherModel teacher = teacherRepository.findById(id).orElse(null);
 
         if (teacherRepository.existsById(id)) {
-            teacherRepository.delete(teacher);
+            userService.delete(teacher.getUser().getId());
             response.put("message", "Teacher deleted successfully");
             return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
         } else {
