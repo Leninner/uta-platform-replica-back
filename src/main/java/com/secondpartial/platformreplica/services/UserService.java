@@ -182,6 +182,7 @@ public class UserService {
     if (userImage != null) {
       LinkedHashMap<String, String> userImageMap = s3Service.setUserImage(userModel, userImage);
       userModel.setUserImageUrl(userImageMap.get("userImageUrl"));
+      userModel.setUserImageKey(userImageMap.get("userImageKey"));
     }
 
     if (user.getName() != null) {

@@ -40,6 +40,9 @@ public class UserModel {
   private String userImageUrl;
 
   @Column(nullable = true)
+  private String userImageKey;
+
+  @Column(nullable = true)
   private String dni;
 
   @ManyToOne()
@@ -55,5 +58,4 @@ public class UserModel {
   @ManyToOne()
   @JoinColumn(name = "career_id")
   private CareerModel career;
-
 }
