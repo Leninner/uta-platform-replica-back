@@ -38,8 +38,8 @@ public class UserController {
   }
 
   @PostMapping()
-  public ResponseEntity<HashMap<String, Object>> registerUser(@RequestBody UserDTO user) {
-    return userService.register(user);
+  public ResponseEntity<LinkedHashMap<String, Object>> registerUser(@RequestBody UserDTO user) {
+    return userService.create(user);
   }
 
   @PostMapping("/bulk")
@@ -48,10 +48,10 @@ public class UserController {
   }
 
   @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
-  public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
+  public ResponseEntity<LinkedHashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
       @ModelAttribute UserModifyDTO user,
       @RequestHeader(value = "Authorization") String token, @RequestHeader String rol) {
-    return userService.modifyUser(id, user, token, user.getUserImage(), rol);
+    return userService.update(id, user, token, user.getUserImage(), rol);
   }
 
   @GetMapping("/cities")
@@ -63,6 +63,6 @@ public class UserController {
   public ResponseEntity<LinkedHashMap<String, Object>> deleteUser(@PathVariable("id") Long id,
       @RequestHeader String rol,
       @RequestHeader(value = "Authorization") String token) {
-    return userService.deleteUser(id, rol, token);
+    return userService.delete(id, rol, token);
   }
 }

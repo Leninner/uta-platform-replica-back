@@ -34,7 +34,7 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
 @Service
-public class UserService {
+public class UserService extends CrudHandler {
   @Autowired
   UserRepository userRepository;
 
@@ -67,13 +67,37 @@ public class UserService {
     return (List<UserModel>) userRepository.findAll();
   }
 
-  public ResponseEntity<HashMap<String, Object>> register(UserDTO user) {
-    HashMap<String, Object> response = new HashMap<>();
+  @Override
+  public ResponseEntity<LinkedHashMap<String, Object>> get(Long id, String token) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+
+    if (!validateToken(token)) {
+      response.put("message", "Invalid token!");
+      response.put("status", HttpStatus.UNAUTHORIZED.value());
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    UserModel user = userRepository.findById(id).orElse(null);
+
+    if (user == null) {
+      response.put("message", "User not found!");
+      response.put("status", HttpStatus.NOT_FOUND.value());
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
+    }
+
+    response.put("user", user);
+
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<LinkedHashMap<String, Object>> create(UserDTO user) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     if (this.validateIfExists(user.getEmail())) {
       response.put("message", "An user with this email already exists!");
       response.put("status", HttpStatus.BAD_REQUEST.value());
-      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     UserModel userModel = this.convertRequestDataToUserModelData(user);
@@ -81,7 +105,7 @@ public class UserService {
     this.processUserCreationByRol(userModel, user);
 
     response.put("message", "User registered successfully!");
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
   public ResponseEntity<HashMap<String, Object>> registerBulk(List<UserDTO> users) {
@@ -164,7 +188,8 @@ public class UserService {
   }
 
   @Transactional
-  public ResponseEntity<LinkedHashMap<String, Object>> deleteUser(Long id, String rol, String token) {
+  @Override
+  public ResponseEntity<LinkedHashMap<String, Object>> delete(Long id, String rol, String token) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     if (!validateToken(token)) {
@@ -191,21 +216,25 @@ public class UserService {
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> modifyUser(Long id, UserModifyDTO user,
+  public ResponseEntity<LinkedHashMap<String, Object>> update(Long id, UserModifyDTO user,
       String token, MultipartFile userImage, String rol) {
-    HashMap<String, Object> response = new HashMap<>();
+    if (rol == null) {
+      rol = "STUDENT";
+    }
+
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     if (!validateToken(token)) {
       response.put("message", "Invalid token");
       response.put("status", HttpStatus.BAD_REQUEST.value());
-      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     UserModel userModel = userRepository.findById(id).get();
     if (userModel == null) {
       response.put("message", "User not found");
       response.put("status", HttpStatus.BAD_REQUEST.value());
-      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     if (user.getCareerId() != null) {
@@ -213,7 +242,7 @@ public class UserService {
       if (!rol.equals(RolEnum.ADMIN.toString())) {
         response.put("message", "You don't have permission to do this action");
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
       }
 
       CareerModel career = careerRepository.findById(user.getCareerId()).get();
@@ -272,7 +301,7 @@ public class UserService {
     response.put("message", "User modified successfully!");
     response.put("userInfo", userInfo);
     response.put("status", HttpStatus.OK.value());
-    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
   public ResponseEntity<HashMap<String, Object>> getCities() {

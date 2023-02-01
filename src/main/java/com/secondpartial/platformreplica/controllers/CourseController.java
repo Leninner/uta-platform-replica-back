@@ -2,6 +2,7 @@ package com.secondpartial.platformreplica.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +18,26 @@ public class CourseController {
   CourseService courseService;
 
   @GetMapping(path = "/{rol}/{userId}")
-  public ResponseEntity<HashMap<String, Object>> getCoursesByUserRol(@RequestHeader("Authorization") String token,
+  public ResponseEntity<LinkedHashMap<String, Object>> getCoursesByUserRol(@RequestHeader("Authorization") String token,
       @PathVariable("rol") String rol, @PathVariable("userId") Long userId) {
     return courseService.getCoursesByRolAndId(token, rol, userId);
   }
 
   @GetMapping(path = "/{courseId}/students")
-  public ResponseEntity<HashMap<String, Object>> getStudentsByCourseId(@PathVariable("courseId") Long courseId) {
+  public ResponseEntity<LinkedHashMap<String, Object>> getStudentsByCourseId(@PathVariable("courseId") Long courseId) {
     return courseService.getStudentsByCourseId(courseId);
   }
 
   @PostMapping()
-  public ResponseEntity<HashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course,
+  public ResponseEntity<LinkedHashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course,
       @RequestHeader("rol") String rol) {
-    return courseService.createCourse(course, rol);
+    return courseService.create(course, rol);
   }
 
   @PostMapping("/bulk")
-  public ResponseEntity<HashMap<String, Object>> createCourses(@RequestBody ArrayList<CourseCreationDTO> courses) {
+  public ResponseEntity<LinkedHashMap<String, Object>> createCourses(
+      @RequestBody ArrayList<CourseCreationDTO> courses) {
     return courseService.createCourses(courses);
   }
 
-  @PutMapping("/{courseId}")
-  
 }
