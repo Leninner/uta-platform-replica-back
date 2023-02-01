@@ -55,6 +55,14 @@ public class AuthService {
     userInfo.put("id", user.getId().toString());
     userInfo.put("semester", user.getStudent().getSemester().toString());
 
+    if (user.getRol().toString().equals("STUDENT")) {
+      userInfo.put("roleId", user.getStudent().getId().toString());
+    }
+
+    if (user.getRol().toString().equals("TEACHER")) {
+      userInfo.put("roleId", user.getTeacher().getId().toString());
+    }
+
     String token = jwtUtil.create(mail, password);
     response.put("token", token);
     response.put("user", userInfo);
