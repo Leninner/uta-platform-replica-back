@@ -2,15 +2,17 @@ package com.secondpartial.platformreplica.dtos;
 
 import java.util.List;
 
+import org.springframework.messaging.rsocket.service.RSocketExchange;
+
 import com.secondpartial.platformreplica.enums.SemesterEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserDTO {
   private String name;
   private String email;

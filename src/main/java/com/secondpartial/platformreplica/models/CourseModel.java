@@ -37,7 +37,7 @@ public class CourseModel {
   private List<StudentModel> students;
 
   @ManyToOne()
-  @JoinColumn(name = "teacher_id")
+  @JoinColumn(name = "teacher_id", nullable = true)
   private TeacherModel teacher;
 
   @ManyToOne()

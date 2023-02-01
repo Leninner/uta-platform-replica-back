@@ -18,4 +18,5 @@ public class UserModifyDTO implements java.io.Serializable {
     private String dni;
     private Long cityId;
     private MultipartFile userImage;
+    private Long careerId;
 }

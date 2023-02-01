@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.secondpartial.platformreplica.dtos.CityDTO;
@@ -162,8 +163,36 @@ public class UserService {
     return user != null;
   }
 
+  @Transactional
+  public ResponseEntity<LinkedHashMap<String, Object>> deleteUser(Long id, String rol, String token) {
+    LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+
+    if (!validateToken(token)) {
+      response.put("message", "Invalid token");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (!rol.equals(RolEnum.ADMIN.toString())) {
+      response.put("message", "You don't have permission to do this action");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    UserModel userModel = userRepository.findById(id).get();
+    if (userModel == null) {
+      response.put("message", "User not found");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    userRepository.deleteUser(id);
+    response.put("message", "User deleted successfully");
+    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
   public ResponseEntity<HashMap<String, Object>> modifyUser(Long id, UserModifyDTO user,
-      String token, MultipartFile userImage) {
+      String token, MultipartFile userImage, String rol) {
     HashMap<String, Object> response = new HashMap<>();
 
     if (!validateToken(token)) {
@@ -177,6 +206,18 @@ public class UserService {
       response.put("message", "User not found");
       response.put("status", HttpStatus.BAD_REQUEST.value());
       return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (user.getCareerId() != null) {
+
+      if (!rol.equals(RolEnum.ADMIN.toString())) {
+        response.put("message", "You don't have permission to do this action");
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+      }
+
+      CareerModel career = careerRepository.findById(user.getCareerId()).get();
+      userModel.setCareer(career);
     }
 
     if (userImage != null) {

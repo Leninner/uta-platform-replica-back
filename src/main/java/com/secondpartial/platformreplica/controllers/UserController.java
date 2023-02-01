@@ -1,10 +1,12 @@
 package com.secondpartial.platformreplica.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,12 +50,19 @@ public class UserController {
   @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
   public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
       @ModelAttribute UserModifyDTO user,
-      @RequestHeader(value = "Authorization") String token) {
-    return userService.modifyUser(id, user, token, user.getUserImage());
+      @RequestHeader(value = "Authorization") String token, @RequestHeader String rol) {
+    return userService.modifyUser(id, user, token, user.getUserImage(), rol);
   }
 
   @GetMapping("/cities")
   public ResponseEntity<HashMap<String, Object>> getCities() {
     return userService.getCities();
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<LinkedHashMap<String, Object>> deleteUser(@PathVariable("id") Long id,
+      @RequestHeader String rol,
+      @RequestHeader(value = "Authorization") String token) {
+    return userService.deleteUser(id, rol, token);
   }
 }

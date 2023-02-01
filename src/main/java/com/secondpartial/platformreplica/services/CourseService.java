@@ -12,6 +12,7 @@ import com.secondpartial.platformreplica.dtos.CoursePartInfoDTO;
 import com.secondpartial.platformreplica.dtos.CourseResponseDTO;
 import com.secondpartial.platformreplica.dtos.StudentResponseDTO;
 import com.secondpartial.platformreplica.dtos.CityDTO;
+import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.enums.SemesterEnum;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CourseModel;
@@ -100,8 +101,22 @@ public class CourseService {
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
-  public ResponseEntity<HashMap<String, Object>> createCourse(CourseCreationDTO course) {
+  public ResponseEntity<HashMap<String, Object>> createCourse(CourseCreationDTO course, String rol) {
     HashMap<String, Object> response = new HashMap<>();
+
+    if (!rol.equals(RolEnum.ADMIN.toString())) {
+      response.put("message", "You don't have permission to create a course");
+      response.put("status", 401);
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    if (courseRepository.findByNameSemesterAndCarrer(course.getName(), course.getSemester(),
+        course.getCareerId()) != null) {
+      response.put("message", "Course already exists");
+      response.put("status", 400);
+      return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
     CareerModel career = careerRepository.findById(course.getCareerId()).get();
     TeacherModel teacher = teacherRepository.findById(course.getTeacherId()).get();
 
@@ -119,7 +134,7 @@ public class CourseService {
     HashMap<String, Object> response = new HashMap<>();
 
     for (CourseCreationDTO course : courses) {
-      this.createCourse(course);
+      this.createCourse(course, "ADMIN");
     }
 
     response.put("message", "Courses created successfully");
@@ -198,7 +213,8 @@ public class CourseService {
           setPhoneNumber(student.getUser().getPhoneNumber());
           setCity(student.getUser().getCity().getName());
           setProvince(
-              new CityDTO(student.getUser().getCity().getId(), student.getUser().getCity().getName(), student.getUser().getCity().getProvince().getName())
+              new CityDTO(student.getUser().getCity().getId(), student.getUser().getCity().getName(),
+                  student.getUser().getCity().getProvince().getName())
                   .getProvinceName());
 
           List<CoursePartInfoDTO> courses = new ArrayList<>();

@@ -47,7 +47,7 @@ public class AssignmentService {
 
   DateUtil dateUtil = new DateUtil();
 
-  public ResponseEntity<LinkedHashMap<String, Object>> createAssignment(String rol, AssignmentCreationDTO assignment,
+  public ResponseEntity<LinkedHashMap<String, Object>> create(String rol, AssignmentCreationDTO assignment,
       MultipartFile[] files) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
@@ -58,50 +58,62 @@ public class AssignmentService {
 
     CourseModel course = courseRepository.findById(assignment.getCourseId()).orElse(null);
 
+    if (course == null) {
+      response.put("message", "Course not found");
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
     List<StudentModel> students = course.getStudents();
 
-    AssignmentModel newAssignment = new AssignmentModel();
-    newAssignment.setName(assignment.getName());
-    newAssignment.setDescription(assignment.getDescription());
-    newAssignment.setPartial(PartialEnum.valueOf(assignment.getPartial()));
-    newAssignment.setDateInit(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignment.getDateInit())));
-    newAssignment.setDateEnd(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignment.getDateEnd())));
-    newAssignment.setCourse(course);
+    try {
 
-    Timestamp now = new Timestamp(System.currentTimeMillis());
-    if (newAssignment.getDateInit().before(now)) {
-      newAssignment.setStatus(StatusEnum.AVAILABLE);
-    } else {
-      newAssignment.setStatus(StatusEnum.UNAVAILABLE);
+      AssignmentModel newAssignment = new AssignmentModel();
+      newAssignment.setName(assignment.getName());
+      newAssignment.setDescription(assignment.getDescription());
+      newAssignment.setPartial(PartialEnum.valueOf(assignment.getPartial()));
+      newAssignment.setDateInit(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignment.getDateInit())));
+      newAssignment.setDateEnd(Timestamp.valueOf(dateUtil.transformWebDateToDBDate(assignment.getDateEnd())));
+      newAssignment.setCourse(course);
+
+      Timestamp now = new Timestamp(System.currentTimeMillis());
+      if (newAssignment.getDateInit().before(now)) {
+        newAssignment.setStatus(StatusEnum.AVAILABLE);
+      } else {
+        newAssignment.setStatus(StatusEnum.UNAVAILABLE);
+      }
+
+      ArrayList<StudentModel> studentsToAdd = new ArrayList<>();
+      for (StudentModel student : students) {
+        studentsToAdd.add(student);
+      }
+
+      assignmentRepository.save(newAssignment);
+
+      newAssignment.setStudents(studentsToAdd);
+
+      newAssignment.setIndicationsFiles(s3Service.setAssignmentFiles(newAssignment, files));
+
+      assignmentRepository.save(newAssignment);
+
+      AssignmentResponseDTO assignmentResponse = new AssignmentResponseDTO();
+      assignmentResponse.setId(newAssignment.getId());
+      assignmentResponse.setName(newAssignment.getName());
+      assignmentResponse.setDescription(newAssignment.getDescription());
+      assignmentResponse.setPartial(newAssignment.getPartial().toString());
+      assignmentResponse.setDateInit(newAssignment.getDateInit().toString());
+      assignmentResponse.setDateEnd(newAssignment.getDateEnd().toString());
+      assignmentResponse.setStatus(newAssignment.getStatus().toString());
+      assignmentResponse.setIndicationsFiles(newAssignment.getIndicationsFiles());
+
+      response.put("assignment", assignmentResponse);
+
+      response.put("message", "Assignment created successfully");
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
+
+    } catch (Exception e) {
+      response.put("message", "Error creating assignment");
+      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    ArrayList<StudentModel> studentsToAdd = new ArrayList<>();
-    for (StudentModel student : students) {
-      studentsToAdd.add(student);
-    }
-
-    assignmentRepository.save(newAssignment);
-
-    newAssignment.setStudents(studentsToAdd);
-
-    newAssignment.setIndicationsFiles(s3Service.setAssignmentFiles(newAssignment, files));
-
-    assignmentRepository.save(newAssignment);
-
-    AssignmentResponseDTO assignmentResponse = new AssignmentResponseDTO();
-    assignmentResponse.setId(newAssignment.getId());
-    assignmentResponse.setName(newAssignment.getName());
-    assignmentResponse.setDescription(newAssignment.getDescription());
-    assignmentResponse.setPartial(newAssignment.getPartial().toString());
-    assignmentResponse.setDateInit(newAssignment.getDateInit().toString());
-    assignmentResponse.setDateEnd(newAssignment.getDateEnd().toString());
-    assignmentResponse.setStatus(newAssignment.getStatus().toString());
-    assignmentResponse.setIndicationsFiles(newAssignment.getIndicationsFiles());
-
-    response.put("assignment", assignmentResponse);
-
-    response.put("message", "Assignment created successfully");
-    return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
   public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentsByCourseId(Long courseId) {

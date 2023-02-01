@@ -28,12 +28,16 @@ public class CourseController {
   }
 
   @PostMapping()
-  public ResponseEntity<HashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course) {
-    return courseService.createCourse(course);
+  public ResponseEntity<HashMap<String, Object>> createCourse(@RequestBody CourseCreationDTO course,
+      @RequestHeader("rol") String rol) {
+    return courseService.createCourse(course, rol);
   }
 
   @PostMapping("/bulk")
   public ResponseEntity<HashMap<String, Object>> createCourses(@RequestBody ArrayList<CourseCreationDTO> courses) {
     return courseService.createCourses(courses);
   }
+
+  @PutMapping("/{courseId}")
+  
 }
