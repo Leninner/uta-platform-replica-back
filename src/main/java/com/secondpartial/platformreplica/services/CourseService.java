@@ -201,7 +201,7 @@ public class CourseService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    CourseModel course = courseRepository.findById(id).get();
+    CourseModel course = courseRepository.getReferenceById(id);
 
     if (course == null) {
       response.put("message", "Course not found");
