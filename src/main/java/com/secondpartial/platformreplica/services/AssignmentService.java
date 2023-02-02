@@ -131,7 +131,6 @@ public class AssignmentService {
     CourseModel course = courseRepository.findById(courseId).orElse(null);
 
     List<AssignmentModel> assignments = course.getAssignments();
-    List<AssignmentResponseDTO> assignmentsResponse = new ArrayList<>();
 
     for (AssignmentModel assignment : assignments) {
 
@@ -166,7 +165,7 @@ public class AssignmentService {
       if (rol.equals(RolEnum.TEACHER.toString())) {
         List<AssignmentStudentResponseDTO> assignmentStudentsResponseDTO = new ArrayList<>();
 
-        List<StudentModel> students = courseRepository.getReferenceById(assignment.getId()).getStudents();
+        List<StudentModel> students = courseRepository.getReferenceById(courseId).getStudents();
 
         AssignmentTeacherResponseDTO assignmentTeacherResponse = new AssignmentTeacherResponseDTO();
         assignmentTeacherResponse.setId(assignment.getId());
@@ -199,8 +198,6 @@ public class AssignmentService {
         response.put("assignmentStudents", assignmentStudentsResponseDTO);
       }
     }
-
-    response.put("assignments", assignmentsResponse);
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
 
