@@ -2,6 +2,8 @@ package com.secondpartial.platformreplica.services;
 
 import java.util.*;
 
+import com.secondpartial.platformreplica.models.*;
+import com.secondpartial.platformreplica.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +17,6 @@ import com.secondpartial.platformreplica.dtos.StudentResponseDTO;
 import com.secondpartial.platformreplica.dtos.CityDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.enums.SemesterEnum;
-import com.secondpartial.platformreplica.models.CareerModel;
-import com.secondpartial.platformreplica.models.CourseModel;
-import com.secondpartial.platformreplica.models.CourseStudentModel;
-import com.secondpartial.platformreplica.models.StudentModel;
-import com.secondpartial.platformreplica.models.TeacherModel;
-import com.secondpartial.platformreplica.repositories.CareerRepository;
-import com.secondpartial.platformreplica.repositories.CourseRepository;
-import com.secondpartial.platformreplica.repositories.CourseStudentRepository;
-import com.secondpartial.platformreplica.repositories.StudentRepository;
-import com.secondpartial.platformreplica.repositories.TeacherRepository;
 import com.secondpartial.platformreplica.utils.JWTUtil;
 
 @Service
@@ -49,6 +41,12 @@ public class CourseService extends CrudHandler {
 
   @Autowired
   CourseStudentRepository courseStudentRepository;
+
+  @Autowired
+  AssignmentStudentRepository assignmentStudentRepository;
+
+  @Autowired
+    AssignmentRepository assignmentRepository;
 
   public ResponseEntity<LinkedHashMap<String, Object>> getCoursesByRolAndId(String token, String rol, Long userId) {
     System.out.println("token: " + token);
@@ -150,21 +148,37 @@ public class CourseService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
     }
 
-    if (courseRepository.findByNameSemesterAndCarrer(course.getName(), course.getSemester(),
-        course.getCareerId()) != null) {
+    if (courseRepository.findByNameAndSemester(course.getName(), courseModel.getSemester().toString()) != null) {
       response.put("message", "Course already exists");
       response.put("status", 400);
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
-    CareerModel career = careerRepository.findById(course.getCareerId()).get();
-    TeacherModel teacher = teacherRepository.findById(course.getTeacherId()).get();
+    if(course.getName() != null) {
+      courseModel.setName(course.getName());
+    }
 
-    courseModel.setName(course.getName());
-    courseModel.setSemester(SemesterEnum.getSemesterEnum(course.getSemester()));
-    courseModel.setDescription(course.getDescription());
-    courseModel.setCareer(career);
-    courseModel.setTeacher(teacher);
+    if(course.getDescription() != null) {
+      courseModel.setDescription(course.getDescription());
+    }
+
+    if(course.getTeacherId() != null) {
+      List<CourseModel> coursesOfLastTeacher = courseModel.getTeacher().getCourses();
+        coursesOfLastTeacher.remove(courseModel);
+        courseModel.getTeacher().setCourses(coursesOfLastTeacher);
+        teacherRepository.save(courseModel.getTeacher());
+
+      TeacherModel teacher = teacherRepository.findById(course.getTeacherId()).get();
+
+      if(teacher.getCourses() == null) {
+        teacher.setCourses(new ArrayList<CourseModel>());
+      }
+        List<CourseModel> coursesOfNewTeacher = teacher.getCourses();
+            coursesOfNewTeacher.add(courseModel);
+            teacher.setCourses(coursesOfNewTeacher);
+            teacherRepository.save(teacher);
+      courseModel.setTeacher(teacher);
+    }
 
     courseRepository.save(courseModel);
     response.put("message", "Course updated successfully");
@@ -186,6 +200,14 @@ public class CourseService extends CrudHandler {
 
   public Boolean addStudentToCourse(Long studentId, Long courseId) {
     CourseStudentModel courseStudent = new CourseStudentModel(null, studentId, courseId);
+    StudentModel studentModel = studentRepository.getReferenceById(studentId);
+    CourseModel courseModel = courseRepository.getReferenceById(courseId);
+    List<AssignmentModel> assignments = courseModel.getAssignments();
+
+    for (AssignmentModel assignment: assignments){
+      AssignmentStudentModel assignmentStudentModel = new AssignmentStudentModel(null, assignment.getId(), studentId, null, null, null, false);
+        assignmentStudentRepository.save(assignmentStudentModel);
+    }
     courseStudentRepository.save(courseStudent);
 
     return true;
@@ -209,6 +231,31 @@ public class CourseService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
     }
 
+    List<AssignmentModel> assignments = (List<AssignmentModel>) assignmentRepository.findByCourseId(id);
+    StudentModel student = new StudentModel();
+
+    for (AssignmentModel assignment : assignments) {
+      List<AssignmentStudentModel> assignmentStudents = (List<AssignmentStudentModel>) assignmentStudentRepository.findByAssignment(assignment.getId());
+
+      for (AssignmentStudentModel assignmentStudent : assignmentStudents) {
+        student = studentRepository.getReferenceById(assignmentStudent.getStudentId());
+
+        List<AssignmentModel> assignmentModelsStudent = student.getAssignments();
+        assignmentModelsStudent.remove(assignment);
+
+        student.setAssignments(assignmentModelsStudent);
+
+        studentRepository.save(student);
+        assignmentStudentRepository.delete(assignmentStudent);
+      }
+      assignmentRepository.delete(assignment);
+    }
+
+
+    List<CourseStudentModel> courseStudents = (List<CourseStudentModel>) courseStudentRepository.findByCourseId(id);
+    for (CourseStudentModel courseStudent : courseStudents) {
+      courseStudentRepository.delete(courseStudent);
+    }
     courseRepository.deleteById(id);
     response.put("message", "Course deleted successfully");
     response.put("status", 200);

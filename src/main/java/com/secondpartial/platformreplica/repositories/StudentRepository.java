@@ -14,4 +14,5 @@ public interface StudentRepository extends JpaRepository<StudentModel, Long> {
 
     @Query(value = "select * from students s where s.user_id = :userId ", nativeQuery = true)
     public StudentModel findByUserId(@Param("userId") Long userId);
+
 }

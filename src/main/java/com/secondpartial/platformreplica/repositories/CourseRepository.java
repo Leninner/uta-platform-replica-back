@@ -25,6 +25,10 @@ public interface CourseRepository extends JpaRepository<CourseModel, Long> {
   public Iterable<CourseModel> findByNameSemesterAndCarrer(@Param("name") String name,
       @Param("semester") String semester, @Param("carrerId") Long careerId);
 
+    @Query(value = "select * from courses c where c.name = :name and c.semester = :semester", nativeQuery = true)
+  public Iterable<CourseModel> findByNameAndSemester(@Param("name") String name,
+                                                           @Param("semester") String semester);
+
   @Query(value = "delete from courses where id = :courseId", nativeQuery = true)
   public void deleteById(@Param("courseId") Long id);
 
