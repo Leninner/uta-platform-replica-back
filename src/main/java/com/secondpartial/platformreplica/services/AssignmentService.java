@@ -15,6 +15,7 @@ import com.secondpartial.platformreplica.dtos.AssignmentCreationDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentResponseDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentStudentAllResponseDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentStudentResponseDTO;
+import com.secondpartial.platformreplica.dtos.AssignmentTeacherResponseDTO;
 import com.secondpartial.platformreplica.enums.PartialEnum;
 import com.secondpartial.platformreplica.enums.RolEnum;
 import com.secondpartial.platformreplica.enums.StatusEnum;
@@ -133,44 +134,49 @@ public class AssignmentService {
     List<AssignmentResponseDTO> assignmentsResponse = new ArrayList<>();
 
     for (AssignmentModel assignment : assignments) {
-      AssignmentResponseDTO assignmentResponse = new AssignmentResponseDTO();
-      assignmentResponse.setId(assignment.getId());
-      assignmentResponse.setName(assignment.getName());
-      assignmentResponse.setDescription(assignment.getDescription());
-      assignmentResponse.setPartial(assignment.getPartial().toString());
-      assignmentResponse.setDateInit(assignment.getDateInit().toString());
-      assignmentResponse.setDateEnd(assignment.getDateEnd().toString());
-      assignmentResponse.setStatus(assignment.getStatus().toString());
-      assignmentResponse.setIndicationsFiles(assignment.getIndicationsFiles());
-      assignmentsResponse.add(assignmentResponse);
 
       if (rol.equals(RolEnum.STUDENT.toString())) {
         StudentModel student = studentRepository.findByUserId(userId);
         AssignmentStudentModel assignmentStudent = assignmentStudentRepository
             .findByStudentAndAssignment(assignment.getId(), student.getId());
-        System.out.println(assignment.getId() + "-------------------------------------");
-        System.out.println(student.getId() + "-------------------------------------");
 
         if (assignmentStudent == null) {
           response.put("message", "Assignment not found");
           // return ResponseEntity.badRequest().body(response);
         }
 
-        AssignmentStudentResponseDTO assignmentStudentResponse = new AssignmentStudentResponseDTO();
+        AssignmentStudentAllResponseDTO assignmentStudentAllResponse = new AssignmentStudentAllResponseDTO();
+        assignmentStudentAllResponse.setId(assignment.getId());
+        assignmentStudentAllResponse.setStudentName(studentRepository.findByUserId(userId).getUser().getName());
+        assignmentStudentAllResponse.setGrade(assignmentStudent.getGrade());
+        assignmentStudentAllResponse.setStudentFiles(assignmentStudent.getStudentFiles());
+        assignmentStudentAllResponse.setIsCompleted(assignmentStudent.getIsCompleted());
+        assignmentStudentAllResponse.setComment(assignmentStudent.getComment());
+        assignmentStudentAllResponse.setAssignmentName(assignment.getName());
+        assignmentStudentAllResponse.setDescription(assignment.getDescription());
+        assignmentStudentAllResponse.setPartial(assignment.getPartial().toString());
+        assignmentStudentAllResponse.setDateInit(assignment.getDateInit().toString());
+        assignmentStudentAllResponse.setDateEnd(assignment.getDateEnd().toString());
+        assignmentStudentAllResponse.setStatus(assignment.getStatus().toString());
+        assignmentStudentAllResponse.setIndicationsFiles(assignment.getIndicationsFiles());
 
-        assignmentStudentResponse.setStudentName(studentRepository.findByUserId(userId).getUser().getName());
-        assignmentStudentResponse.setGrade(assignmentStudent.getGrade());
-        assignmentStudentResponse.setStudentFiles(assignmentStudent.getStudentFiles());
-        assignmentStudentResponse.setIsCompleted(assignmentStudent.getIsCompleted());
-        assignmentStudentResponse.setComment(assignmentStudent.getComment());
-
-        response.put("assignmentStudent", assignmentStudentResponse);
+        response.put("assignmentStudent", assignmentStudentAllResponse);
       }
 
       if (rol.equals(RolEnum.TEACHER.toString())) {
         List<AssignmentStudentResponseDTO> assignmentStudentsResponseDTO = new ArrayList<>();
 
         List<StudentModel> students = courseRepository.getReferenceById(assignment.getId()).getStudents();
+
+        AssignmentTeacherResponseDTO assignmentTeacherResponse = new AssignmentTeacherResponseDTO();
+        assignmentTeacherResponse.setId(assignment.getId());
+        assignmentTeacherResponse.setAssignmentName(assignment.getName());
+        assignmentTeacherResponse.setDescription(assignment.getDescription());
+        assignmentTeacherResponse.setPartial(assignment.getPartial().toString());
+        assignmentTeacherResponse.setDateInit(assignment.getDateInit().toString());
+        assignmentTeacherResponse.setDateEnd(assignment.getDateEnd().toString());
+        assignmentTeacherResponse.setStatus(assignment.getStatus().toString());
+        assignmentTeacherResponse.setIndicationsFiles(assignment.getIndicationsFiles());
 
         for (StudentModel student : students) {
           AssignmentStudentModel assignmentStudent = assignmentStudentRepository.findByStudentAndAssignment(
@@ -187,6 +193,8 @@ public class AssignmentService {
 
           assignmentStudentsResponseDTO.add(assignmentStudentResponse);
         }
+
+        assignmentTeacherResponse.setStudents(assignmentStudentsResponseDTO);
 
         response.put("assignmentStudents", assignmentStudentsResponseDTO);
       }
@@ -370,6 +378,8 @@ public class AssignmentService {
     assignmentStudentResponse.setStudentFiles(assignmentStudent.getStudentFiles());
     assignmentStudentResponse.setComment(assignmentStudent.getComment());
     assignmentStudentResponse.setIsCompleted(assignmentStudent.getIsCompleted());
+
+    response.put("assignmentStudent", assignmentStudentResponse);
 
     response.put("message", "Files uploaded successfully:");
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);

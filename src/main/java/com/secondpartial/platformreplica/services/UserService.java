@@ -200,8 +200,8 @@ public class UserService extends CrudHandler {
     return user != null;
   }
 
-  @Transactional
   @Override
+  @Transactional
   public ResponseEntity<LinkedHashMap<String, Object>> delete(Long id, String rol, String token) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 

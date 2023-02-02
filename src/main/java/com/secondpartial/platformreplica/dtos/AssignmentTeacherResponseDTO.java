@@ -1,5 +1,7 @@
 package com.secondpartial.platformreplica.dtos;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -7,13 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class AssignmentStudentAllResponseDTO {
+public class AssignmentTeacherResponseDTO {
     private Long id;
-    private String studentName;
-    private Double grade;
-    private String comment;
-    private String studentFiles;
-    private Boolean isCompleted;
     private String assignmentName;
     private String partial;
     private String indicationsFiles;
@@ -21,4 +18,5 @@ public class AssignmentStudentAllResponseDTO {
     private String dateInit;
     private String dateEnd;
     private String status;
+    private List<AssignmentStudentResponseDTO> students;
 }
