@@ -363,6 +363,7 @@ public class AssignmentService {
     }
     url = s3Service.setStudentFiles(assignmentStudent, files);
     assignmentStudent.setStudentFiles(url);
+    assignmentStudent.setIsCompleted(true);
 
     assignmentStudentRepository.save(assignmentStudent);
 
