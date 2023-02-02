@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 public class CourseUpdateDTO {
     Long id;
     String name;
-    String semester;
     String description;
-    Long careerId;
     Long teacherId;
 }

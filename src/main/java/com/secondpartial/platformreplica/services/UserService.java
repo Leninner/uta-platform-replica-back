@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.secondpartial.platformreplica.enums.SemesterEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -147,7 +148,7 @@ public class UserService extends CrudHandler {
 
   public void processUserCreationByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
-      StudentModel student = new StudentModel(null, userModel, null, null, null);
+      StudentModel student = new StudentModel(null, userModel, null, null, user.getSemester());
       List<Long> courseIds = user.getCourseIds();
 
       if (courseIds != null) {
