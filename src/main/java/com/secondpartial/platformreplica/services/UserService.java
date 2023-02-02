@@ -17,12 +17,14 @@ import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.dtos.UserModifyDTO;
 import com.secondpartial.platformreplica.dtos.UserResponseDTO;
 import com.secondpartial.platformreplica.enums.RolEnum;
+import com.secondpartial.platformreplica.models.AssignmentStudentModel;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CityModel;
 import com.secondpartial.platformreplica.models.CourseModel;
 import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.models.UserModel;
+import com.secondpartial.platformreplica.repositories.AssignmentStudentRepository;
 import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CityRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
@@ -56,6 +58,9 @@ public class UserService extends CrudHandler {
 
   @Autowired
   CourseRepository courseRepository;
+
+  @Autowired
+  AssignmentStudentRepository assignmentStudentRepository;
 
   @Autowired
   S3Service s3Service;
@@ -222,6 +227,30 @@ public class UserService extends CrudHandler {
       response.put("message", "User not found");
       response.put("status", HttpStatus.BAD_REQUEST.value());
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+    if (userModel.getRol() == RolEnum.ADMIN) {
+      response.put("message", "You can't delete an admin");
+      response.put("status", HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (userModel.getRol() == RolEnum.STUDENT) {
+      StudentModel student = userModel.getStudent();
+      if (student.getAssignments() != null) {
+        List<AssignmentStudentModel> assignments = assignmentStudentRepository
+            .getByStudent(student.getId());
+        for (AssignmentStudentModel assignment : assignments) {
+          assignmentStudentRepository.delete(assignment);
+        }
+        student.getAssignments().clear();
+      }
+      if (student.getCourses() != null) {
+        student.getCourses().clear();
+      }
+      studentRepository.delete(student);
+    } else {
+      TeacherModel teacher = teacherRepository.getByUser(userModel);
+      teacherRepository.delete(teacher);
     }
 
     userRepository.deleteUser(id);

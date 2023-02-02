@@ -18,4 +18,7 @@ public interface AssignmentStudentRepository extends JpaRepository<AssignmentStu
 
         @Query(value = "SELECT * FROM assignment_student ast where ast.assignment_id = :assignmentId", nativeQuery = true)
         List<AssignmentStudentModel> findByAssignment(@Param("assignmentId") Long assignmentId);
+
+        @Query(value = "SELECT * FROM assignment_student ast where ast.student_id = :studentId", nativeQuery = true)
+        List<AssignmentStudentModel> getByStudent(@Param("studentId") Long studentId);
 }
