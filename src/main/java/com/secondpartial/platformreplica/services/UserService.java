@@ -331,4 +331,46 @@ public class UserService extends CrudHandler {
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
 
+  public ResponseEntity<HashMap<String, Object>> getUsersByRol(String rol) {
+    HashMap<String, Object> response = new HashMap<>();
+
+    List<UserModel> users = (List<UserModel>) userRepository.findByRol(rol);
+    ArrayList<HashMap<String, Object>> usersDTO = new ArrayList<>();
+
+    for (UserModel user : users) {
+      HashMap<String, Object> userInfo = new HashMap<>();
+      userInfo.put("name", user.getName());
+      userInfo.put("email", user.getEmail());
+      userInfo.put("address", user.getAddress());
+      userInfo.put("phoneNumber", user.getPhoneNumber());
+      userInfo.put("rol", user.getRol().toString());
+      userInfo.put("userImageUrl", user.getUserImageUrl());
+
+      userInfo.put("city",
+          new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
+              .getName());
+      userInfo.put("province",
+          new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
+              .getProvinceName());
+      userInfo.put("id", user.getId().toString());
+    
+    System.out.println("rol + " + user.getRol().toString());
+    
+    if (user.getRol().toString().equals("STUDENT")) {
+      userInfo.put("semester", user.getStudent().getSemester().toString());
+      userInfo.put("roleId", user.getStudent().getId().toString());
+    }
+
+    if (user.getRol().toString().equals("TEACHER")) {
+      userInfo.put("roleId", user.getTeacher().getId().toString());
+    }
+
+      usersDTO.add(userInfo);
+    }
+
+    response.put("data", usersDTO);
+    response.put("status", HttpStatus.OK.value());
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
 }

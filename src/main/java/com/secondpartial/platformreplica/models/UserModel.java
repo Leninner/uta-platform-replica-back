@@ -46,16 +46,16 @@ public class UserModel {
   private String dni;
 
   @ManyToOne()
-  @JoinColumn(name = "city_id")
+  @JoinColumn(name = "city_id", nullable = true)
   private CityModel city;
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
   private StudentModel student;
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
   private TeacherModel teacher;
 
   @ManyToOne()
-  @JoinColumn(name = "career_id")
+  @JoinColumn(name = "career_id", columnDefinition = "on delete set null")
   private CareerModel career;
 }
