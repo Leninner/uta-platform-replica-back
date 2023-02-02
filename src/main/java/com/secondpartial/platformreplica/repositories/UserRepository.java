@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
   @Query(value = "delete from students where students.user_id = :userId", nativeQuery = true)
   public void deleteUser(@Param("userId") Long userId);
 
+  @Query(value = "select * from users u where u.rol = :rol", nativeQuery = true)
+  public Iterable<UserModel> findByRol(@Param("rol") String rol);
 }

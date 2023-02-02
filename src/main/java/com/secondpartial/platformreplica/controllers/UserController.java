@@ -37,6 +37,11 @@ public class UserController {
     return userService.getUsers(token);
   }
 
+  @GetMapping("/{rol}")
+  public ResponseEntity<HashMap<String, Object>> getUsersByRol(@PathVariable("rol") String rol) {
+    return userService.getUsersByRol(rol);
+  }
+
   @PostMapping()
   public ResponseEntity<LinkedHashMap<String, Object>> registerUser(@RequestBody UserDTO user) {
     return userService.create(user);
