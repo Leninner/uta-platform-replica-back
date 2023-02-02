@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import com.secondpartial.platformreplica.dtos.CourseUpdateDTO;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +41,11 @@ public class CourseController {
       @RequestBody ArrayList<CourseCreationDTO> courses) {
     return courseService.createCourses(courses);
   }
+
+  @PutMapping()
+    public ResponseEntity<LinkedHashMap<String, Object>> updateCourse( @RequestBody CourseUpdateDTO course,
+        @RequestHeader("rol") String rol) {
+        return courseService.update(course, rol);
+    }
 
 }

@@ -110,8 +110,7 @@ public class CourseService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    if (courseRepository.findByNameSemesterAndCarrer(course.getName(), course.getSemester(),
-        course.getCareerId()) != null) {
+    if (((List<CourseModel>) courseRepository.findByNameAndSemester(course.getName(), SemesterEnum.getSemesterEnum(course.getSemester()).toString())).size() > 0) {
       response.put("message", "Course already exists");
       response.put("status", 400);
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
@@ -125,6 +124,17 @@ public class CourseService extends CrudHandler {
         course.getImage(), null, teacher, career, null);
 
     courseRepository.save(courseModel);
+
+    CourseResponseDTO courseResponse = new CourseResponseDTO() {
+      {
+        setId(courseModel.getId());
+        setName(courseModel.getName());
+        setSemester(courseModel.getSemester().toString());
+        setDescription(courseModel.getDescription());
+        setCareerName(courseModel.getCareer().getName());
+        setTeacherName(courseModel.getTeacher().getUser().getName());
+      }
+    };
     response.put("message", "Course created successfully");
     response.put("status", 200);
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.CREATED);
@@ -140,7 +150,7 @@ public class CourseService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    CourseModel courseModel = courseRepository.findById(course.getId()).get();
+    CourseModel courseModel = courseRepository.getReferenceById(course.getId());
 
     if (courseModel == null) {
       response.put("message", "Course not found");
@@ -148,7 +158,7 @@ public class CourseService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
     }
 
-    if (courseRepository.findByNameAndSemester(course.getName(), courseModel.getSemester().toString()) != null) {
+    if (((List<CourseModel>) courseRepository.findByNameAndSemester(course.getName(), courseModel.getSemester().toString())).size() > 0) {
       response.put("message", "Course already exists");
       response.put("status", 400);
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
