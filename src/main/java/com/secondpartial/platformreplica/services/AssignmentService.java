@@ -132,6 +132,7 @@ public class AssignmentService {
 
     List<AssignmentModel> assignments = course.getAssignments();
     ArrayList<AssignmentTeacherResponseDTO> assignmentsResponse = new ArrayList<>();
+    ArrayList<AssignmentStudentAllResponseDTO> assignmentsStudentResponse = new ArrayList<>();
 
     for (AssignmentModel assignment : assignments) {
 
@@ -160,7 +161,8 @@ public class AssignmentService {
         assignmentStudentAllResponse.setStatus(assignment.getStatus().toString());
         assignmentStudentAllResponse.setIndicationsFiles(assignment.getIndicationsFiles());
 
-        response.put("assignments", assignmentStudentAllResponse);
+        assignmentsStudentResponse.add(assignmentStudentAllResponse);
+        response.put("assignments", assignmentsStudentResponse);
       }
 
       if (rol.equals(RolEnum.TEACHER.toString())) {
@@ -196,10 +198,8 @@ public class AssignmentService {
 
         assignmentTeacherResponse.setStudents(assignmentStudentsResponseDTO);
         assignmentsResponse.add(assignmentTeacherResponse);
-      }
-
-      response.put("assignments", assignmentsResponse);
-    
+        response.put("assignments", assignmentsResponse);
+      }    
     }
 
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
