@@ -360,6 +360,7 @@ public class AssignmentService {
         studentId);
 
     if (assignmentStudent == null) {
+      System.out.println("assignmentStudent == null");
       response.put("message", "Assignment not found");
       return ResponseEntity.badRequest().body(response);
     }
@@ -369,7 +370,6 @@ public class AssignmentService {
     }
     url = s3Service.setStudentFiles(assignmentStudent, files);
     assignmentStudent.setStudentFiles(url);
-    assignmentStudent.setIsCompleted(true);
     assignmentStudent.setIsCompleted(true);
 
     assignmentStudentRepository.save(assignmentStudent);
