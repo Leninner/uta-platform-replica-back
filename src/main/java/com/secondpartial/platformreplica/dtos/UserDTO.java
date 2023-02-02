@@ -2,8 +2,6 @@ package com.secondpartial.platformreplica.dtos;
 
 import java.util.List;
 
-import org.springframework.messaging.rsocket.service.RSocketExchange;
-
 import com.secondpartial.platformreplica.enums.SemesterEnum;
 
 import lombok.AllArgsConstructor;
