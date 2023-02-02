@@ -14,9 +14,9 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
   String deleteQuery = "DO $$  DECLARE  user_name text;  BEGIN SELECT name INTO user_name FROM users WHERE id = :userId ; EXECUTE 'DROP OWNED BY ' || user_name || '; DROP USER ' || user_name || ';'; END $$;";
 
-  @Query(value = "delete from students where students.user_id = :userId", nativeQuery = true)
+  @Query(value = "delete from users where id = :userId ", nativeQuery = true)
   public void deleteUser(@Param("userId") Long userId);
 
-  @Query(value = "select * from users u where u.rol = :rol", nativeQuery = true)
+  @Query(value = "select * from users u where u.rol = :rol ", nativeQuery = true)
   public Iterable<UserModel> findByRol(@Param("rol") String rol);
 }

@@ -5,16 +5,20 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class StudentResponseDTO {
     private Long id;
     private String name;
     private String email;
     private String userImageUrl;
     private String rol;
+    private String career;
+    private String dni;
+    private String semester;
     private String address;
     private String phoneNumber;
     private String city;

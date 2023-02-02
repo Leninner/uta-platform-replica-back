@@ -12,4 +12,7 @@ public interface CourseStudentRepository extends JpaRepository<CourseStudentMode
     @Query(value = "select * from course_student cs where cs.course_id = :courseId", nativeQuery = true)
     public Iterable<CourseStudentModel> findByCourseId(@Param("courseId") Long courseId);
 
+    @Query(value = "select * from course_student cs where cs.student_id = :studentId", nativeQuery = true)
+    public Iterable<CourseStudentModel> findByStudentId(@Param("studentId") Long studentId);
+
 }

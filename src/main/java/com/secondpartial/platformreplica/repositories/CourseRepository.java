@@ -25,7 +25,7 @@ public interface CourseRepository extends JpaRepository<CourseModel, Long> {
   public Iterable<CourseModel> findByNameSemesterAndCarrer(@Param("name") String name,
       @Param("semester") String semester, @Param("carrerId") Long careerId);
 
-  @Query(value = "DROP OWNED BY :courseId CASCADE", nativeQuery = true)
+  @Query(value = "delete from courses where id = :courseId", nativeQuery = true)
   public void deleteById(@Param("courseId") Long id);
 
 }

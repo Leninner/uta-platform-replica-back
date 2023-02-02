@@ -21,6 +21,7 @@ import com.secondpartial.platformreplica.models.AssignmentStudentModel;
 import com.secondpartial.platformreplica.models.CareerModel;
 import com.secondpartial.platformreplica.models.CityModel;
 import com.secondpartial.platformreplica.models.CourseModel;
+import com.secondpartial.platformreplica.models.CourseStudentModel;
 import com.secondpartial.platformreplica.models.StudentModel;
 import com.secondpartial.platformreplica.models.TeacherModel;
 import com.secondpartial.platformreplica.models.UserModel;
@@ -28,6 +29,7 @@ import com.secondpartial.platformreplica.repositories.AssignmentStudentRepositor
 import com.secondpartial.platformreplica.repositories.CareerRepository;
 import com.secondpartial.platformreplica.repositories.CityRepository;
 import com.secondpartial.platformreplica.repositories.CourseRepository;
+import com.secondpartial.platformreplica.repositories.CourseStudentRepository;
 import com.secondpartial.platformreplica.repositories.StudentRepository;
 import com.secondpartial.platformreplica.repositories.TeacherRepository;
 import com.secondpartial.platformreplica.repositories.UserRepository;
@@ -58,6 +60,9 @@ public class UserService extends CrudHandler {
 
   @Autowired
   CourseRepository courseRepository;
+
+  @Autowired
+  CourseStudentRepository courseStudentRepository;
 
   @Autowired
   AssignmentStudentRepository assignmentStudentRepository;
@@ -165,6 +170,25 @@ public class UserService extends CrudHandler {
 
     if (userModel.getRol() == RolEnum.TEACHER) {
       TeacherModel teacher = new TeacherModel(null, userModel, null);
+      List<Long> courseIds = user.getCourseIds();
+
+      if (courseIds != null) {
+        System.out.println("courseIds: " + courseIds);
+        List<CourseModel> courses = teacher.getCourses();
+
+        if (courses == null) {
+          courses = new ArrayList<CourseModel>();
+        }
+
+        for (Long courseId : courseIds) {
+          CourseModel course = courseRepository.findById(courseId).get();
+          course.setTeacher(teacher);
+          courses.add(courseRepository.getReferenceById(courseId));
+        }
+
+        teacher.setCourses(courses);
+      }
+
       teacherRepository.save(teacher);
       return;
     }
@@ -207,7 +231,7 @@ public class UserService extends CrudHandler {
 
   @Override
   @Transactional
-  public ResponseEntity<LinkedHashMap<String, Object>> delete(Long id, String rol, String token) {
+  public ResponseEntity<LinkedHashMap<String, Object>> delete(Long userId, String rol, String token) {
     LinkedHashMap<String, Object> response = new LinkedHashMap<>();
 
     if (!validateToken(token)) {
@@ -222,7 +246,7 @@ public class UserService extends CrudHandler {
       return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
-    UserModel userModel = userRepository.findById(id).get();
+    UserModel userModel = userRepository.findById(userId).get();
     if (userModel == null) {
       response.put("message", "User not found");
       response.put("status", HttpStatus.BAD_REQUEST.value());
@@ -236,24 +260,55 @@ public class UserService extends CrudHandler {
 
     if (userModel.getRol() == RolEnum.STUDENT) {
       StudentModel student = userModel.getStudent();
+
+      if (student == null) {
+        userRepository.delete(userModel);
+        response.put("message", "User deleted");
+        response.put("status", HttpStatus.OK.value());
+        return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
+      }
+
       if (student.getAssignments() != null) {
         List<AssignmentStudentModel> assignments = assignmentStudentRepository
             .getByStudent(student.getId());
+
         for (AssignmentStudentModel assignment : assignments) {
           assignmentStudentRepository.delete(assignment);
         }
         student.getAssignments().clear();
       }
       if (student.getCourses() != null) {
+        List<CourseStudentModel> courses = (List<CourseStudentModel>) courseStudentRepository
+            .findByStudentId(student.getId());
+
+        for (CourseStudentModel course : courses) {
+          courseStudentRepository.delete(course);
+        }
         student.getCourses().clear();
       }
       studentRepository.delete(student);
-    } else {
-      TeacherModel teacher = teacherRepository.getByUser(userModel);
-      teacherRepository.delete(teacher);
+    } else if (userModel.getRol() == RolEnum.TEACHER) {
+      TeacherModel teacher = userModel.getTeacher();
+
+      if (teacher == null) {
+        userRepository.delete(userModel);
+        response.put("message", "User deleted");
+        response.put("status", HttpStatus.OK.value());
+      }
+      if (teacher.getCourses() != null) {
+        List<CourseModel> courses = (List<CourseModel>) courseRepository
+            .findByIdTeacher(teacher.getId());
+
+        for (CourseModel course : courses) {
+          course.setTeacher(null);
+          courseRepository.save(course);
+        }
+        teacher.getCourses().clear();
+      }
+      teacherRepository.deleteById(teacher.getId());
     }
 
-    userRepository.deleteUser(id);
+    userRepository.delete(userModel);
     response.put("message", "User deleted successfully");
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);
   }
