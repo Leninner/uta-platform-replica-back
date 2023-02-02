@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.secondpartial.platformreplica.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class TeacherService extends CrudHandler {
 
     @Autowired
     CityRepository cityRepository;
+
+    @Autowired
+    CourseRepository courseRepository;
 
     @Override
     public ResponseEntity<LinkedHashMap<String, Object>> create(UserDTO user) {
@@ -73,24 +77,81 @@ public class TeacherService extends CrudHandler {
     }
 
     @Override
-    public ResponseEntity<LinkedHashMap<String, Object>> update(Long id, TeacherUpdateDTO teacher) {
+    public ResponseEntity<LinkedHashMap<String, Object>> update(Long id, TeacherUpdateDTO teacher, String rol ) {
         LinkedHashMap<String, Object> response = new LinkedHashMap<>();
+
+        if (!rol.equals(RolEnum.ADMIN.toString())) {
+            response.put("error", "You don't have permission to update this teacher");
+            return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.UNAUTHORIZED);
+        }
+
         TeacherModel teacherModel = teacherRepository.findById(id).orElse(null);
 
         if (teacherRepository.existsById(id)) {
-            teacherModel.getUser().setName(teacher.getName());
-            teacherModel.getUser().setEmail(teacher.getEmail());
-            teacherModel.getUser().setAddress(teacher.getAddress());
-            teacherModel.getUser().setPhoneNumber(teacher.getPhoneNumber());
+            if (teacher.getName()!= null){
+                teacherModel.getUser().setName(teacher.getName());
+            }
 
-            CityModel city = cityRepository.findById(teacher.getCityId()).orElse(null);
-            teacherModel.getUser().setCity(city);
+            if (teacher.getEmail()!= null){
+                teacherModel.getUser().setEmail(teacher.getEmail());
+            }
 
-            teacherModel.getUser().setDni(teacher.getDni());
+            if (teacher.getAddress()!= null){
+                teacherModel.getUser().setAddress(teacher.getAddress());
+            }
+
+            if (teacher.getPhoneNumber()!= null){
+                teacherModel.getUser().setPhoneNumber(teacher.getPhoneNumber());
+            }
+
+            if (teacher.getCityId()!= null){
+                CityModel city = cityRepository.findById(teacher.getCityId()).orElse(null);
+                teacherModel.getUser().setCity(city);
+            }
+
+            if (teacher.getDni()!= null){
+                teacherModel.getUser().setDni(teacher.getDni());
+            }
+
+            if (teacher.getCoursesIds() != null) {
+                List<CourseModel> courses = new ArrayList<>();
+                for (Long courseId : teacher.getCoursesIds()) {
+                    CourseModel course = courseRepository.getReferenceById(courseId);
+                    TeacherModel OldTeacher = course.getTeacher();
+                    List<CourseModel> oldCourses = OldTeacher.getCourses();
+                    oldCourses.remove(course);
+                    OldTeacher.setCourses(oldCourses);
+                    teacherRepository.save(OldTeacher);
+
+                    course.setTeacher(teacherModel);
+                    courses.add(course);
+                }
+                teacherModel.setCourses(courses);
+            }
+
 
             teacherRepository.save(teacherModel);
 
-            this.get(id);
+            TeacherResponseDTO teacherResponeDTO = new TeacherResponseDTO();
+            List<CoursePartInfoDTO> coursePartInfoDTO = new ArrayList<>();
+            List<CourseModel> courses = teacherModel.getCourses();
+
+            for (CourseModel course : courses) {
+                coursePartInfoDTO.add(courseService.getCoursePartInfo(course.getId()));
+            }
+
+            teacherResponeDTO.setCourses(coursePartInfoDTO);
+            teacherResponeDTO.setId(teacherModel.getId());
+            teacherResponeDTO.setName(teacherModel.getUser().getName());
+            teacherResponeDTO.setEmail(teacherModel.getUser().getEmail());
+            teacherResponeDTO.setDni(teacherModel.getUser().getDni());
+            teacherResponeDTO.setRol(RolEnum.TEACHER.toString());
+            teacherResponeDTO.setAddress(teacherModel.getUser().getAddress());
+            teacherResponeDTO.setPhoneNumber(teacherModel.getUser().getPhoneNumber());
+            teacherResponeDTO.setCity(teacherModel.getUser().getCity().getName());
+            teacherResponeDTO.setProvince(teacherModel.getUser().getCity().getProvince().getName());
+
+            response.put("teacher", teacherResponeDTO);
 
             response.put("message", "Teacher updated successfully");
             return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);

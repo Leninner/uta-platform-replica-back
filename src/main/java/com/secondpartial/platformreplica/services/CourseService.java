@@ -266,7 +266,7 @@ public class CourseService extends CrudHandler {
     for (CourseStudentModel courseStudent : courseStudents) {
       courseStudentRepository.delete(courseStudent);
     }
-    courseRepository.deleteById(id);
+    courseRepository.delete(course);
     response.put("message", "Course deleted successfully");
     response.put("status", 200);
     return new ResponseEntity<LinkedHashMap<String, Object>>(response, HttpStatus.OK);

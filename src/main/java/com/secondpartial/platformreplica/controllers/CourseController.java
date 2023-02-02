@@ -48,4 +48,10 @@ public class CourseController {
         return courseService.update(course, rol);
     }
 
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<LinkedHashMap<String, Object>> deleteCourse(@PathVariable("courseId") Long courseId,
+        @RequestHeader("rol") String rol) {
+        return courseService.delete(courseId, rol);
+    }
+
 }

@@ -297,8 +297,8 @@ public class UserService extends CrudHandler {
         response.put("status", HttpStatus.OK.value());
       }
       if (teacher.getCourses() != null) {
-        List<CourseModel> courses = (List<CourseModel>) courseRepository
-            .findByIdTeacher(teacher.getId());
+        List<CourseModel> courses = (List<CourseModel>) teacherRepository
+            .getReferenceById(teacher.getId()).getCourses();
 
         for (CourseModel course : courses) {
           course.setTeacher(null);

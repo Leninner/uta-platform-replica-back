@@ -37,7 +37,7 @@ public abstract class CrudHandler {
         return null;
     }
 
-    public ResponseEntity<LinkedHashMap<String, Object>> update(Long id, TeacherUpdateDTO teacher) {
+    public ResponseEntity<LinkedHashMap<String, Object>> update(Long id, TeacherUpdateDTO teacher, String rol) {
         return null;
     }
 
