@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.secondpartial.platformreplica.dtos.AssignmentCreationDTO;
 import com.secondpartial.platformreplica.dtos.AssignmentStudentModifyDTO;
+import com.secondpartial.platformreplica.dtos.SetGradeDTO;
 import com.secondpartial.platformreplica.services.AssignmentService;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -57,8 +58,9 @@ public class AssignmentController {
       @RequestHeader("role") String role,
       @PathVariable("assignmentId") Long assignmentId,
       @PathVariable("studentId") Long studentId,
-      @RequestBody double grade) {
-    return assignmentService.setAssignmentStudentGrade(role, assignmentId, studentId, grade);
+      @RequestBody SetGradeDTO gradeSummary) {
+        System.out.println("Prueba " + gradeSummary.getGrade());
+    return assignmentService.setAssignmentStudentGrade(role, assignmentId, studentId, Double.parseDouble(gradeSummary.getGrade()));
   }
 
   @PostMapping(consumes = { "multipart/form-data" })
