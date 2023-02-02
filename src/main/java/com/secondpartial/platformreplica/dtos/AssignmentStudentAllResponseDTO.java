@@ -7,10 +7,16 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class AssignmentStudentResponseDTO {
+public class AssignmentStudentAllResponseDTO {
     private String studentName;
     private Double grade;
     private String comment;
     private String studentFiles;
-    private Boolean isCompleted;
+    private String assignmentName;
+    private String partial;
+    private String indicationsFiles;
+    private String description;
+    private String dateInit;
+    private String dateEnd;
+    private String status;
 }

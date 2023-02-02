@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import com.secondpartial.platformreplica.models.AssignmentStudentModel;
 
 @Repository
@@ -14,4 +16,6 @@ public interface AssignmentStudentRepository extends JpaRepository<AssignmentStu
         AssignmentStudentModel findByStudentAndAssignment(@Param("assignmentId") Long assignmentId,
                         @Param("studentId") Long studentId);
 
+        @Query(value = "SELECT * FROM assignment_student ast where ast.assignment_id = :assignmentId", nativeQuery = true)
+        List<AssignmentStudentModel> findByAssignment(@Param("assignmentId") Long assignmentId);
 }

@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +25,10 @@ public class AssignmentController {
   @Autowired
   AssignmentService assignmentService;
 
-  @GetMapping(path = "/course/{courseId}")
+  @GetMapping(path = "/course/{courseId}/user/{userId}")
   public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentsByCourseId(
-      @PathVariable("courseId") Long courseId) {
-    return assignmentService.getAssignmentsByCourseId(courseId);
+      @PathVariable("courseId") Long courseId, @PathVariable("userId") Long userId, @RequestHeader String rol) {
+    return assignmentService.getAssignmentsByCourseId(courseId, userId, rol);
   }
 
   @PutMapping(value = "modify/{id}", consumes = { "multipart/form-data" })
@@ -37,17 +38,18 @@ public class AssignmentController {
     return assignmentService.modifyAssignment(rol, id, assignment, assignment.getIndicationsFiles());
   }
 
-  @PutMapping(value = "delete/{id}")
+  @DeleteMapping(value = "delete/{id}")
   public ResponseEntity<LinkedHashMap<String, Object>> deleteAssignment(@RequestHeader String rol,
       @PathVariable("id") Long id) {
-    return assignmentService.deleteAssignment(rol, id);
+    return assignmentService.delete(rol, id);
   }
 
   @GetMapping(path = "/{assignmentId}/student/{studentId}")
   public ResponseEntity<LinkedHashMap<String, Object>> getAssignmentByStudentIdAndAssignmentId(
       @PathVariable("assignmentId") Long assignmentId,
       @PathVariable("studentId") Long studentId) {
-    return assignmentService.getAssignmentByStudentIdAndAssignmentId(assignmentId, studentId);
+    return assignmentService.getAssignmentByStudentIdAndAssignmentId(assignmentId,
+        studentId);
   }
 
   @PutMapping(value = "/{assignmentId}/student/{studentId}")
@@ -67,12 +69,11 @@ public class AssignmentController {
 
   @PutMapping(value = "/{assignmentId}/student/{studentId}", consumes = { "multipart/form-data" })
   public ResponseEntity<LinkedHashMap<String, Object>> updateStudentFiles(
-      @RequestHeader("rol") String rol,
       @PathVariable("assignmentId") Long assignmentId,
       @PathVariable("studentId") Long studentId,
       @ModelAttribute AssignmentStudentModifyDTO assignment) {
     System.out.println("Prueba");
-    return assignmentService.updateStudentFiles(rol, assignmentId, studentId, assignment.getStudentFiles());
+    return assignmentService.updateStudentFiles(assignmentId, studentId, assignment.getStudentFiles());
   }
 
 }

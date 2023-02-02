@@ -36,4 +36,7 @@ public class AssignmentStudentModel {
     @Column(name = "student_files", length = 1024, nullable = true)
     private String studentFiles;
 
+    @Column(name = "is_completed", nullable = false, columnDefinition = "boolean default false")
+    private Boolean isCompleted;
+
 }

@@ -12,8 +12,5 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class AssignmentStudentModifyDTO implements java.io.Serializable {
-    Long StudentId;
-    Long AssignmentId;
-    String comment;
     List<MultipartFile> studentFiles;
 }
