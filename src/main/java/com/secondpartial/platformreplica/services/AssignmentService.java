@@ -192,6 +192,7 @@ public class AssignmentService {
           assignmentStudentResponse.setStudentFiles(assignmentStudent.getStudentFiles());
           assignmentStudentResponse.setIsCompleted(assignmentStudent.getIsCompleted());
           assignmentStudentResponse.setComment(assignmentStudent.getComment());
+          assignmentStudentResponse.setId(student.getId());
 
           assignmentStudentsResponseDTO.add(assignmentStudentResponse);
         }

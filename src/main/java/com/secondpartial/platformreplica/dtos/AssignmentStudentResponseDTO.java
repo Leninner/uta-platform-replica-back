@@ -13,4 +13,5 @@ public class AssignmentStudentResponseDTO {
     private String comment;
     private String studentFiles;
     private Boolean isCompleted;
+    private Long id;
 }
