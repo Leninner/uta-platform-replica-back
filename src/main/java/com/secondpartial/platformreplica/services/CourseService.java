@@ -192,13 +192,13 @@ public class CourseService {
           setId(student.getId());
           setName(student.getUser().getName());
           setEmail(student.getUser().getEmail());
-          setImage(student.getUser().getImage());
+          setUserImageUrl(student.getUser().getUserImageUrl());
           setRol(student.getUser().getRol().toString());
           setAdress(student.getUser().getAddress());
           setPhoneNumber(student.getUser().getPhoneNumber());
           setCity(student.getUser().getCity().getName());
           setProvince(
-              new CityDTO(student.getUser().getCity().getName(), student.getUser().getCity().getProvince().getName())
+              new CityDTO(student.getUser().getCity().getId(), student.getUser().getCity().getName(), student.getUser().getCity().getProvince().getName())
                   .getProvinceName());
 
           List<CoursePartInfoDTO> courses = new ArrayList<>();

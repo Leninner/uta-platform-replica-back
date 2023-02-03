@@ -13,6 +13,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      logging:
+        show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 security:
   jwt:
     ttlMillis: ${env.JWT_TTL_MILLIS}
@@ -35,3 +40,10 @@ logging:
           InstanceMetadataService: error
         util:
           EC2MetadataUtils: error
+    org:
+      springframework:
+        web: DEBUG
+servlet:
+  multipart:
+    max-request-size: ${env.MAX_REQUEST_SIZE}
+    max-file-size: ${env.MAX_FILE_SIZE}

@@ -18,7 +18,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -58,11 +57,8 @@ public class AssignmentModel {
   @Enumerated(EnumType.STRING)
   private StatusEnum status;
 
-  @Column(name = "indication_file", nullable = true)
-  private String indicationsFile;
-
-  @Transient
-  private String indicationsFileUrl;
+  @Column(name = "indications_files", length = 1024, nullable = true)
+  private String indicationsFiles;
 
   @ManyToMany()
   @JoinTable(name = "assignment_student", joinColumns = @JoinColumn(name = "assignment_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))

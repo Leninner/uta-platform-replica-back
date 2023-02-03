@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +33,7 @@ public class AssignmentStudentModel {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "student_file")
-    private String studentFile;
-
-    @Transient
-    private String studentFileUrl;
+    @Column(name = "student_files", length = 1024, nullable = true)
+    private String studentFiles;
 
 }

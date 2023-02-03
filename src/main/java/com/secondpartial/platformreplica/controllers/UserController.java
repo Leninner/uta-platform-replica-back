@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.secondpartial.platformreplica.dtos.UserDTO;
 import com.secondpartial.platformreplica.dtos.UserModifyDTO;
@@ -47,14 +45,15 @@ public class UserController {
     return userService.registerBulk(users);
   }
 
-  @PutMapping(value = "/{id}")
+  @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
   public ResponseEntity<HashMap<String, Object>> ModifyUser(@PathVariable("id") Long id,
-      @RequestBody UserModifyDTO user,
+      @ModelAttribute UserModifyDTO user,
       @RequestHeader(value = "Authorization") String token) {
-    System.out.println("id: " + id);
-    System.out.println("user: " + user);
-    return userService.modifyUser(id, user, token);
+    return userService.modifyUser(id, user, token, user.getUserImage());
   }
 
-  // endpoint para retornar las ciudades
+  @GetMapping("/cities")
+  public ResponseEntity<HashMap<String, Object>> getCities() {
+    return userService.getCities();
+  }
 }

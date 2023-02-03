@@ -2,7 +2,6 @@ package com.secondpartial.platformreplica.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -16,5 +15,5 @@ public class AssignmentResponseDTO {
     private String dateInit;
     private String dateEnd;
     private String status;
-
+    private String indicationsFiles;
 }

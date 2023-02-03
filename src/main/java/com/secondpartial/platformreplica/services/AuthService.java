@@ -44,11 +44,26 @@ public class AuthService {
     userInfo.put("address", user.getAddress());
     userInfo.put("phoneNumber", user.getPhoneNumber());
     userInfo.put("rol", user.getRol().toString());
-    userInfo.put("image", user.getImage());
-    userInfo.put("city", new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getName());
+    userInfo.put("userImageUrl", user.getUserImageUrl());
+    System.out.println(user.getUserImageUrl());
+    userInfo.put("city",
+        new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
+            .getName());
     userInfo.put("province",
-        new CityDTO(user.getCity().getName(), user.getCity().getProvince().getName()).getProvinceName());
+        new CityDTO(user.getCity().getId(), user.getCity().getName(), user.getCity().getProvince().getName())
+            .getProvinceName());
     userInfo.put("id", user.getId().toString());
+    
+    System.out.println("rol + " + user.getRol().toString());
+    
+    if (user.getRol().toString().equals("STUDENT")) {
+      userInfo.put("semester", user.getStudent().getSemester().toString());
+      userInfo.put("roleId", user.getStudent().getId().toString());
+    }
+
+    if (user.getRol().toString().equals("TEACHER")) {
+      userInfo.put("roleId", user.getTeacher().getId().toString());
+    }
 
     String token = jwtUtil.create(mail, password);
     response.put("token", token);

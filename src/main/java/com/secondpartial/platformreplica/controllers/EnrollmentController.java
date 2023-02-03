@@ -14,12 +14,13 @@ import com.secondpartial.platformreplica.services.EnrollmentService;
 @RestController
 @RequestMapping("/enrollments")
 public class EnrollmentController {
-    @Autowired
-    EnrollmentService enrollmentService;
+  @Autowired
+  EnrollmentService enrollmentService;
 
-    @PostMapping()
-    public ResponseEntity<HashMap<String, Object>> enrollStudentToCourse(
-            @RequestBody EnrollStudentDTO enrollStudentDTO) {
-        return enrollmentService.enrollStudentToCourse(enrollStudentDTO);
-    }
+  @PostMapping()
+  public ResponseEntity<HashMap<String, Object>> enrollStudentToCourse(
+      @RequestBody EnrollStudentDTO enrollStudentDTO) {
+        System.out.println("enrollStudentDTO: " + enrollStudentDTO);
+    return enrollmentService.enrollStudentToCourse(enrollStudentDTO);
+  }
 }

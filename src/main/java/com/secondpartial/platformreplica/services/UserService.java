@@ -2,6 +2,7 @@ package com.secondpartial.platformreplica.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class UserService {
   @Autowired
   CourseRepository courseRepository;
 
+  @Autowired
+  S3Service s3Service;
+
   public List<UserModel> getUsers(String token) {
     if (!validateToken(token)) {
       return null;
@@ -95,7 +99,7 @@ public class UserService {
 
   public void processUserCreationByRol(UserModel userModel, UserDTO user) {
     if (userModel.getRol() == RolEnum.STUDENT) {
-      StudentModel student = new StudentModel(null, userModel, null, null);
+      StudentModel student = new StudentModel(null, userModel, null, null, null);
       List<Long> courseIds = user.getCourseIds();
 
       if (courseIds != null) {
@@ -159,7 +163,7 @@ public class UserService {
   }
 
   public ResponseEntity<HashMap<String, Object>> modifyUser(Long id, UserModifyDTO user,
-      String token) {
+      String token, MultipartFile userImage) {
     HashMap<String, Object> response = new HashMap<>();
 
     if (!validateToken(token)) {
@@ -173,6 +177,12 @@ public class UserService {
       response.put("message", "User not found");
       response.put("status", HttpStatus.BAD_REQUEST.value());
       return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    if (userImage != null) {
+      LinkedHashMap<String, String> userImageMap = s3Service.setUserImage(userModel, userImage);
+      userModel.setUserImageUrl(userImageMap.get("userImageUrl"));
+      userModel.setUserImageKey(userImageMap.get("userImageKey"));
     }
 
     if (user.getName() != null) {
@@ -209,15 +219,31 @@ public class UserService {
     userInfo.put("address", userModel.getAddress());
     userInfo.put("phoneNumber", userModel.getPhoneNumber());
     userInfo.put("rol", userModel.getRol().toString());
-    userInfo.put("image", userModel.getImage());
+    userInfo.put("userImageUrl", userModel.getUserImageUrl());
     userInfo.put("city",
-        new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getName());
+        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(),
+            userModel.getCity().getProvince().getName()).getName());
     userInfo.put("province",
-        new CityDTO(userModel.getCity().getName(), userModel.getCity().getProvince().getName()).getProvinceName());
+        new CityDTO(userModel.getCity().getId(), userModel.getCity().getName(),
+            userModel.getCity().getProvince().getName()).getProvinceName());
     userInfo.put("id", userModel.getId().toString());
 
     response.put("message", "User modified successfully!");
     response.put("userInfo", userInfo);
+    response.put("status", HttpStatus.OK.value());
+    return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+  }
+
+  public ResponseEntity<HashMap<String, Object>> getCities() {
+    HashMap<String, Object> response = new HashMap<>();
+    List<CityModel> cities = cityRepository.findAll();
+    List<CityDTO> citiesDTO = new ArrayList<CityDTO>();
+
+    for (CityModel city : cities) {
+      citiesDTO.add(new CityDTO(city.getId(), city.getName(), city.getProvince().getName()));
+    }
+
+    response.put("cities", citiesDTO);
     response.put("status", HttpStatus.OK.value());
     return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
   }
