@@ -56,6 +56,6 @@ public class UserModel {
   private TeacherModel teacher;
 
   @ManyToOne()
-  @JoinColumn(name = "career_id", columnDefinition = "on delete set null")
+  @JoinColumn(name = "career_id")
   private CareerModel career;
 }

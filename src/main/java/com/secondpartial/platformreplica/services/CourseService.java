@@ -173,11 +173,16 @@ public class CourseService extends CrudHandler {
     }
 
     if(course.getTeacherId() != null) {
-      List<CourseModel> coursesOfLastTeacher = courseModel.getTeacher().getCourses();
+      List<CourseModel> coursesOfLastTeacher;
+      try {
+        coursesOfLastTeacher = courseModel.getTeacher().getCourses();
         coursesOfLastTeacher.remove(courseModel);
         courseModel.getTeacher().setCourses(coursesOfLastTeacher);
         teacherRepository.save(courseModel.getTeacher());
-
+      } catch (Exception e) {
+        System.out.println(e);
+      }
+      
       TeacherModel teacher = teacherRepository.findById(course.getTeacherId()).get();
 
       if(teacher.getCourses() == null) {
@@ -314,6 +319,14 @@ public class CourseService extends CrudHandler {
       ArrayList<CourseResponseDTO> coursesResponse = new ArrayList<>();
       for (CourseModel course : courses) {
         if (course.getSemester().toString().compareTo(semester) == 0) {
+          String teacherName;
+
+          if(course.getTeacher() == null) {
+            teacherName = "No teacher assigned";
+          } else {
+            teacherName = course.getTeacher().getUser().getName();
+          }
+
           CourseResponseDTO courseResponse = new CourseResponseDTO() {
             {
               setId(course.getId());
@@ -322,7 +335,7 @@ public class CourseService extends CrudHandler {
               setDescription(course.getDescription());
               setImage(course.getImage());
               setCareerName(course.getCareer().getName());
-              setTeacherName(course.getTeacher().getUser().getName());
+              setTeacherName(teacherName);
             }
           };
           coursesResponse.add(courseResponse);
