@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "users")
@@ -52,11 +50,9 @@ public class UserModel {
   private CityModel city;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private StudentModel student;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private TeacherModel teacher;
 
   @ManyToOne()
